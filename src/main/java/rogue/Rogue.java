@@ -16,31 +16,35 @@ import org.json.simple.parser.ParseException;
 
 public class Rogue{
 
-    public void setPlayer(Player thePlayer){
+    private Player player = new Player();
+    private String symbols;
+    private ArrayList<Item> rogueItems = new ArrayList<Item>();
+    private ArrayList<Room> roomArray = new ArrayList<Room>();
 
+    public void setPlayer(Player thePlayer){
+        player = thePlayer;
     }
 
 
     public void setSymbols(String filename){
-
+        symbols = filename;
     }
 
     public ArrayList<Room> getRooms(){
-        return null;
+        return roomArray;
 
     }
 
     public ArrayList<Item> getItems(){
-        return null;
+        return rogueItems;
 
     }
     public Player getPlayer(){
-        return null;
-
+        return player;
     }
 
     public void createRooms(String filename){
-
+        
     }
     public String displayAll(){
         //creates a string that displays all the rooms in the dungeon

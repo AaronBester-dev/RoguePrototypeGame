@@ -13,6 +13,8 @@ public class Room  {
    private int roomWidth;
    private int roomHeight;
    private int roomId;
+   private ArrayList<Items> roomItems = new ArrayList<Items>();
+   private Player player = new Player();
 
     // Default constructor
  public Room() {
@@ -56,28 +58,27 @@ public class Room  {
 
 
  public ArrayList<Item> getRoomItems() {
-    return null;
+    return roomItems;
 
  }
 
 
  public void setRoomItems(ArrayList<Item> newRoomItems) {
-
+    roomItems = newRoomItems;
  }
 
 
  public Player getPlayer() {
-    return null;
-
+    return player;
  }
 
 
  public void setPlayer(Player newPlayer) {
-
+    player = newPlayer;
  }
 
  public int getDoor(String direction){
-
+    
     return 0;
 
  }

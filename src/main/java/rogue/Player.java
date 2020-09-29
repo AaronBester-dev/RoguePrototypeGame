@@ -16,7 +16,7 @@ public class Player {
 
 
     public Player(String name) {
-
+        this.setName(name);
     }
 
 

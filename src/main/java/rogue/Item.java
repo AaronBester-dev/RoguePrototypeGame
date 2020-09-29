@@ -12,7 +12,7 @@ public class Item  {
     private Character itemCharacter;
     private String itemDescription;
     private Point itemLocation = new Point();
-
+    private Room currentRoom = new Room();
 
     //Constructors
     public Item() {
@@ -20,7 +20,10 @@ public class Item  {
     }
 
     public Item(int id, String name, String type, Point xyLocation) {
-
+        this.setId(id);
+        this.setName(name);
+        this.setType(type);
+        this.setXyLocation(xyLocation);
     }
     
     // Getters and setters
@@ -92,12 +95,12 @@ public class Item  {
 
 
     public Room getCurrentRoom() {
-        return null;
+        return currentRoom;
         
     }
 
 
     public void setCurrentRoom(Room newCurrentRoom) {
-        
+        currentRoom = newCurrentRoom;
     }
 }
