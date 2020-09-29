@@ -8,6 +8,7 @@ public class Player {
 
     private String playerName;
     private Point playerLocation = new Point();
+    private Room currentRoom = new Room();
 
     // Default constructor
     public Player() {
@@ -47,6 +48,6 @@ public class Player {
 
 
     public void setCurrentRoom(Room newRoom) {
-
+        currentRoom = newRoom;
     }
 }

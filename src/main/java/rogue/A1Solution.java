@@ -47,7 +47,7 @@ public class A1Solution{
         }
 
 // instantiate a new Rogue object and call methods to do the required things
-        Rogue rogue = new Rogue();
+        
         
 
         

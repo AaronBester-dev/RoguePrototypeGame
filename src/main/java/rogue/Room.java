@@ -13,7 +13,7 @@ public class Room  {
    private int roomWidth;
    private int roomHeight;
    private int roomId;
-   private ArrayList<Items> roomItems = new ArrayList<Items>();
+   private ArrayList<Item> roomItems = new ArrayList<Item>();
    private Player player = new Player();
 
     // Default constructor
@@ -78,7 +78,7 @@ public class Room  {
  }
 
  public int getDoor(String direction){
-    
+
     return 0;
 
  }
