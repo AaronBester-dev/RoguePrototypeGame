@@ -7,8 +7,8 @@ import java.awt.Point;
 public class Player {
 
     private String playerName;
-    private Point playerLocation = new Point();
-    private Room currentRoom = new Room();
+    private Point playerLocation;
+    private Room currentRoom;
 
     // Default constructor
     public Player() {

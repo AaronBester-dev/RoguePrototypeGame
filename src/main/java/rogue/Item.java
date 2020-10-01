@@ -13,8 +13,8 @@ public class Item  {
     private String itemType;
     private Character itemCharacter;
     private String itemDescription;
-    private Point itemLocation = new Point();
-    private Room currentRoom = new Room();
+    private Point itemLocation;
+    private Room currentRoom;
 
     //Constructors
     public Item() {

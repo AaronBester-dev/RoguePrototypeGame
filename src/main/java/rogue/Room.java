@@ -20,7 +20,7 @@ public class Room  {
    private int eDoor;
    private int wDoor;
    private ArrayList<Item> roomItems = new ArrayList<Item>();
-   private Player player = new Player();
+   private Player roomPlayer;
    private boolean isPlayer;
 
     // Default constructor
@@ -52,7 +52,7 @@ public Room(JSONObject jsonRoom){
     roomItems.add((new Item((JSONObject) item)));
   }
 
-
+  System.out.println(roomHeight);
 }
  
 
@@ -102,12 +102,12 @@ public Room(JSONObject jsonRoom){
 
 
  public Player getPlayer() {
-    return player;
+    return roomPlayer;
  }
 
 
  public void setPlayer(Player newPlayer) {
-    player = newPlayer;
+    roomPlayer = newPlayer;
  }
 
  public int getDoor(String direction){
