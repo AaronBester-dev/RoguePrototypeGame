@@ -16,17 +16,34 @@ public class Room  {
    private int roomDoor;
    private ArrayList<Item> roomItems = new ArrayList<Item>();
    private Player player = new Player();
+  
 
     // Default constructor
  public Room() {
-    this.setWidth(0);
-    this.setHeight(0);
-    this.setId(0);
+    setWidth(0);
+    setHeight(0);
+    setId(0);
  }
 
  
 public Room(JSONObject jsonRoom){
-  
+  int integerId = Integer.decode(jsonRoom.get("id").toString());
+  boolean isPlayer = Boolean.decode(jsonRoom.get("start").toString());
+  int integerHeight = Integer.decode(jsonRoom.get("height").toString());
+  int integerWidth = Integer.decode(jsonRoom.get("width").toString());
+  if(isPlayer == false){
+    setPlayer(null);
+  }
+  setId(integerId);
+  setHeight(integerHeight);
+  setWidth(integerWidth);
+
+  for(Object door : (JSONArray) jsonRoom.get("doors")){
+    setDoor(jsonRoom.get("dir").toString(),Integer.decode(jsonRoom.get("id").toString()));
+  }
+
+
+
 }
  
 
@@ -99,8 +116,13 @@ public void setDoor(String direction, int location){
 
 
 public boolean isPlayerInRoom() {
-
-return true;
+  if(isPlayer == false){
+    return false;
+  }
+  else{
+    return true;
+  }
+ 
 }
 
 
