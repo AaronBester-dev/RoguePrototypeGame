@@ -12,20 +12,20 @@ public class Player {
 
     // Default constructor
     public Player() {
-        this.setName(Bingus);
-        this.setXyLocation(Point(1,1));
-        this.setCurrentRoom(Room());
+        setName("Bingus");
+        setXyLocation(playerLocation);
+        setCurrentRoom(currentRoom) ;
     }
 
     public Player(String name, Point newLocation, Room newRoom ){
-        this.setName(name);
-        this.setXyLocation(newLocation);
-        this.setCurrentRoom(newRoom);
+        setName(name);
+        setXyLocation(newLocation);
+        setCurrentRoom(newRoom);
     }
 
 
     public Player(String name) {
-        this.setName(name);
+        setName(name);
     }
 
 
@@ -50,7 +50,7 @@ public class Player {
 
 
     public Room getCurrentRoom() {
-        return null;
+        return currentRoom;
 
     }
 

@@ -1,5 +1,7 @@
 package rogue;
 import java.awt.Point;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;  
 
 /**
  * A basic Item class; basic functionality for both consumables and equipment
@@ -16,18 +18,25 @@ public class Item  {
 
     //Constructors
     public Item() {
-        
+        setId(0);
+        setName("Empty");
+        setType("NOTYPE");
+        setXyLocation(new Point(0,0));
     }
 
     public Item(JSONObject jsonItem){
+        Integer id = Integer.decode(jsonItem.get("id").toString());
+        Integer x =   Integer.decode(jsonItem.get("x").toString());
+        Integer y =   Integer.decode(jsonItem.get("y").toString());
+        setId(id);
         
     }
 
     public Item(int id, String name, String type, Point xyLocation) {
-        this.setId(id);
-        this.setName(name);
-        this.setType(type);
-        this.setXyLocation(xyLocation);
+        setId(id);
+        setName(name);
+        setType(type);
+        setXyLocation(xyLocation);
     }
     
     // Getters and setters

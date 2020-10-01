@@ -18,9 +18,9 @@ public class Rogue{
 
     private Player player = new Player();
     private String symbols;
-    private ArrayList<Item> rogueItems = new ArrayList<Item>();
     private ArrayList<Room> roomArray = new ArrayList<Room>();
-
+    private ArrayList<Item> rogueItems = new ArrayList<Item>();
+ 
     public void setPlayer(Player thePlayer){
         player = thePlayer;
     }
@@ -36,7 +36,7 @@ public class Rogue{
     }
 
     public ArrayList<Item> getItems(){
-        return rogueItems;
+        return null;
 
     }
     public Player getPlayer(){
@@ -45,19 +45,30 @@ public class Rogue{
 
     public void createRooms(String filename){
         JSONParser parser = new JSONParser();
-        JSONObject roomObject = (JSONObject) parser.parse(new FileReader(filename));
-        JSONArray jsonRooms = (JSONArray) roomObject.get("room");
+        JSONArray jsonRooms = null;
+        try{
+               JSONObject roomObject = (JSONObject) parser.parse(new FileReader(filename));
+                jsonRooms = (JSONArray) roomObject.get("room");
+        }
+         catch(FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+     
+       
         for(Object object : jsonRooms ){
-            roomArray.add(Room((JSONObject)object));
+            roomArray.add(new Room((JSONObject)object));
         }
 
-        JSONArray jsonItems = (JSONArray) roomObject.get("items");
-        for(Object object : jsonItems){
-            rogueItems.add(Item((JSONObject)object));
-        }
+       
     }
     public String displayAll(){
         //creates a string that displays all the rooms in the dungeon
+        String roomDisplay;
+    
         return null;
     }
 }
