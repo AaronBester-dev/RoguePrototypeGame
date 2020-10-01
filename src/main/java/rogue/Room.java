@@ -13,14 +13,21 @@ public class Room  {
    private int roomWidth;
    private int roomHeight;
    private int roomId;
+   private int roomDoor;
    private ArrayList<Item> roomItems = new ArrayList<Item>();
    private Player player = new Player();
 
     // Default constructor
  public Room() {
-
+    this.setWidth(0);
+    this.setHeight(0);
+    this.setId(0);
  }
 
+ 
+public Room(JSONObject jsonRoom){
+  
+}
  
 
 
@@ -78,9 +85,7 @@ public class Room  {
  }
 
  public int getDoor(String direction){
-
-    return 0;
-
+    return roomDoor;
  }
 
 /*
@@ -89,7 +94,7 @@ location is a number between 0 and the length of the wall
 */
 
 public void setDoor(String direction, int location){
-
+  roomDoor = location;
 }
 
 

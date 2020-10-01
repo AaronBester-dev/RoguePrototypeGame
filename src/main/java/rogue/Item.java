@@ -19,6 +19,10 @@ public class Item  {
         
     }
 
+    public Item(JSONObject jsonItem){
+        
+    }
+
     public Item(int id, String name, String type, Point xyLocation) {
         this.setId(id);
         this.setName(name);
@@ -95,8 +99,7 @@ public class Item  {
 
 
     public Room getCurrentRoom() {
-        return currentRoom;
-        
+        return currentRoom;    
     }
 
 

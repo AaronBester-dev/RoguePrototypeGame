@@ -12,7 +12,15 @@ public class Player {
 
     // Default constructor
     public Player() {
+        this.setName(Bingus);
+        this.setXyLocation(Point(1,1));
+        this.setCurrentRoom(Room());
+    }
 
+    public Player(String name, Point newLocation, Room newRoom ){
+        this.setName(name);
+        this.setXyLocation(newLocation);
+        this.setCurrentRoom(newRoom);
     }
 
 

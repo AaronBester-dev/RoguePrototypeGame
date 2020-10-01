@@ -15,6 +15,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import sun.jvm.hotspot.asm.SymbolFinder;
+
 
 public class A1Solution{
 
@@ -33,10 +35,11 @@ public class A1Solution{
             JSONObject configurationJSON = (JSONObject) obj;
 
             // Extract the Rooms value from the file to get the file location for rooms
-            
+            String roomFileLocation = (String) configurationJSON.get("Rooms");
+
 
             // Extract the Symbols value from the file to get the file location for symbols-map
-
+            String symbolFileLocation = (String) configurationJSON.get("Symbols"); 
             
         } catch(FileNotFoundException e) {
             e.printStackTrace();
@@ -47,6 +50,9 @@ public class A1Solution{
         }
 
 // instantiate a new Rogue object and call methods to do the required things
+        Rogue rogue = new Rogue();
+        rogue.createRooms(roomFileLocation);
+        rogue.setSymbols(symbolFileLocation);
         
         
 

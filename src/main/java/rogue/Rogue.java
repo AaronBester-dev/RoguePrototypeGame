@@ -27,7 +27,7 @@ public class Rogue{
 
 
     public void setSymbols(String filename){
-        symbols = filename;
+        //TODO Read stuff from symbols file
     }
 
     public ArrayList<Room> getRooms(){
@@ -44,7 +44,17 @@ public class Rogue{
     }
 
     public void createRooms(String filename){
-        
+        JSONParser parser = new JSONParser();
+        JSONObject roomObject = (JSONObject) parser.parse(new FileReader(filename));
+        JSONArray jsonRooms = (JSONArray) roomObject.get("room");
+        for(Object object : jsonRooms ){
+            roomArray.add(Room((JSONObject)object));
+        }
+
+        JSONArray jsonItems = (JSONArray) roomObject.get("items");
+        for(Object object : jsonItems){
+            rogueItems.add(Item((JSONObject)object));
+        }
     }
     public String displayAll(){
         //creates a string that displays all the rooms in the dungeon
