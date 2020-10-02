@@ -51,8 +51,6 @@ public Room(JSONObject jsonRoom){
   for(Object item : (JSONArray) jsonRoom.get("loot")){
     roomItems.add((new Item((JSONObject) item)));
   }
-
-  System.out.println(roomHeight);
 }
  
 

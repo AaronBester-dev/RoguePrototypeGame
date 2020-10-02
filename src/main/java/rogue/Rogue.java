@@ -1,7 +1,8 @@
 package rogue;
 
 import java.util.ArrayList;
-
+import java.util.HashMap;
+import java.util.Map;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -20,6 +21,7 @@ public class Rogue{
     private String symbols;
     private ArrayList<Room> roomArray = new ArrayList<Room>();
     private ArrayList<Item> rogueItems = new ArrayList<Item>();
+    Map<K,V> symbolMap;
  
     public void setPlayer(Player thePlayer){
         player = thePlayer;
@@ -28,6 +30,25 @@ public class Rogue{
 
     public void setSymbols(String filename){
         //TODO Read stuff from symbols file
+        JSONParser parser = new JSONParser();
+        JSONArray jsonSymbols = null;
+        symbolMap = new HashMap();
+        try{
+
+            JSONObject symbolObject = (JSONObject) parser.parse(new FileReader(filename));
+            jsonSymbols = (JSONArray) symbolObject.get("symbols");
+
+        } catch(FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        for(Object object : jsonSymbols){
+            symbolMap.put(object.get("name").toString(), object.get("symbol").toString());
+        }
     }
 
     public ArrayList<Room> getRooms(){
