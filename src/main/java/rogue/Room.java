@@ -15,10 +15,10 @@ public class Room  {
    private int roomWidth;
    private int roomHeight;
    private int roomId;
-   private int nDoor;
-   private int sDoor;
-   private int eDoor;
-   private int wDoor;
+   private int nDoor = -1;
+   private int sDoor = -1;
+   private int eDoor = -1;
+   private int wDoor = -1;
    private ArrayList<Item> roomItems = new ArrayList<Item>();
    private Player roomPlayer;
    private boolean isPlayer;
@@ -161,8 +161,101 @@ public boolean isPlayerInRoom() {
     * @return (String) String representation of how the room looks
     */
    public String displayRoom() {
-    return null;
-     
+     String roomDisplayString = "";
+     String[][] roomDisplayArray = new String[roomHeight][roomWidth];
+
+     for(int x = 0; x < roomWidth; x++){
+       roomDisplayArray[0][x] = "NS_WALL";
+     }
+     for(int y = 1; y< roomHeight-1; y++){
+       int x = 0;
+       roomDisplayArray[y][x] = "EW_WALL";
+       for(x = 1; x < roomWidth-1; x++){
+        roomDisplayArray[y][x] = "FLOOR";
+       }
+       x++;
+       roomDisplayArray[y][x] = "EW_WALL";
+
+     }
+
+     for(int x = 0; x < roomWidth; x++){
+      roomDisplayArray[roomHeight-1][x] = "NS_WALL";
+    }
+    if(nDoor != -1){
+      roomDisplayArray[0][nDoor] = "DOOR";
+    }
+    if(eDoor != -1){
+      roomDisplayArray[eDoor][0] = "DOOR";
+    }
+    if(sDoor != -1){
+      roomDisplayArray[roomHeight-1][sDoor] = "DOOR";
+    }
+    if(wDoor != -1){
+      roomDisplayArray[wDoor][roomWidth-1] = "DOOR";
+    }
+
+    if(isPlayerInRoom() == true){
+      roomDisplayArray[(int)roomPlayer.getXyLocation().getY()][(int)roomPlayer.getXyLocation().getX()] = "PLAYER";
+    }
+
+    for(int i = 0; i < roomItems.size(); i++){
+      roomDisplayArray[(int)roomItems.get(i).getXyLocation().getY()][(int)roomItems.get(i).getXyLocation().getX()] = "ITEM"; 
+    }
+
+    for(int y = 0; y < roomHeight; y++){
+      for(int x = 0; x < roomWidth; x++){
+        roomDisplayString += roomDisplayArray[y][x];
+      }
+    }
+    roomDisplayString += "\n";
+    roomDisplayString += "\n";
+    return(roomDisplayString); 
+
+       /*
+    for(int i = 0; i < roomWidth; i++){
+      if(nDoor == i){
+        roomDisplayString += "DOOR";
+      }
+      else{
+        roomDisplayString += "NS_WALL";
+      }
+    }
+
+    for(int y = 1; y < roomHeight-1; y++  ){
+      if(wDoor == y){
+        roomDisplayString += "DOOR";
+      }
+      else{
+        roomDisplayString += "EW_WALL";
+      }
+
+      for(int x = 1; x< roomWidth-1; x++){
+        if(isPlayerInRoom() == true){
+          if(y == (roomPlayer.getXyLocation().getY()) && x == (roomPlayer.getXyLocation().getX())){
+            roomDisplayString += "PLAYER";
+          }
+          
+        }
+      }
+      if(eDoor == y){
+        roomDisplayString += "DOOR";
+      }
+      else{
+        roomDisplayString += "EW_WALL";
+      }
+    }
+    
+    for(i = 0; i < roomWidth; i++){
+      if(sDoor == i){
+        roomDisplayString += "DOOR";
+      }
+      else{
+        roomDisplayString += "NS_WALL";
+      }
+  
+     roomDisplayString += '\n';
+     roomDisplayString += '\n';
+     */
      
    }
 }

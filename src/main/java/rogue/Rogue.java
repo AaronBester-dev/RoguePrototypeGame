@@ -21,7 +21,7 @@ public class Rogue{
     private String symbols;
     private ArrayList<Room> roomArray = new ArrayList<Room>();
     private ArrayList<Item> rogueItems = new ArrayList<Item>();
-    Map<K,V> symbolMap;
+    private Map<String,String> symbolMap;
  
     public void setPlayer(Player thePlayer){
         player = thePlayer;
@@ -47,7 +47,8 @@ public class Rogue{
         }
 
         for(Object object : jsonSymbols){
-            symbolMap.put(object.get("name").toString(), object.get("symbol").toString());
+            JSONObject jsonSymbol = (JSONObject) object;
+            symbolMap.put(jsonSymbol.get("name").toString(), jsonSymbol.get("symbol").toString());
         }
     }
 
