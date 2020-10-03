@@ -13,7 +13,7 @@ public class Player {
     // Default constructor
     public Player() {
         setName("Bingus");
-        setXyLocation(playerLocation);
+        setXyLocation(new Point(1,1));
         setCurrentRoom(currentRoom) ;
     }
 

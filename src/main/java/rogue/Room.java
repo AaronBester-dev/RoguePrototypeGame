@@ -20,8 +20,8 @@ public class Room  {
    private int eDoor = -1;
    private int wDoor = -1;
    private ArrayList<Item> roomItems = new ArrayList<Item>();
-   private Player roomPlayer;
-   private boolean isPlayer;
+   private Player roomPlayer = null;
+
 
     // Default constructor
  public Room() {
@@ -33,11 +33,11 @@ public class Room  {
  
 public Room(JSONObject jsonRoom){
   Integer integerId = Integer.decode(jsonRoom.get("id").toString());
-  isPlayer = Boolean.parseBoolean(jsonRoom.get("start").toString());
+  Boolean isPlayer = Boolean.parseBoolean(jsonRoom.get("start").toString());
   Integer integerHeight = Integer.decode(jsonRoom.get("height").toString());
   Integer integerWidth = Integer.decode(jsonRoom.get("width").toString());
-  if(isPlayer == false){
-    setPlayer(null);
+  if(isPlayer.booleanValue()){
+    roomPlayer = new Player();
   }
   setId(integerId);
   setHeight(integerHeight);
@@ -51,6 +51,8 @@ public Room(JSONObject jsonRoom){
   for(Object item : (JSONArray) jsonRoom.get("loot")){
     roomItems.add((new Item((JSONObject) item)));
   }
+
+  System.out.println(sDoor);
 }
  
 
@@ -109,13 +111,14 @@ public Room(JSONObject jsonRoom){
  }
 
  public int getDoor(String direction){
-    if(direction == "N"){
+   
+    if(direction.equals("N") ){
       return(nDoor);
     }
-    else if(direction == "S"){
+    else if(direction.equals("S") ){
       return(sDoor);
     }
-    else if(direction == "E"){
+    else if(direction.equals("E")){
       return(eDoor);
     }
     else{
@@ -129,13 +132,14 @@ location is a number between 0 and the length of the wall
 */
 
 public void setDoor(String direction, int location){
-   if(direction == "N"){
+  System.out.println(direction);
+   if(direction.equals("N") ){
       nDoor = location;
     }
-    else if(direction == "S"){
+    else if(direction.equals("S")){
       sDoor = location;
     }
-    else if(direction == "E"){
+    else if(direction.equals("E")){
       eDoor = location;
     }
     else{
@@ -145,7 +149,7 @@ public void setDoor(String direction, int location){
 
 
 public boolean isPlayerInRoom() {
-  if(isPlayer == false){
+  if(roomPlayer == null){
     return false;
   }
   else{
@@ -173,7 +177,7 @@ public boolean isPlayerInRoom() {
        for(x = 1; x < roomWidth-1; x++){
         roomDisplayArray[y][x] = "FLOOR";
        }
-       x++;
+       
        roomDisplayArray[y][x] = "EW_WALL";
 
      }
@@ -206,9 +210,10 @@ public boolean isPlayerInRoom() {
       for(int x = 0; x < roomWidth; x++){
         roomDisplayString += roomDisplayArray[y][x];
       }
+      roomDisplayString += '\n';
     }
-    roomDisplayString += "\n";
-    roomDisplayString += "\n";
+    roomDisplayString += '\n';
+    roomDisplayString += '\n';
     return(roomDisplayString); 
 
        /*

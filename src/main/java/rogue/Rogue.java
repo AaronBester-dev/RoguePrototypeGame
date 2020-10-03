@@ -89,8 +89,14 @@ public class Rogue{
     }
     public String displayAll(){
         //creates a string that displays all the rooms in the dungeon
-        String roomDisplay;
-    
-        return null;
+        String roomsDisplay = "";
+
+        for(int i = 0; i < roomArray.size(); i++){
+            roomsDisplay += roomArray.get(i).displayRoom();
+        }
+        for(Map.Entry<String,String> symbolString : symbolMap.entrySet()){
+            roomsDisplay = roomsDisplay.replaceAll(symbolString.getKey(), symbolString.getValue());
+        }
+        return roomsDisplay;
     }
 }

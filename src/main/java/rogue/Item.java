@@ -29,6 +29,9 @@ public class Item  {
         Integer x =   Integer.decode(jsonItem.get("x").toString());
         Integer y =   Integer.decode(jsonItem.get("y").toString());
         setId(id);
+        setName("NONAME");
+        setType("NOTYPE");
+        setXyLocation(new Point(x,y));
         
     }
 
