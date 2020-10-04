@@ -3,7 +3,6 @@ package rogue;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -15,33 +14,24 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-
-
 public class A1Solution{
 
- 
-
-
     public static void main(String[] args) { 
-        
-
-        // Hardcoded configuration file location/name
-        String configurationFileLocation = "fileLocations.json";  //please don't change this for this version of the assignment
-        String roomFileLocation = "";
-        String symbolFileLocation = "";
+      // Hardcoded configuration file location/name
+      String configurationFileLocation = "fileLocations.json";  //please don't change this for this version of the assignment
+      String roomFileLocation = "";
+      String symbolFileLocation = "";
  // reading the input file locations using the configuration file
-        JSONParser parser = new JSONParser();
-        try {
+      JSONParser parser = new JSONParser();
+      try {
+        Object obj = parser.parse(new FileReader(configurationFileLocation));
+        JSONObject configurationJSON = (JSONObject) obj;
 
-            Object obj = parser.parse(new FileReader(configurationFileLocation));
-            JSONObject configurationJSON = (JSONObject) obj;
+        // Extract the Rooms value from the file to get the file location for rooms
+        roomFileLocation = (String) configurationJSON.get("Rooms");
 
-            // Extract the Rooms value from the file to get the file location for rooms
-            roomFileLocation = (String) configurationJSON.get("Rooms");
-
-
-            // Extract the Symbols value from the file to get the file location for symbols-map
-             symbolFileLocation = (String) configurationJSON.get("Symbols"); 
+        // Extract the Symbols value from the file to get the file location for symbols-map
+        symbolFileLocation = (String) configurationJSON.get("Symbols"); 
             
         } catch(FileNotFoundException e) {
             e.printStackTrace();
@@ -52,15 +42,9 @@ public class A1Solution{
         }
 
 // instantiate a new Rogue object and call methods to do the required things
-        Rogue rogueGame = new Rogue();
-        rogueGame.createRooms(roomFileLocation);
-        rogueGame.setSymbols(symbolFileLocation);
-        System.out.println(rogueGame.displayAll());
-        
-        
-
-        
+      Rogue rogueGame = new Rogue();
+      rogueGame.createRooms(roomFileLocation);
+      rogueGame.setSymbols(symbolFileLocation);
+      System.out.println(rogueGame.displayAll());        
     }
-
-
 }

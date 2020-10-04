@@ -12,50 +12,42 @@ public class Player {
 
     // Default constructor
     public Player() {
-        setName("Bingus");
-        setXyLocation(new Point(1,1));
-        setCurrentRoom(currentRoom) ;
+      setName("Aaron");
+      setXyLocation(new Point(1,1));
+      setCurrentRoom(currentRoom) ;
     }
 
     public Player(String name, Point newLocation, Room newRoom ){
-        setName(name);
-        setXyLocation(newLocation);
-        setCurrentRoom(newRoom);
+      setName(name);
+      setXyLocation(newLocation);
+      setCurrentRoom(newRoom);
     }
-
 
     public Player(String name) {
-        setName(name);
+      setName(name);
     }
-
 
     public String getName() {
-        return(playerName);
+      return(playerName);
     }
 
-
     public void setName(String newName) {
-        playerName = newName;
+      playerName = newName;
     }
 
     public Point getXyLocation() {
-        return(playerLocation);
-
+      return(playerLocation);
     }
-
 
     public void setXyLocation(Point newXyLocation) {
-        playerLocation = newXyLocation;
+      playerLocation = newXyLocation;
     }
-
 
     public Room getCurrentRoom() {
-        return currentRoom;
-
+      return currentRoom;
     }
 
-
     public void setCurrentRoom(Room newRoom) {
-        currentRoom = newRoom;
+      currentRoom = newRoom;
     }
 }

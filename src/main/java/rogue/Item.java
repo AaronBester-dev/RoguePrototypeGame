@@ -18,104 +18,85 @@ public class Item  {
 
     //Constructors
     public Item() {
-        setId(0);
-        setName("Empty");
-        setType("NOTYPE");
-        setXyLocation(new Point(0,0));
+      setId(0);
+      setName("Empty");
+      setType("NOTYPE");
+      setXyLocation(new Point(0,0));
     }
 
     public Item(JSONObject jsonItem){
-        Integer id = Integer.decode(jsonItem.get("id").toString());
-        Integer x =   Integer.decode(jsonItem.get("x").toString());
-        Integer y =   Integer.decode(jsonItem.get("y").toString());
-        setId(id);
-        setName("NONAME");
-        setType("NOTYPE");
-        setXyLocation(new Point(x,y));
-        
+      Integer id = Integer.decode(jsonItem.get("id").toString());
+      Integer x =   Integer.decode(jsonItem.get("x").toString());
+      Integer y =   Integer.decode(jsonItem.get("y").toString());
+      
+      setId(id);
+      setName("NONAME");
+      setType("NOTYPE");
+      setXyLocation(new Point(x,y));
     }
 
     public Item(int id, String name, String type, Point xyLocation) {
-        setId(id);
-        setName(name);
-        setType(type);
-        setXyLocation(xyLocation);
+      setId(id);
+      setName(name);
+      setType(type);
+      setXyLocation(xyLocation);
     }
     
     // Getters and setters
 
-
     public int getId() {
-        return(itemId);
-       
+      return(itemId);
     }
-
 
     public void setId(int id) {
-        itemId = id;
+      itemId = id;
     }
-
 
     public String getName() {
-        return(itemName);
+      return(itemName);
     }
-
 
     public void setName(String name) {
-        itemName = name;
+      itemName = name;
     }
-
 
     public String getType() {
-        return(itemType);
-
+      return(itemType);
     }
-
 
     public void setType(String type) {
-        itemType = type;
+      itemType = type;
     }
     
-
     public Character getDisplayCharacter() {
-        return(itemCharacter);
-        
+      return(itemCharacter);
     }
-
 
     public void setDisplayCharacter(Character newDisplayCharacter) {
-        itemCharacter = newDisplayCharacter;
+      itemCharacter = newDisplayCharacter;
     }
-
 
     public String getDescription() {
-        return(itemDescription);
-     
+      return(itemDescription);
     }
-
 
     public void setDescription(String newDescription) {
-        itemDescription = newDescription;
+      itemDescription = newDescription;
     }
-
 
     public Point getXyLocation() {
-        return(itemLocation);
-     
+      return(itemLocation);
     }
-
     
     public void setXyLocation(Point newXyLocation) {
-        itemLocation = newXyLocation;
+      itemLocation = newXyLocation;
     }
-
 
     public Room getCurrentRoom() {
-        return currentRoom;    
+      return currentRoom;    
     }
 
-
     public void setCurrentRoom(Room newCurrentRoom) {
-        currentRoom = newCurrentRoom;
+      currentRoom = newCurrentRoom;
     }
 }
