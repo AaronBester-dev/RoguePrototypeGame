@@ -2,7 +2,7 @@
     "room": [{
             "id": 1,
             "start": true,
-            "height": 20,
+            "height": 10,
             "width": 20,
             "doors": [{
                 "dir": "S",
