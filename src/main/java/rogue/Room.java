@@ -24,8 +24,8 @@ public class Room  {
 
     // Default constructor
     public Room() {
-      setWidth(0);
-      setHeight(0);
+      setWidth(10);
+      setHeight(10);
       setId(0);
     }
  
