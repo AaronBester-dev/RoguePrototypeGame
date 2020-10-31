@@ -51,6 +51,14 @@ public class Rogue {
       rogueParser = new RogueParser(filename);
     }
 
+    public Rogue(RogueParser parser) {
+      player = null;
+      roomArray = new ArrayList<Room>();
+      rogueItems = new ArrayList<Item>();
+      symbolMap = null;
+      rogueParser = parser;
+    }
+
 /**
 * setter that sets the current player in rogue.
 *@param thePlayer new player
@@ -103,10 +111,14 @@ public class Rogue {
     public void createRooms(String filename) {
 
       while((tempRoomMap = rogueParser.nextRoom()) != null){
-        roomArray.add(new Room(tempRoomMap));
+        addRoom(tempRoomMap);
       }
+      //TO DO ADD ITEMS TO ROOM
 
+    }
 
+    public void addRoom(Map <String,String> toAdd){
+      roomArray.add(new Room(tempRoomMap));
     }
 
 /**
@@ -121,8 +133,8 @@ public class Rogue {
       for (int i = 0; i < roomArray.size(); i++) {
         roomsDisplay += roomArray.get(i).displayRoom();
       }
-      for (Map.Entry<String, String> symbolString : symbolMap.entrySet()) {
-        roomsDisplay = roomsDisplay.replaceAll(symbolString.getKey(), symbolString.getValue());
+      for (Map.Entry<String, Character> symbolString : symbolMap.entrySet()) {
+        roomsDisplay = roomsDisplay.replaceAll(symbolString.getKey(), symbolString.getValue().toString());
       }
 
       return roomsDisplay;

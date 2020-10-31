@@ -2,7 +2,7 @@ package rogue;
 import java.util.ArrayList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
+import java.util.Map;
 
 /**
  * A room within the dungeon - contains monsters, treasure,
@@ -28,7 +28,7 @@ public class Room  {
       setWidth(2);
       setHeight(2);
       setId(0);
-      roomDisplayArray = String[roomHeight][roomWidth];
+      roomDisplayArray = new String[roomHeight][roomWidth];
     }
 /**
  * Default constructor for room that intializes room to default values.
@@ -53,7 +53,7 @@ public class Room  {
       setDoor("E",Integer.decode(roomMap.get("E")));
       setDoor("S",Integer.decode(roomMap.get("S")));
 
-      roomDisplayArray = String[roomHeight][roomWidth];
+      roomDisplayArray = new String[roomHeight][roomWidth];
       updateDisplayRoom();
 
     }
@@ -118,8 +118,8 @@ public class Room  {
     }
 
     public void addItem(Item toAdd){
-      int itemX = toAdd.getXyLocation.getX();
-      int itemY = toAdd.getXyLocation.getY();
+      int itemX = (int) toAdd.getXyLocation().getX();
+      int itemY = (int) toAdd.getXyLocation().getY();
       if(itemX > roomWidth || itemX < 0 || itemY > roomHeight || itemY < 0 || !(roomDisplayArray[itemX][itemY].equals("FLOOR"))){
         throw(ImpossiblePositionException);
       }
