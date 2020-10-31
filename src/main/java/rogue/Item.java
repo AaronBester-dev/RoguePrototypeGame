@@ -29,8 +29,8 @@ public class Item  {
 */
     public Item(JSONObject jsonItem) {
       Integer id = Integer.decode(jsonItem.get("id").toString());
-      Integer x =   Integer.decode(jsonItem.get("x").toString());
-      Integer y =   Integer.decode(jsonItem.get("y").toString());
+      Integer x = Integer.decode(jsonItem.get("x").toString());
+      Integer y = Integer.decode(jsonItem.get("y").toString());
 
       setId(id);
       setName("NONAME");

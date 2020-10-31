@@ -71,6 +71,12 @@ public class RogueParser {
 
     }
 
+    public HashMap getSymbols() {
+
+        return(symbols);
+
+    }
+
     /**
      * Get the character for a symbol.
      * @param symbolName (String) Symbol Name

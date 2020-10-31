@@ -19,6 +19,7 @@ public class Room  {
     private int wDoor = -1;
     private ArrayList<Item> roomItems = new ArrayList<Item>();
     private Player roomPlayer = null;
+    private String[][] roomDisplayArray;
 
 /**
  * Default constructor for room that intializes room to default values.
@@ -27,16 +28,17 @@ public class Room  {
       setWidth(2);
       setHeight(2);
       setId(0);
+      roomDisplayArray = String[roomHeight][roomWidth];
     }
 /**
  * Default constructor for room that intializes room to default values.
  *@param jsonRoom jsonObject that contains all of the values needed for a room
  */
-    public Room(JSONObject jsonRoom) {
-      Integer integerId = Integer.decode(jsonRoom.get("id").toString());
-      Boolean isPlayer = Boolean.parseBoolean(jsonRoom.get("start").toString());
-      Integer integerHeight = Integer.decode(jsonRoom.get("height").toString());
-      Integer integerWidth = Integer.decode(jsonRoom.get("width").toString());
+    public Room(Map<String,String> roomMap) {
+      Integer integerId = Integer.decode(roomMap.get("id"));
+      Boolean isPlayer = Boolean.parseBoolean(roomMap.get("start").toString());
+      Integer integerHeight = Integer.decode(roomMap.get("height").toString());
+      Integer integerWidth = Integer.decode(roomMap.get("width").toString());
 
       if (isPlayer.booleanValue()) {
         roomPlayer = new Player();
@@ -46,14 +48,14 @@ public class Room  {
       setHeight(integerHeight);
       setWidth(integerWidth);
 
-      for (Object door : (JSONArray) jsonRoom.get("doors")) {
-        JSONObject jsonDoor = (JSONObject) door;
-        setDoor(jsonDoor.get("dir").toString(), Integer.decode(jsonDoor.get("id").toString()));
-      }
+      setDoor("N",Integer.decode(roomMap.get("N")));
+      setDoor("W",Integer.decode(roomMap.get("W")));
+      setDoor("E",Integer.decode(roomMap.get("E")));
+      setDoor("S",Integer.decode(roomMap.get("S")));
 
-      for (Object item : (JSONArray) jsonRoom.get("loot")) {
-        roomItems.add((new Item((JSONObject) item)));
-      }
+      roomDisplayArray = String[roomHeight][roomWidth];
+      updateDisplayRoom();
+
     }
 
    // Required getter and setters below
@@ -114,6 +116,22 @@ public class Room  {
     public void setRoomItems(ArrayList<Item> newRoomItems) {
       roomItems = newRoomItems;
     }
+
+    public void addItem(Item toAdd){
+      int itemX = toAdd.getXyLocation.getX();
+      int itemY = toAdd.getXyLocation.getY();
+      if(itemX > roomWidth || itemX < 0 || itemY > roomHeight || itemY < 0 || !(roomDisplayArray[itemX][itemY].equals("FLOOR"))){
+        throw(ImpossiblePositionException);
+      }
+      else if(itemX != -1){
+        throw (NoSuchItemException);
+      }
+      else{
+        roomItems.add(toAdd);
+      }
+
+    }
+
 /**
  * getter that gets the player in the room.
  *@return player in room
@@ -178,14 +196,19 @@ location is a number between 0 and the length of the wall
     * @return (String) String representation of how the room looks.
     */
 
+    public void updateDisplayRoom(){
+      initalizeRoomDisplayArray();
+      addDoorsToRoomDisplayArray();
+      addContentsToRoomDisplayArray();
+    }
+
     public String displayRoom() {
       String roomDisplayString = "";
-      String[][] roomDisplayArray = new String[roomHeight][roomWidth];
 
-      roomDisplayArray = initalizeRoomDisplayArray(roomDisplayArray);
-      roomDisplayArray = addDoorsToRoomDisplayArray(roomDisplayArray);
-      roomDisplayArray = addContentsToRoomDisplayArray(roomDisplayArray);
-      roomDisplayString = convertDisplayArrayToString(roomDisplayArray, roomDisplayString);
+      initalizeRoomDisplayArray();
+      addDoorsToRoomDisplayArray();
+      addContentsToRoomDisplayArray();
+      convertDisplayArrayToString(roomDisplayString);
 
       return (roomDisplayString);
     }
@@ -196,7 +219,7 @@ location is a number between 0 and the length of the wall
     * @return a array that holds the x and y locations of every object in the room
     */
 
-    public String[][] initalizeRoomDisplayArray(String[][] roomDisplayArray) {
+    public void initalizeRoomDisplayArray() {
       for (int x = 0; x < roomWidth; x++) {
         roomDisplayArray[0][x] = "NS_WALL";
       }
@@ -213,8 +236,6 @@ location is a number between 0 and the length of the wall
       for (int x = 0; x < roomWidth; x++) {
         roomDisplayArray[roomHeight - 1][x] = "NS_WALL";
       }
-
-      return (roomDisplayArray);
     }
 
      /**
@@ -223,7 +244,7 @@ location is a number between 0 and the length of the wall
     * @return a array that holds the x and y locations of every object in the room.
     */
 
-    public String[][] addDoorsToRoomDisplayArray(String[][] roomDisplayArray) {
+    public void addDoorsToRoomDisplayArray() {
       if (nDoor != -1) {
         roomDisplayArray[0][nDoor] = "DOOR";
       }
@@ -236,8 +257,6 @@ location is a number between 0 and the length of the wall
       if (wDoor != -1) {
         roomDisplayArray[wDoor][roomWidth - 1] = "DOOR";
       }
-
-      return (roomDisplayArray);
     }
 
       /**
@@ -246,7 +265,7 @@ location is a number between 0 and the length of the wall
     * @return a array that holds the x and y locations of every object in the room
     */
 
-    public String[][] addContentsToRoomDisplayArray(String[][] roomDisplayArray) {
+    public void addContentsToRoomDisplayArray() {
       if (isPlayerInRoom()) {
         roomDisplayArray[(int) roomPlayer.getXyLocation().getY()][(int) roomPlayer.getXyLocation().getX()] = "PLAYER";
       }
@@ -255,8 +274,6 @@ location is a number between 0 and the length of the wall
         roomDisplayArray[(int) roomItems.get(i).getXyLocation().getY()]
         [(int) roomItems.get(i).getXyLocation().getX()] = "ITEM";
       }
-
-      return (roomDisplayArray);
     }
 
     /**
@@ -266,7 +283,7 @@ location is a number between 0 and the length of the wall
     * @return a string that displays the contents of the room
     */
 
-    public String convertDisplayArrayToString(String[][]roomDisplayArray, String roomDisplayString) {
+    public String convertDisplayArrayToString(String roomDisplayString) {
       for (int y = 0; y < roomHeight; y++) {
         for (int x = 0; x < roomWidth; x++) {
           roomDisplayString += roomDisplayArray[y][x];

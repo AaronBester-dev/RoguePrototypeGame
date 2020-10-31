@@ -21,9 +21,10 @@ public class Rogue {
     private Player player;
     private ArrayList<Room> roomArray;
     private ArrayList<Item> rogueItems;
-    private Map<String, String> symbolMap;
+    private Map<String, Character> symbolMap;
     private RogueParser rogueParser;
     private Map<String, String> tempRoomMap;
+    private Map<String, String> tempItemMap;
 
 /**
 *Default constructor for rogue that sets everything to default values.
@@ -66,25 +67,7 @@ public class Rogue {
 
     public void setSymbols(String filename) {
         //TODO Read stuff from symbols file
-      JSONParser parser = new JSONParser();
-      JSONArray jsonSymbols = null;
-      symbolMap = new HashMap();
-
-      try {
-        JSONObject symbolObject = (JSONObject) parser.parse(new FileReader(filename));
-        jsonSymbols = (JSONArray) symbolObject.get("symbols");
-      } catch (FileNotFoundException e) {
-          e.printStackTrace();
-      } catch (IOException e) {
-          e.printStackTrace();
-      } catch (ParseException e) {
-          e.printStackTrace();
-      }
-
-      for (Object object : jsonSymbols) {
-        JSONObject jsonSymbol = (JSONObject) object;
-        symbolMap.put(jsonSymbol.get("name").toString(), jsonSymbol.get("symbol").toString());
-      }
+      symbolMap = rogueParser.getSymbols();
     }
 
 /**
@@ -120,8 +103,10 @@ public class Rogue {
     public void createRooms(String filename) {
 
       while((tempRoomMap = rogueParser.nextRoom()) != null){
-        
+        roomArray.add(new Room(tempRoomMap));
       }
+
+
     }
 
 /**
