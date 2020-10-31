@@ -22,6 +22,7 @@ public class Rogue {
     private ArrayList<Room> roomArray;
     private ArrayList<Item> rogueItems;
     private Map<String, String> symbolMap;
+    private RogueParser rogueParser;
 
 /**
 *Default constructor for rogue that sets everything to default values.
@@ -31,6 +32,20 @@ public class Rogue {
       roomArray = new ArrayList<Room>();
       rogueItems = new ArrayList<Item>();
       symbolMap = null;
+      rogueParser = new RogueParser();
+    }
+
+/**
+*constructor for rogue that sets everything to default values and sets up the parser.
+*@param filename name of the file that contains the config settings
+*/
+
+    public Rogue(String filename) {
+      player = null;
+      roomArray = new ArrayList<Room>();
+      rogueItems = new ArrayList<Item>();
+      symbolMap = null;
+      rogueParser = new RogueParser(filename);
     }
 
 /**

@@ -100,23 +100,39 @@ public class Room  {
     public void setId(int newId) {
       roomId = newId;
     }
-
+/**
+ * getter that gets items array of a room.
+ *@return list of items in room
+ */
     public ArrayList<Item> getRoomItems() {
       return (roomItems);
     }
-
+/**
+ * setter that sets room items array to a new list of item.
+ *@param newRoomItems new list of items
+ */
     public void setRoomItems(ArrayList<Item> newRoomItems) {
       roomItems = newRoomItems;
     }
-
+/**
+ * getter that gets the player in the room.
+ *@return player in room
+ */
     public Player getPlayer() {
       return (roomPlayer);
     }
-
+/**
+ * setter that sets player to a room.
+ *@param newPlayer new player in the room.
+ */
     public void setPlayer(Player newPlayer) {
       roomPlayer = newPlayer;
     }
-
+/**
+ * getter that gets the door of direction you want in the room.
+ *@param direction direction that the door is in.
+ *@return door that is in the room in the direction you want.
+ */
     public int getDoor(String direction) {
       if (direction.equals("N")) {
         return (nDoor);
@@ -133,7 +149,11 @@ public class Room  {
 direction is one of NSEW
 location is a number between 0 and the length of the wall
 */
-
+/**
+ * setter that sets the door in the direction you want in the room.
+ *@param direction direction of the door you want to place.
+ *@param location location of where you want to place the door
+ */
     public void setDoor(String direction, int location) {
       if (direction.equals("N")) {
         nDoor = location;
@@ -145,7 +165,10 @@ location is a number between 0 and the length of the wall
         wDoor = location;
       }
     }
-
+/**
+ * checks whether or not the player is in the room.
+ *@return true if player is in room and false if otherwise.
+ */
     public boolean isPlayerInRoom() {
       return !(roomPlayer == null);
     }
@@ -166,6 +189,12 @@ location is a number between 0 and the length of the wall
 
       return (roomDisplayString);
     }
+
+   /**
+    * Initializes roomDisplayArray to a empty room.
+    * @param roomDisplayArray a array that holds the x and y locations of every object in the room.
+    * @return a array that holds the x and y locations of every object in the room
+    */
 
     public String[][] initalizeRoomDisplayArray(String[][] roomDisplayArray) {
       for (int x = 0; x < roomWidth; x++) {
@@ -188,6 +217,12 @@ location is a number between 0 and the length of the wall
       return (roomDisplayArray);
     }
 
+     /**
+    * Adds doors to the room.
+    * @param roomDisplayArray a array that holds the x and y locations of every object in the room.
+    * @return a array that holds the x and y locations of every object in the room.
+    */
+
     public String[][] addDoorsToRoomDisplayArray(String[][] roomDisplayArray) {
       if (nDoor != -1) {
         roomDisplayArray[0][nDoor] = "DOOR";
@@ -205,6 +240,12 @@ location is a number between 0 and the length of the wall
       return (roomDisplayArray);
     }
 
+      /**
+    * Adds player and items to the room.
+    * @param roomDisplayArray a array that holds the x and y locations of every object in the room.
+    * @return a array that holds the x and y locations of every object in the room
+    */
+
     public String[][] addContentsToRoomDisplayArray(String[][] roomDisplayArray) {
       if (isPlayerInRoom()) {
         roomDisplayArray[(int) roomPlayer.getXyLocation().getY()][(int) roomPlayer.getXyLocation().getX()] = "PLAYER";
@@ -217,6 +258,13 @@ location is a number between 0 and the length of the wall
 
       return (roomDisplayArray);
     }
+
+    /**
+    * Converts displayArray to a string that displays the contents of the room.
+    * @param roomDisplayArray a array that holds the x and y locations of every object in the room.
+    * @param roomDisplayString a string that displays the contents of the room.
+    * @return a string that displays the contents of the room
+    */
 
     public String convertDisplayArrayToString(String[][]roomDisplayArray, String roomDisplayString) {
       for (int y = 0; y < roomHeight; y++) {
