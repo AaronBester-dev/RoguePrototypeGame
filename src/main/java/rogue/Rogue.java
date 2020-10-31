@@ -23,6 +23,7 @@ public class Rogue {
     private ArrayList<Item> rogueItems;
     private Map<String, String> symbolMap;
     private RogueParser rogueParser;
+    private Map<String, String> tempRoomMap;
 
 /**
 *Default constructor for rogue that sets everything to default values.
@@ -32,6 +33,7 @@ public class Rogue {
       roomArray = new ArrayList<Room>();
       rogueItems = new ArrayList<Item>();
       symbolMap = null;
+      tempRoomMap = null;
       rogueParser = new RogueParser();
     }
 
@@ -116,22 +118,9 @@ public class Rogue {
 *@param filename name of the room file
 */
     public void createRooms(String filename) {
-      JSONParser parser = new JSONParser();
-      JSONArray jsonRooms = null;
 
-      try {
-        JSONObject roomObject = (JSONObject) parser.parse(new FileReader(filename));
-        jsonRooms = (JSONArray) roomObject.get("room");
-      } catch (FileNotFoundException e) {
-          e.printStackTrace();
-      } catch (IOException e) {
-          e.printStackTrace();
-      } catch (ParseException e) {
-          e.printStackTrace();
-      }
-
-      for (Object object : jsonRooms) {
-        roomArray.add(new Room((JSONObject) object));
+      while((tempRoomMap = rogueParser.nextRoom()) != null){
+        
       }
     }
 
