@@ -262,7 +262,7 @@ public class RogueParser {
 
         for (Map<String, String> itemLocation : itemLocations) {
             if (itemLocation.get("id").toString().equals(item.get("id").toString())) {
-                item.put("room", itemLocation.get("id"));
+                item.put("room", itemLocation.get("room"));
                 item.put("x", itemLocation.get("x"));
                 item.put("y", itemLocation.get("y"));
                 break;
