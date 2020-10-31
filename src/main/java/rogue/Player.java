@@ -1,8 +1,8 @@
 package rogue;
-import java.util.ArrayList;
+
 import java.awt.Point;
 /**
- * The player character
+ * The player character.
  */
 public class Player {
 
@@ -10,43 +10,71 @@ public class Player {
     private Point playerLocation;
     private Room currentRoom;
 
-    // Default constructor
+/**
+ * Default player constructor that sets player to default values.
+ */
     public Player() {
       setName("Aaron");
-      setXyLocation(new Point(1,1));
-      setCurrentRoom(currentRoom) ;
+      setXyLocation(new Point(1, 1));
+      setCurrentRoom(currentRoom);
     }
-
-    public Player(String name, Point newLocation, Room newRoom ){
+/**
+ * player constructor that sets player to values of variables.
+ *@param name name of the player
+ *@param newLocation newLocation of the player
+ *@param newRoom newRoom of the player
+ */
+    public Player(String name, Point newLocation, Room newRoom) {
       setName(name);
       setXyLocation(newLocation);
       setCurrentRoom(newRoom);
     }
-
+/**
+ * player constructor that only sets name of the player.
+ *@param name name of the player
+ */
     public Player(String name) {
       setName(name);
     }
-
+/**
+ * getter that gets the current name of the player.
+ *@return current name of the player
+ */
     public String getName() {
-      return(playerName);
+      return (playerName);
     }
-
+/**
+ * setter that sets the current name of the player.
+ *@param newName new name of the player
+ */
     public void setName(String newName) {
       playerName = newName;
     }
-
+/**
+ * getter that gets the current xyLocation of the player.
+ *@return current xyLocation of the player
+ */
     public Point getXyLocation() {
-      return(playerLocation);
+      return (playerLocation);
     }
-
+/**
+ * setter that sets the current xyLocation of the player.
+ *@param newXyLocation new xyLocation of the player
+ */
     public void setXyLocation(Point newXyLocation) {
       playerLocation = newXyLocation;
     }
-
+/**
+ * getter that sets the current room of the player.
+ *@return the current room of the player
+ */
     public Room getCurrentRoom() {
-      return currentRoom;
+      return (currentRoom);
     }
-
+/**
+ * setter that sets the current room of the player.
+ *@param newRoom new room of the player
+ */
     public void setCurrentRoom(Room newRoom) {
       currentRoom = newRoom;
     }

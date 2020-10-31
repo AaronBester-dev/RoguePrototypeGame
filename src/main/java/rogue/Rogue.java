@@ -7,35 +7,56 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import java.awt.Point;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+/**
+*Rogue is the class that sets up the rogue game.
+*/
 
-public class Rogue{
+public class Rogue {
 
     private Player player;
-    private ArrayList<Room> roomArray = new ArrayList<Room>();
-    private ArrayList<Item> rogueItems = new ArrayList<Item>();
-    private Map<String,String> symbolMap;
- 
-    public void setPlayer(Player thePlayer){
+    private ArrayList<Room> roomArray;
+    private ArrayList<Item> rogueItems;
+    private Map<String, String> symbolMap;
+
+/**
+*Default constructor for rogue that sets everything to default values.
+*/
+    public Rogue() {
+      player = null;
+      roomArray = new ArrayList<Room>();
+      rogueItems = new ArrayList<Item>();
+      symbolMap = null;
+    }
+
+/**
+* setter that sets the current player in rogue.
+*@param thePlayer new player
+*/
+
+    public void setPlayer(Player thePlayer) {
       player = thePlayer;
     }
 
-    public void setSymbols(String filename){
+/**
+* sets the current symbols map to the symbols in the symbol file in rogue.
+*@param filename name of the symbol file
+*/
+
+    public void setSymbols(String filename) {
         //TODO Read stuff from symbols file
       JSONParser parser = new JSONParser();
       JSONArray jsonSymbols = null;
       symbolMap = new HashMap();
 
-      try{
+      try {
         JSONObject symbolObject = (JSONObject) parser.parse(new FileReader(filename));
         jsonSymbols = (JSONArray) symbolObject.get("symbols");
-      } catch(FileNotFoundException e) {
+      } catch (FileNotFoundException e) {
           e.printStackTrace();
       } catch (IOException e) {
           e.printStackTrace();
@@ -43,50 +64,75 @@ public class Rogue{
           e.printStackTrace();
       }
 
-      for(Object object : jsonSymbols){
+      for (Object object : jsonSymbols) {
         JSONObject jsonSymbol = (JSONObject) object;
         symbolMap.put(jsonSymbol.get("name").toString(), jsonSymbol.get("symbol").toString());
       }
     }
 
-    public ArrayList<Room> getRooms(){
+/**
+* gets the current room array in rogue.
+*@return room array of every room in the game.
+*/
+    public ArrayList<Room> getRooms() {
       return roomArray;
     }
 
-    public ArrayList<Item> getItems(){
+/**
+* gets the current item array in rogue.
+*@return room array of every room in the game.
+*/
+
+    public ArrayList<Item> getItems() {
       return rogueItems;
     }
-    public Player getPlayer(){
+
+/**
+* gets the current player in rogue.
+*@return current player in rogue.
+*/
+
+    public Player getPlayer() {
       return player;
     }
 
-    public void createRooms(String filename){
+/**
+* creates the room array based off of the rooms in room file.
+*@param filename name of the room file
+*/
+    public void createRooms(String filename) {
       JSONParser parser = new JSONParser();
       JSONArray jsonRooms = null;
 
-      try{
+      try {
         JSONObject roomObject = (JSONObject) parser.parse(new FileReader(filename));
         jsonRooms = (JSONArray) roomObject.get("room");
-      } catch(FileNotFoundException e) {
+      } catch (FileNotFoundException e) {
           e.printStackTrace();
       } catch (IOException e) {
           e.printStackTrace();
       } catch (ParseException e) {
           e.printStackTrace();
       }
-     
-      for(Object object : jsonRooms ){
-        roomArray.add(new Room((JSONObject)object));
+
+      for (Object object : jsonRooms) {
+        roomArray.add(new Room((JSONObject) object));
       }
     }
-    public String displayAll(){
+
+/**
+* returns the string that displays the current rooms in the dungeon.
+*@return string that displays the current rooms in the dungeon
+*/
+
+    public String displayAll() {
         //creates a string that displays all the rooms in the dungeon
       String roomsDisplay = "";
 
-      for(int i = 0; i < roomArray.size(); i++){
+      for (int i = 0; i < roomArray.size(); i++) {
         roomsDisplay += roomArray.get(i).displayRoom();
       }
-      for(Map.Entry<String,String> symbolString : symbolMap.entrySet()){
+      for (Map.Entry<String, String> symbolString : symbolMap.entrySet()) {
         roomsDisplay = roomsDisplay.replaceAll(symbolString.getKey(), symbolString.getValue());
       }
 

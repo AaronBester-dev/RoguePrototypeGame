@@ -1,24 +1,29 @@
 package rogue;
 
-import java.util.Scanner;
-import java.util.ArrayList;
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import java.awt.Point;
-
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public class A1Solution{
+/**
+*A1Solution is the main class that provides a solution to assignment 1.
+*
+*/
+public class A1Solution {
 
-    public static void main(String[] args) { 
+/**
+*<p>main method parses the symbol,room,and configuration file.
+*main also creates newrogueGame and runs everything it needs to make the program work.
+*</p>
+*@param args array of command line arguments
+*/
+    public static void main(String[] args) {
       // Hardcoded configuration file location/name
-      String configurationFileLocation = "fileLocations.json";  //please don't change this for this version of the assignment
+      //please don't change this for this version of the assignment
+      String configurationFileLocation = "fileLocations.json";
       String roomFileLocation = "";
       String symbolFileLocation = "";
  // reading the input file locations using the configuration file
@@ -31,9 +36,9 @@ public class A1Solution{
         roomFileLocation = (String) configurationJSON.get("Rooms");
 
         // Extract the Symbols value from the file to get the file location for symbols-map
-        symbolFileLocation = (String) configurationJSON.get("Symbols"); 
-            
-        } catch(FileNotFoundException e) {
+        symbolFileLocation = (String) configurationJSON.get("Symbols");
+
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
