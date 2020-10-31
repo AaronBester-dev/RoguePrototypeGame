@@ -121,6 +121,10 @@ public class Rogue {
       roomArray.add(new Room(tempRoomMap));
     }
 
+    public void addItem(Map <String,String> toAdd){
+      
+    }
+
 /**
 * returns the string that displays the current rooms in the dungeon.
 *@return string that displays the current rooms in the dungeon
