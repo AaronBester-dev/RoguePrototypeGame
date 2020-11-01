@@ -19,6 +19,7 @@ public class Room  {
     private int wDoor = -1;
     private ArrayList<Item> roomItems = new ArrayList<Item>();
     private Player roomPlayer = null;
+    private HashMap<String,Integer> doors = new HashMap<String,Integer>();
     private String[][] roomDisplayArray;
 
 /**
@@ -153,13 +154,13 @@ public class Room  {
  */
     public int getDoor(String direction) {
       if (direction.equals("N")) {
-        return (nDoor);
+        return (doors.get("N"));
       } else if (direction.equals("S")) {
-        return (sDoor);
+        return (doors.get("S"));
       } else if (direction.equals("E")) {
-        return (eDoor);
+        return (doors.get("E"));
       } else {
-        return (wDoor);
+        return (doors.get("W"));
       }
     }
 
@@ -174,13 +175,33 @@ location is a number between 0 and the length of the wall
  */
     public void setDoor(String direction, int location) {
       if (direction.equals("N")) {
-        nDoor = location;
+        if(doors.contains("N")){
+          doors.replace("N",location);
+        }
+        else{
+          doors.put("N",location);
+        }
       } else if (direction.equals("S")) {
-        sDoor = location;
+        if(doors.contains("S")){
+          doors.replace("S",location);
+        }
+        else{
+          doors.put("S",location);
+        }
       } else if (direction.equals("E")) {
-        eDoor = location;
+        if(doors.contains("E")){
+          doors.replace("E",location);
+        }
+        else{
+          doors.put("E",location);
+        }
       } else {
-        wDoor = location;
+        if(doors.contains("W")){
+          doors.replace("W",location);
+        }
+        else{
+          doors.put("W",location);
+        }
       }
     }
 /**
