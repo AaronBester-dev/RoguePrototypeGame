@@ -191,6 +191,12 @@ location is a number between 0 and the length of the wall
       return !(roomPlayer == null);
     }
 
+    public boolean verifyRoom(){
+      //TO DO VERIFY IF ITEMS DOORS AND EVERYTHING IS VALID;
+      return true;
+      return false;
+    } 
+
    /**
     * Produces a string that can be printed to produce an ascii rendering of the room and all of its contents.
     * @return (String) String representation of how the room looks.
