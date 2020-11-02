@@ -153,15 +153,7 @@ public class Room  {
  *@return door that is in the room in the direction you want.
  */
     public int getDoor(String direction) {
-      if (direction.equals("N")) {
-        return (doors.get("N"));
-      } else if (direction.equals("S")) {
-        return (doors.get("S"));
-      } else if (direction.equals("E")) {
-        return (doors.get("E"));
-      } else {
-        return (doors.get("W"));
-      }
+      return(doors.get(direction));
     }
 
 /*
@@ -174,34 +166,11 @@ location is a number between 0 and the length of the wall
  *@param location location of where you want to place the door
  */
     public void setDoor(String direction, int location) {
-      if (direction.equals("N")) {
-        if(doors.contains("N")){
-          doors.replace("N",location);
-        }
-        else{
-          doors.put("N",location);
-        }
-      } else if (direction.equals("S")) {
-        if(doors.contains("S")){
-          doors.replace("S",location);
-        }
-        else{
-          doors.put("S",location);
-        }
-      } else if (direction.equals("E")) {
-        if(doors.contains("E")){
-          doors.replace("E",location);
-        }
-        else{
-          doors.put("E",location);
-        }
-      } else {
-        if(doors.contains("W")){
-          doors.replace("W",location);
-        }
-        else{
-          doors.put("W",location);
-        }
+      if(doors.contains(direction)){
+        doors.replace(direction,location);
+      }
+      else{
+        doors.put(direction,location);
       }
     }
 /**
