@@ -13,10 +13,6 @@ public class Room  {
     private int roomWidth;
     private int roomHeight;
     private int roomId;
-    private int nDoor = -1;
-    private int sDoor = -1;
-    private int eDoor = -1;
-    private int wDoor = -1;
     private ArrayList<Item> roomItems = new ArrayList<Item>();
     private Player roomPlayer = null;
     private HashMap<String,Door> doors = new HashMap<String,Door>();
@@ -241,17 +237,18 @@ location is a number between 0 and the length of the wall
     */
 
     public void addDoorsToRoomDisplayArray() {
-      if (nDoor != -1) {
-        roomDisplayArray[0][nDoor] = "DOOR";
+      Door doorHolder = null;
+      if ((doorHolder = doors.get("N")) != null) {
+        roomDisplayArray[0][doorHolder.getWallPosition] = "DOOR";
       }
-      if (eDoor != -1) {
-        roomDisplayArray[eDoor][0] = "DOOR";
+      if ((doorHolder = doors.get("E") != null) {
+        roomDisplayArray[doorHolder.getWallPosition][0] = "DOOR";
       }
-      if (sDoor != -1) {
-        roomDisplayArray[roomHeight - 1][sDoor] = "DOOR";
+      if ((doorHolder = doors.get("S") != null) {
+        roomDisplayArray[roomHeight - 1][doorHolder.getWallPosition] = "DOOR";
       }
-      if (wDoor != -1) {
-        roomDisplayArray[wDoor][roomWidth - 1] = "DOOR";
+      if ((doorHolder = doors.get("W") != null) {
+        roomDisplayArray[doorHolder.getWallPosition][roomWidth - 1] = "DOOR";
       }
     }
 
@@ -268,7 +265,7 @@ location is a number between 0 and the length of the wall
 
       for (int i = 0; i < roomItems.size(); i++) {
         roomDisplayArray[(int) roomItems.get(i).getXyLocation().getY()]
-        [(int) roomItems.get(i).getXyLocation().getX()] = "ITEM";
+        [(int) roomItems.get(i).getXyLocation().getX()] = roomItems.get(i).getType();
       }
     }
 
