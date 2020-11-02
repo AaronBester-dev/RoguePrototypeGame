@@ -80,6 +80,8 @@ public class Rogue {
             itemInfo = parser.nextItem();
         }
 
+        connectDoors();
+
     }
 
 /**
@@ -143,9 +145,8 @@ public class Rogue {
 
     public void addRoom(Map <String,String> toAdd){
       Room newRoom = new Room();
-      String[] doorStringArray;
-      int doorConnectedRoomId = 0;
-      int wallPosition = 0;
+      
+      
       Integer integerId = Integer.decode(toAdd.get("id"));
       Boolean isPlayer = Boolean.parseBoolean(toAdd.get("start").toString());
       Integer integerHeight = Integer.decode(toAdd.get("height").toString());
@@ -159,32 +160,11 @@ public class Rogue {
       newRoom.setId(integerId);
       newRoom.setHeight(integerHeight);
       newRoom.setWidth(integerWidth);
-
-      doorStringArray = roomMap.get("N").split(" ");
-      doorConnectedRoomId = Integer.decode(doorStringArray[0]);
-      wallPosition = Integer.decode(doorStringArray[1]);
-      Door nDoor = new Door(roomArray.get(integerId),roomArray.get(doorConnectedRoomId),wallPosition);
-
-      doorStringArray = roomMap.get("W").split(" ");
-      doorConnectedRoomId = Integer.decode(doorStringArray[0]);
-      wallPosition = Integer.decode(doorStringArray[1]);
-      Door wDoor = new Door(roomArray.get(integerId),roomArray.get(doorConnectedRoomId),wallPosition);
-
-      doorStringArray = roomMap.get("E").split(" ");
-      doorConnectedRoomId = Integer.decode(doorStringArray[0]);
-      wallPosition = Integer.decode(doorStringArray[1]);
-      Door eDoor = new Door(roomArray.get(integerId),roomArray.get(doorConnectedRoomId),wallPosition);
-
-      doorStringArray = roomMap.get("S").split(" ");
-      doorConnectedRoomId = Integer.decode(doorStringArray[0]);
-      wallPosition = Integer.decode(doorStringArray[1]);
-      Door sDoor = new Door(roomArray.get(integerId),roomArray.get(doorConnectedRoomId),wallPosition);
       
-
-      newRoom.setDoor("N",nDoor);
-      newRoom.setDoor("W",wDoor);
-      newRoom.setDoor("E",eDoor);
-      newRoom.setDoor("S",sDoor);
+      newRoom.setDoor("N",addDoor(roomMap.get("N")));
+      newRoom.setDoor("W",addDoor(roomMap.get("W")));
+      newRoom.setDoor("E",addDoor(roomMap.get("E")));
+      newRoom.setDoor("S",addDoor(roomMap.get("S")));
 
       newRoom.updateDisplayRoom();
       roomArray.add(newRoom);
@@ -212,8 +192,40 @@ public class Rogue {
       } catch (NoSuchItemException f){
         roomArray.get(roomId).getRoomItems().remove(itemId);
       }
-      
+    }
 
+    public Door addDoor(String toAdd,Room newRoom){
+      String[] doorStringArray;
+      int doorConnectedRoomId = 0;
+      int wallPosition = 0;
+
+      if(toAdd.equals("-1")){
+        return(null);
+      }
+      else{
+        doorStringArray = toAdd.split(" ");
+        doorConnectedRoomId = Integer.decode(doorStringArray[0]);
+        wallPosition = Integer.decode(doorStringArray[1]);
+        return(new Door(newRoom,doorConnectedRoomId,wallPosition));
+      }
+    }
+
+    public void connectDoors(){
+      Door doorHolder = null;
+      for(int i = 0; i < roomArray.sizeof(); i++){
+        if((doorHolder = roomArray.getDoor("N")) != null){
+          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid));
+        }
+        if((doorHolder = roomArray.getDoor("W")) != null){
+          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid));
+        }
+        if((doorHolder = roomArray.getDoor("S")) != null){
+          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid));
+        }
+        if((doorHolder = roomArray.getDoor("E")) != null){
+          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid));
+        }
+      }
     }
 
 /**

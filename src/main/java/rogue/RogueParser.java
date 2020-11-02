@@ -269,7 +269,7 @@ public class RogueParser {
         item.put("id", itemsJSON.get("id").toString());
         item.put("name", itemsJSON.get("name").toString());
         item.put("type", itemsJSON.get("type").toString());
-        item.put("description",itemsJSON.get("description").toString());
+        item.put("description",itemsJSON.get("description").toString())
 
         for (Map<String, String> itemLocation : itemLocations) {
             if (itemLocation.get("id").toString().equals(item.get("id").toString())) {
