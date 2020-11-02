@@ -143,7 +143,9 @@ public class Rogue {
 
     public void addRoom(Map <String,String> toAdd){
       Room newRoom = new Room();
-
+      String[] doorStringArray;
+      int doorConnectedRoomId = 0;
+      int wallPosition = 0;
       Integer integerId = Integer.decode(toAdd.get("id"));
       Boolean isPlayer = Boolean.parseBoolean(toAdd.get("start").toString());
       Integer integerHeight = Integer.decode(toAdd.get("height").toString());
@@ -158,32 +160,59 @@ public class Rogue {
       newRoom.setHeight(integerHeight);
       newRoom.setWidth(integerWidth);
 
-      newRoom.setDoor("N",Integer.decode(roomMap.get("N")));
-      newRoom.setDoor("W",Integer.decode(roomMap.get("W")));
-      newRoom.setDoor("E",Integer.decode(roomMap.get("E")));
-      newRoom.setDoor("S",Integer.decode(roomMap.get("S")));
+      doorStringArray = roomMap.get("N").split(" ");
+      doorConnectedRoomId = Integer.decode(doorStringArray[0]);
+      wallPosition = Integer.decode(doorStringArray[1]);
+      Door nDoor = new Door(roomArray.get(integerId),roomArray.get(doorConnectedRoomId),wallPosition);
+
+      doorStringArray = roomMap.get("W").split(" ");
+      doorConnectedRoomId = Integer.decode(doorStringArray[0]);
+      wallPosition = Integer.decode(doorStringArray[1]);
+      Door wDoor = new Door(roomArray.get(integerId),roomArray.get(doorConnectedRoomId),wallPosition);
+
+      doorStringArray = roomMap.get("E").split(" ");
+      doorConnectedRoomId = Integer.decode(doorStringArray[0]);
+      wallPosition = Integer.decode(doorStringArray[1]);
+      Door eDoor = new Door(roomArray.get(integerId),roomArray.get(doorConnectedRoomId),wallPosition);
+
+      doorStringArray = roomMap.get("S").split(" ");
+      doorConnectedRoomId = Integer.decode(doorStringArray[0]);
+      wallPosition = Integer.decode(doorStringArray[1]);
+      Door sDoor = new Door(roomArray.get(integerId),roomArray.get(doorConnectedRoomId),wallPosition);
+      
+
+      newRoom.setDoor("N",nDoor);
+      newRoom.setDoor("W",wDoor);
+      newRoom.setDoor("E",eDoor);
+      newRoom.setDoor("S",sDoor);
 
       newRoom.updateDisplayRoom();
-
       roomArray.add(newRoom);
       
     }
 
     public void addItem(Map <String,String> toAdd){
-      /* 
-        look up the attributes of the item in the map
-        set the fields in the object you just created using those values
-        add the item object to the list of items in the dungeon
-        add the item to the room it is currently located in
-        */
+      
       Item newItem = new Item();
-      newItem.setId(Integer.decode(toAdd.get("id")));
+      int itemId = Integer.decode(toAdd.get("id"));
+      int roomId = Integer.decode(toAdd.get("room"));
+      int itemX = Integer.decode(toAdd.get("x"));
+      int itemY = Integer.decode(toADd.get("y"));
+      newItem.setId(itemId);
       newItem.setName(toAdd.get("name"));
       newItem.setType(toAdd.get("type"));
-      new Point newItemLocation = new Point(Integer.decode(toAdd.get("x")),Integer.decode(toAdd.get("y")));
+      newItem.setDescription(toAdd.get("description"));
+      new Point newItemLocation = new Point(itemX,itemY);
       newItem.setXyLocation(newItemLocation);
       rogueItems.add(newItem);
-      roomArray.get(Integer.decode(toAdd.get("room"))).addItem(newItem);
+      try{
+        roomArray.get(roomId).addItem(newItem);
+      } catch (ImpossiblePositionException e){
+        //TODO MAKE IT WORK
+      } catch (NoSuchItemException f){
+        roomArray.get(roomId).getRoomItems().remove(itemId);
+      }
+      
 
     }
 

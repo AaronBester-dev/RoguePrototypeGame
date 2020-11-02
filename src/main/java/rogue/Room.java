@@ -19,7 +19,7 @@ public class Room  {
     private int wDoor = -1;
     private ArrayList<Item> roomItems = new ArrayList<Item>();
     private Player roomPlayer = null;
-    private HashMap<String,Integer> doors = new HashMap<String,Integer>();
+    private HashMap<String,Door> doors = new HashMap<String,Door>();
     private String[][] roomDisplayArray;
 
 /**
@@ -152,7 +152,7 @@ public class Room  {
  *@param direction direction that the door is in.
  *@return door that is in the room in the direction you want.
  */
-    public int getDoor(String direction) {
+    public Door getDoor(String direction) {
       return(doors.get(direction));
     }
 
@@ -165,12 +165,12 @@ location is a number between 0 and the length of the wall
  *@param direction direction of the door you want to place.
  *@param location location of where you want to place the door
  */
-    public void setDoor(String direction, int location) {
+    public void setDoor(int direction,Door newDoor) {
       if(doors.contains(direction)){
-        doors.replace(direction,location);
+        doors.replace(direction,newDoor);
       }
       else{
-        doors.put(direction,location);
+        doors.put(direction,newDoor);
       }
     }
 /**
