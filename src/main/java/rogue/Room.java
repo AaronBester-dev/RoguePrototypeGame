@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.util.Map;
+import java.util.HashMap;
 
 /**
  * A room within the dungeon - contains monsters, treasure,
@@ -15,7 +16,7 @@ public class Room  {
     private int roomId;
     private ArrayList<Item> roomItems = new ArrayList<Item>();
     private Player roomPlayer = null;
-    private HashMap<String,Door> doors = new HashMap<String,Door>();
+    private HashMap<String,Door> doors = new HashMap<>();
     private String[][] roomDisplayArray;
 
 /**
@@ -32,27 +33,6 @@ public class Room  {
  *@param jsonRoom jsonObject that contains all of the values needed for a room
  */
     public Room(Map<String,String> roomMap) {
-      Integer integerId = Integer.decode(roomMap.get("id"));
-      Boolean isPlayer = Boolean.parseBoolean(roomMap.get("start").toString());
-      Integer integerHeight = Integer.decode(roomMap.get("height").toString());
-      Integer integerWidth = Integer.decode(roomMap.get("width").toString());
-
-      if (isPlayer.booleanValue()) {
-        roomPlayer = new Player();
-      }
-
-      setId(integerId);
-      setHeight(integerHeight);
-      setWidth(integerWidth);
-
-      setDoor("N",Integer.decode(roomMap.get("N")));
-      setDoor("W",Integer.decode(roomMap.get("W")));
-      setDoor("E",Integer.decode(roomMap.get("E")));
-      setDoor("S",Integer.decode(roomMap.get("S")));
-
-      roomDisplayArray = new String[roomHeight][roomWidth];
-      updateDisplayRoom();
-
     }
 
    // Required getter and setters below
@@ -241,13 +221,13 @@ location is a number between 0 and the length of the wall
       if ((doorHolder = doors.get("N")) != null) {
         roomDisplayArray[0][doorHolder.getWallPosition] = "DOOR";
       }
-      if ((doorHolder = doors.get("E") != null) {
+      if ((doorHolder = doors.get("E")) != null) {
         roomDisplayArray[doorHolder.getWallPosition][0] = "DOOR";
       }
-      if ((doorHolder = doors.get("S") != null) {
+      if ((doorHolder = doors.get("S")) != null) {
         roomDisplayArray[roomHeight - 1][doorHolder.getWallPosition] = "DOOR";
       }
-      if ((doorHolder = doors.get("W") != null) {
+      if ((doorHolder = doors.get("W")) != null) {
         roomDisplayArray[doorHolder.getWallPosition][roomWidth - 1] = "DOOR";
       }
     }

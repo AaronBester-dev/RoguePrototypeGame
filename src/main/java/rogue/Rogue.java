@@ -56,14 +56,6 @@ public class Rogue {
       rogueParser = new RogueParser(filename);
     }
 
-    public Rogue(RogueParser parser) {
-      player = null;
-      roomArray = new ArrayList<Room>();
-      rogueItems = new ArrayList<Item>();
-      symbolMap = null;
-      rogueParser = parser;
-    }
-
     public Rogue(RogueParser theDungeonInfo){
 
         parser = theDungeonInfo;
@@ -182,7 +174,7 @@ public class Rogue {
       newItem.setName(toAdd.get("name"));
       newItem.setType(toAdd.get("type"));
       newItem.setDescription(toAdd.get("description"));
-      new Point newItemLocation = new Point(itemX,itemY);
+      Point newItemLocation = new Point(itemX,itemY);
       newItem.setXyLocation(newItemLocation);
       rogueItems.add(newItem);
       try{

@@ -211,9 +211,9 @@ public class RogueParser {
             JSONObject doorObj = (JSONObject) doorArray.get(j);
             String dir = String.valueOf(doorObj.get("dir"));
             String conRoomAndWallPos = doorObj.get("con_room").toString();
-            con_roomAndWallPos += " ";
-            con_roomAndWallPos += doorObj.get("wall_pos").toString();
-            room.replace(dir, con_roomAndWallPos);
+            conRoomAndWallPos += " ";
+            conRoomAndWallPos += doorObj.get("wall_pos").toString();
+            room.replace(dir, conRoomAndWallPos);
             
         }
 
@@ -269,7 +269,7 @@ public class RogueParser {
         item.put("id", itemsJSON.get("id").toString());
         item.put("name", itemsJSON.get("name").toString());
         item.put("type", itemsJSON.get("type").toString());
-        item.put("description",itemsJSON.get("description").toString())
+        item.put("description",itemsJSON.get("description").toString());
 
         for (Map<String, String> itemLocation : itemLocations) {
             if (itemLocation.get("id").toString().equals(item.get("id").toString())) {
