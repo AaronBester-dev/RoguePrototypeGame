@@ -87,7 +87,6 @@ public class Rogue {
 
 /**
 * sets the current symbols map to the symbols in the symbol file in rogue.
-*@param filename name of the symbol file
 */
 
     public void setSymbols() {
@@ -149,6 +148,7 @@ public class Rogue {
       if (isPlayer.booleanValue()) {
         Player roomPlayer = new Player();
         newRoom.setPlayer(roomPlayer);
+        roomPlayer.setCurrentRoom(newRoom);
       }
 
       newRoom.setId(integerId);
@@ -173,15 +173,14 @@ public class Rogue {
     public void addItem(Map<String, String> toAdd) {
 
       Item newItem = new Item();
-   
       int itemId = Integer.decode(toAdd.get("id"));
-      
+
       newItem.setId(itemId);
       newItem.setName(toAdd.get("name"));
       newItem.setType(toAdd.get("type"));
       newItem.setDescription(toAdd.get("description"));
 
-      if(toAdd.get("room") != null){
+      if (toAdd.get("room") != null) {
         int roomId = Integer.decode(toAdd.get("room"));
         int itemX = Integer.decode(toAdd.get("x"));
         int itemY = Integer.decode(toAdd.get("y"));
@@ -189,16 +188,13 @@ public class Rogue {
         newItem.setXyLocation(newItemLocation);
         rogueItems.add(newItem);
         try {
-          roomArray.get(roomId-1).addItem(newItem);
+          roomArray.get(roomId - 1).addItem(newItem);
         } catch (ImpossiblePositionException e) {
           //TODO MAKE IT WORK
         } catch (NoSuchItemException f) {
-          roomArray.get(roomId-1).getRoomItems().remove(itemId);
+          roomArray.get(roomId - 1).getRoomItems().remove(itemId);
         }
       }
-     
-     
-     
     }
 
 /**
@@ -215,11 +211,11 @@ public class Rogue {
       if (toAdd.equals("-1")) {
         return (null);
       } else {
-       
+
         doorStringArray = toAdd.split(" ");
         doorConnectedRoomId = Integer.decode(doorStringArray[0]);
         wallPosition = Integer.decode(doorStringArray[1]);
-       
+
         return (new Door(newRoom, doorConnectedRoomId, wallPosition));
       }
     }
@@ -233,19 +229,19 @@ public class Rogue {
       for (Room tempRoom : roomArray) {
         doorHolder = tempRoom.getDoor("N");
         if (doorHolder != null) {
-          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid()-1));
+          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid() - 1));
         }
         doorHolder = tempRoom.getDoor("W");
         if (doorHolder != null) {
-          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid()-1));
+          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid() - 1));
         }
         doorHolder = tempRoom.getDoor("S");
         if (doorHolder != null) {
-          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid()-1));
+          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid() - 1));
         }
         doorHolder = tempRoom.getDoor("E");
         if (doorHolder != null) {
-          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid()-1));
+          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid() - 1));
         }
       }
     }
@@ -273,11 +269,22 @@ public class Rogue {
 * returns the string of the room after a move.
 *@return string that displays the room after a move
 *@param input input from player
+*@throws InvalidMoveException when player makes a move that isn't allowed
 */
 
-    public String makeMove(char input) {
+    public String makeMove(char input) throws InvalidMoveException {
       //TODO MAKE IT MOVE
-      return "NOT WORKING";
+      if (input == UP) {
+        return ("MOVED UP");
+      } else if (input == LEFT) {
+        return ("MOVED LEFT");
+      } else if (input == RIGHT) {
+        return ("MOVED RIGHT");
+      } else if (input == DOWN) {
+        return ("MOVED DOWN");
+      } else {
+        throw new InvalidMoveException();
+      }
     }
 /**
 * returns the string that displays the room.
