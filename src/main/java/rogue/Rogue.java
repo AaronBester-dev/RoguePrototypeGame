@@ -6,6 +6,9 @@ import java.util.Map;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.awt.Point;
+
+
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -27,7 +30,7 @@ public class Rogue {
     private ArrayList<Room> roomArray;
     private ArrayList<Item> rogueItems;
     private Map<String, Character> symbolMap;
-    private RogueParser rogueParser;
+    private RogueParser parser;
     private Map<String, String> tempRoomMap;
     private Map<String, String> tempItemMap;
 
@@ -40,7 +43,7 @@ public class Rogue {
       rogueItems = new ArrayList<Item>();
       symbolMap = null;
       tempRoomMap = null;
-      rogueParser = new RogueParser();
+      parser = new RogueParser();
     }
 
 /**
@@ -53,7 +56,7 @@ public class Rogue {
       roomArray = new ArrayList<Room>();
       rogueItems = new ArrayList<Item>();
       symbolMap = null;
-      rogueParser = new RogueParser(filename);
+      parser = new RogueParser(filename);
     }
 
     public Rogue(RogueParser theDungeonInfo){
@@ -92,7 +95,7 @@ public class Rogue {
 
     public void setSymbols(String filename) {
         //TODO Read stuff from symbols file
-      symbolMap = rogueParser.getSymbols();
+      symbolMap = parser.getSymbols();
     }
 
 /**
@@ -127,7 +130,7 @@ public class Rogue {
 */
     public void createRooms(String filename) {
 
-      while((tempRoomMap = rogueParser.nextRoom()) != null){
+      while((tempRoomMap = parser.nextRoom()) != null){
         addRoom(tempRoomMap);
       }
       //TO DO ADD ITEMS TO ROOM
@@ -137,7 +140,6 @@ public class Rogue {
 
     public void addRoom(Map <String,String> toAdd){
       Room newRoom = new Room();
-      
       
       Integer integerId = Integer.decode(toAdd.get("id"));
       Boolean isPlayer = Boolean.parseBoolean(toAdd.get("start").toString());
@@ -153,10 +155,10 @@ public class Rogue {
       newRoom.setHeight(integerHeight);
       newRoom.setWidth(integerWidth);
       
-      newRoom.setDoor("N",addDoor(roomMap.get("N")));
-      newRoom.setDoor("W",addDoor(roomMap.get("W")));
-      newRoom.setDoor("E",addDoor(roomMap.get("E")));
-      newRoom.setDoor("S",addDoor(roomMap.get("S")));
+      newRoom.setDoor("N",addDoor(toAdd.get("N"),newRoom));
+      newRoom.setDoor("W",addDoor(toAdd.get("W"),newRoom));
+      newRoom.setDoor("E",addDoor(toAdd.get("E"),newRoom));
+      newRoom.setDoor("S",addDoor(toAdd.get("S"),newRoom));
 
       newRoom.updateDisplayRoom();
       roomArray.add(newRoom);
@@ -169,7 +171,7 @@ public class Rogue {
       int itemId = Integer.decode(toAdd.get("id"));
       int roomId = Integer.decode(toAdd.get("room"));
       int itemX = Integer.decode(toAdd.get("x"));
-      int itemY = Integer.decode(toADd.get("y"));
+      int itemY = Integer.decode(toAdd.get("y"));
       newItem.setId(itemId);
       newItem.setName(toAdd.get("name"));
       newItem.setType(toAdd.get("type"));
@@ -204,18 +206,19 @@ public class Rogue {
 
     public void connectDoors(){
       Door doorHolder = null;
-      for(int i = 0; i < roomArray.sizeof(); i++){
-        if((doorHolder = roomArray.getDoor("N")) != null){
-          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid));
+      for(Room tempRoom : roomArray){
+
+        if((doorHolder = tempRoom.getDoor("N")) != null){
+          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid()));
         }
-        if((doorHolder = roomArray.getDoor("W")) != null){
-          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid));
+        if((doorHolder = tempRoom.getDoor("W")) != null){
+          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid()));
         }
-        if((doorHolder = roomArray.getDoor("S")) != null){
-          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid));
+        if((doorHolder = tempRoom.getDoor("S")) != null){
+          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid()));
         }
-        if((doorHolder = roomArray.getDoor("E")) != null){
-          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid));
+        if((doorHolder = tempRoom.getDoor("E")) != null){
+          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid()));
         }
       }
     }
@@ -238,4 +241,16 @@ public class Rogue {
 
       return roomsDisplay;
     }
+
+    public String makeMove(char input){
+      //TODO MAKE IT MOVE
+      return "NOT WORKING";
+    }
+
+    public String getNextDisplay(){
+      //GET STRING OF NEXT MOVE
+      return "NOT DONE";
+    }
+
+
 }

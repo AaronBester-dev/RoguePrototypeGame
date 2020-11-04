@@ -127,9 +127,11 @@ public static void main(String[] args) {
     // allocate memory for the game and set it up
     Rogue theGame = new Rogue(parser);
    //set up the initial game display
+   
     Player thePlayer = new Player("Judi");
     theGame.setPlayer(thePlayer);
     message = "Welcome to my Rogue game";
+    /*
     theGameUI.draw(message, theGame.getNextDisplay());
 
 
@@ -146,7 +148,7 @@ public static void main(String[] args) {
         theGameUI.setMessage(message);
     }
     }
-
+    */
     // do something here to say goodbye to the user
 
 

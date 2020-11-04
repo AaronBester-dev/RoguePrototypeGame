@@ -5,6 +5,8 @@ import org.json.simple.JSONObject;
 import java.util.Map;
 import java.util.HashMap;
 
+import java.lang.Exception;
+
 /**
  * A room within the dungeon - contains monsters, treasure,
  * doors out, etc.
@@ -94,14 +96,14 @@ public class Room  {
       roomItems = newRoomItems;
     }
 
-    public void addItem(Item toAdd){
+    public void addItem(Item toAdd) throws ImpossiblePositionException, NoSuchItemException{
       int itemX = (int) toAdd.getXyLocation().getX();
       int itemY = (int) toAdd.getXyLocation().getY();
       if(itemX > roomWidth || itemX < 0 || itemY > roomHeight || itemY < 0 || !(roomDisplayArray[itemX][itemY].equals("FLOOR"))){
-        throw(ImpossiblePositionException);
+        throw new ImpossiblePositionException();
       }
       else if(itemX != -1){
-        throw (NoSuchItemException);
+        throw new NoSuchItemException();
       }
       else{
         roomItems.add(toAdd);
@@ -129,7 +131,13 @@ public class Room  {
  *@return door that is in the room in the direction you want.
  */
     public Door getDoor(String direction) {
-      return(doors.get(direction));
+      if(doors.containsKey(direction)){
+        return(doors.get(direction));
+      }
+      else{
+        return(null);
+      }
+      
     }
 
 /*
@@ -141,8 +149,8 @@ location is a number between 0 and the length of the wall
  *@param direction direction of the door you want to place.
  *@param location location of where you want to place the door
  */
-    public void setDoor(int direction,Door newDoor) {
-      if(doors.contains(direction)){
+    public void setDoor(String direction,Door newDoor) {
+      if(doors.containsKey(direction)){
         doors.replace(direction,newDoor);
       }
       else{
@@ -160,7 +168,7 @@ location is a number between 0 and the length of the wall
     public boolean verifyRoom(){
       //TO DO VERIFY IF ITEMS DOORS AND EVERYTHING IS VALID;
       return true;
-      return false;
+      
     } 
 
    /**
@@ -218,17 +226,17 @@ location is a number between 0 and the length of the wall
 
     public void addDoorsToRoomDisplayArray() {
       Door doorHolder = null;
-      if ((doorHolder = doors.get("N")) != null) {
-        roomDisplayArray[0][doorHolder.getWallPosition] = "DOOR";
+      if ((doorHolder = getDoor("N")) != null) {
+        roomDisplayArray[0][doorHolder.getWallPosition()] = "DOOR";
       }
-      if ((doorHolder = doors.get("E")) != null) {
-        roomDisplayArray[doorHolder.getWallPosition][0] = "DOOR";
+      if ((doorHolder = getDoor("E")) != null) {
+        roomDisplayArray[doorHolder.getWallPosition()][0] = "DOOR";
       }
-      if ((doorHolder = doors.get("S")) != null) {
-        roomDisplayArray[roomHeight - 1][doorHolder.getWallPosition] = "DOOR";
+      if ((doorHolder = getDoor("S")) != null) {
+        roomDisplayArray[roomHeight - 1][doorHolder.getWallPosition()] = "DOOR";
       }
-      if ((doorHolder = doors.get("W")) != null) {
-        roomDisplayArray[doorHolder.getWallPosition][roomWidth - 1] = "DOOR";
+      if ((doorHolder = getDoor("W")) != null) {
+        roomDisplayArray[doorHolder.getWallPosition()][roomWidth - 1] = "DOOR";
       }
     }
 
