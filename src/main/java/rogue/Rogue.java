@@ -1,6 +1,7 @@
 package rogue;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import java.awt.Point;
@@ -22,7 +23,7 @@ public class Rogue {
     private Player player;
     private ArrayList<Room> roomArray = new ArrayList<Room>();
     private ArrayList<Item> rogueItems = new ArrayList<Item>();
-    private Map<String, Character> symbolMap;
+    private HashMap<String, Character> symbolMap;
     private RogueParser parser;
     private Map<String, String> tempRoomMap;
     private Map<String, String> tempItemMap;
@@ -70,7 +71,7 @@ public class Rogue {
             addItem(itemInfo);
             itemInfo = parser.nextItem();
         }
-
+        setSymbols();
         connectDoors();
 
     }
@@ -89,7 +90,7 @@ public class Rogue {
 *@param filename name of the symbol file
 */
 
-    public void setSymbols(String filename) {
+    public void setSymbols() {
         //TODO Read stuff from symbols file
       symbolMap = parser.getSymbols();
     }
@@ -172,7 +173,7 @@ public class Rogue {
     public void addItem(Map<String, String> toAdd) {
 
       Item newItem = new Item();
-      System.out.println(toAdd);
+   
       int itemId = Integer.decode(toAdd.get("id"));
       
       newItem.setId(itemId);
@@ -261,7 +262,7 @@ public class Rogue {
       for (int i = 0; i < roomArray.size(); i++) {
         roomsDisplay += roomArray.get(i).displayRoom();
       }
-      for (Map.Entry<String, Character> symbolString : symbolMap.entrySet()) {
+      for (HashMap.Entry<String, Character> symbolString : symbolMap.entrySet()) {
         roomsDisplay = roomsDisplay.replaceAll(symbolString.getKey(), symbolString.getValue().toString());
       }
 

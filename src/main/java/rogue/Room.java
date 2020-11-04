@@ -189,8 +189,7 @@ location is a number between 0 and the length of the wall
       initalizeRoomDisplayArray();
       addDoorsToRoomDisplayArray();
       addContentsToRoomDisplayArray();
-      convertDisplayArrayToString(roomDisplayString);
-
+      roomDisplayString = convertDisplayArrayToString(roomDisplayString);
       return (roomDisplayString);
     }
 
@@ -252,7 +251,7 @@ location is a number between 0 and the length of the wall
 
       for (int i = 0; i < roomItems.size(); i++) {
         roomDisplayArray[(int) roomItems.get(i).getXyLocation().getY()]
-        [(int) roomItems.get(i).getXyLocation().getX()] = roomItems.get(i).getType();
+        [(int) roomItems.get(i).getXyLocation().getX()] = roomItems.get(i).getType().toUpperCase();
       }
     }
 
@@ -272,7 +271,7 @@ location is a number between 0 and the length of the wall
 
       roomDisplayString += '\n';
       roomDisplayString += '\n';
-
+      System.out.println(roomDisplayString);
       return (roomDisplayString);
     }
 }

@@ -128,6 +128,7 @@ public static void main(String[] args) {
     // allocate memory for the game and set it up
     */
     Rogue theGame = new Rogue(parser);
+    System.out.println(theGame.displayAll());
    //set up the initial game display
 
     Player thePlayer = new Player("Judi");
