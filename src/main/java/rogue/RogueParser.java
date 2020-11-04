@@ -71,10 +71,13 @@ public class RogueParser {
 
     }
 
+    /**
+     * Returns the symbols hashamp.
+     * @return symbols Hashmap of every symbol
+     */
+
     public HashMap getSymbols() {
-
-        return(symbols);
-
+        return (symbols);
     }
 
     /**
@@ -214,7 +217,6 @@ public class RogueParser {
             conRoomAndWallPos += " ";
             conRoomAndWallPos += doorObj.get("wall_pos").toString();
             room.replace(dir, conRoomAndWallPos);
-            
         }
 
         JSONArray lootArray = (JSONArray) roomJSON.get("loot");
@@ -269,7 +271,7 @@ public class RogueParser {
         item.put("id", itemsJSON.get("id").toString());
         item.put("name", itemsJSON.get("name").toString());
         item.put("type", itemsJSON.get("type").toString());
-        item.put("description",itemsJSON.get("description").toString());
+        item.put("description", itemsJSON.get("description").toString());
 
         for (Map<String, String> itemLocation : itemLocations) {
             if (itemLocation.get("id").toString().equals(item.get("id").toString())) {

@@ -1,19 +1,12 @@
 package rogue;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+
 import java.awt.Point;
 
 
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 /**
 *Rogue is the class that sets up the rogue game.
@@ -59,18 +52,23 @@ public class Rogue {
       parser = new RogueParser(filename);
     }
 
-    public Rogue(RogueParser theDungeonInfo){
+/**
+*constructor for rogue sets up room to the values in the room file.
+*@param theDungeonInfo parser that gets all values from the file
+*/
+
+    public Rogue(RogueParser theDungeonInfo) {
 
         parser = theDungeonInfo;
 
         Map roomInfo = parser.nextRoom();
-        while(roomInfo !=null){
+        while (roomInfo != null) {
             addRoom(roomInfo);
             roomInfo = parser.nextRoom();
         }
 
         Map itemInfo = parser.nextItem();
-        while(itemInfo !=null){
+        while (itemInfo != null) {
             addItem(itemInfo);
             itemInfo = parser.nextItem();
         }
@@ -130,17 +128,20 @@ public class Rogue {
 */
     public void createRooms(String filename) {
 
-      while((tempRoomMap = parser.nextRoom()) != null){
+      while ((tempRoomMap = parser.nextRoom()) != null) {
         addRoom(tempRoomMap);
       }
       //TO DO ADD ITEMS TO ROOM
-      
-
     }
 
-    public void addRoom(Map <String,String> toAdd){
+/**
+* creates a room and adds it to the room array.
+*@param toAdd hashmap that contains a room map.
+*/
+
+    public void addRoom(Map<String, String> toAdd) {
       Room newRoom = new Room();
-      
+
       Integer integerId = Integer.decode(toAdd.get("id"));
       Boolean isPlayer = Boolean.parseBoolean(toAdd.get("start").toString());
       Integer integerHeight = Integer.decode(toAdd.get("height").toString());
@@ -154,19 +155,24 @@ public class Rogue {
       newRoom.setId(integerId);
       newRoom.setHeight(integerHeight);
       newRoom.setWidth(integerWidth);
-      
-      newRoom.setDoor("N",addDoor(toAdd.get("N"),newRoom));
-      newRoom.setDoor("W",addDoor(toAdd.get("W"),newRoom));
-      newRoom.setDoor("E",addDoor(toAdd.get("E"),newRoom));
-      newRoom.setDoor("S",addDoor(toAdd.get("S"),newRoom));
+
+      newRoom.setDoor("N", addDoor(toAdd.get("N"), newRoom));
+      newRoom.setDoor("W", addDoor(toAdd.get("W"), newRoom));
+      newRoom.setDoor("E", addDoor(toAdd.get("E"), newRoom));
+      newRoom.setDoor("S", addDoor(toAdd.get("S"), newRoom));
 
       newRoom.updateDisplayRoom();
       roomArray.add(newRoom);
-      
+
     }
 
-    public void addItem(Map <String,String> toAdd){
-      
+/**
+* creates a item and adds it to a room.
+*@param toAdd item map that contains all item values.
+*/
+
+    public void addItem(Map<String, String> toAdd) {
+
       Item newItem = new Item();
       int itemId = Integer.decode(toAdd.get("id"));
       int roomId = Integer.decode(toAdd.get("room"));
@@ -176,48 +182,64 @@ public class Rogue {
       newItem.setName(toAdd.get("name"));
       newItem.setType(toAdd.get("type"));
       newItem.setDescription(toAdd.get("description"));
-      Point newItemLocation = new Point(itemX,itemY);
+      Point newItemLocation = new Point(itemX, itemY);
       newItem.setXyLocation(newItemLocation);
       rogueItems.add(newItem);
-      try{
+      try {
         roomArray.get(roomId).addItem(newItem);
-      } catch (ImpossiblePositionException e){
+      } catch (ImpossiblePositionException e) {
         //TODO MAKE IT WORK
-      } catch (NoSuchItemException f){
+      } catch (NoSuchItemException f) {
         roomArray.get(roomId).getRoomItems().remove(itemId);
       }
     }
 
-    public Door addDoor(String toAdd,Room newRoom){
+/**
+* creates a new door.
+*@param toAdd string that contains conRoomId and wall postition
+*@param newRoom room to add the door to
+*@return Door returns the new door that was created
+*/
+
+    public Door addDoor(String toAdd, Room newRoom) {
       String[] doorStringArray;
       int doorConnectedRoomId = 0;
       int wallPosition = 0;
 
-      if(toAdd.equals("-1")){
-        return(null);
-      }
-      else{
+      if (toAdd.equals("-1")) {
+        return (null);
+      } else {
+        System.out.println(toAdd);
         doorStringArray = toAdd.split(" ");
         doorConnectedRoomId = Integer.decode(doorStringArray[0]);
+         
         wallPosition = Integer.decode(doorStringArray[1]);
-        return(new Door(newRoom,doorConnectedRoomId,wallPosition));
+       
+        return (new Door(newRoom, doorConnectedRoomId, wallPosition));
       }
     }
 
-    public void connectDoors(){
-      Door doorHolder = null;
-      for(Room tempRoom : roomArray){
+/**
+* connects doors to the other room after room array has been created.
+*/
 
-        if((doorHolder = tempRoom.getDoor("N")) != null){
+    public void connectDoors() {
+      Door doorHolder = null;
+      for (Room tempRoom : roomArray) {
+        doorHolder = tempRoom.getDoor("N");
+        if (doorHolder != null) {
           doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid()));
         }
-        if((doorHolder = tempRoom.getDoor("W")) != null){
+        doorHolder = tempRoom.getDoor("W");
+        if (doorHolder != null) {
           doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid()));
         }
-        if((doorHolder = tempRoom.getDoor("S")) != null){
+        doorHolder = tempRoom.getDoor("S");
+        if (doorHolder != null) {
           doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid()));
         }
-        if((doorHolder = tempRoom.getDoor("E")) != null){
+        doorHolder = tempRoom.getDoor("E");
+        if (doorHolder != null) {
           doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid()));
         }
       }
@@ -242,12 +264,21 @@ public class Rogue {
       return roomsDisplay;
     }
 
-    public String makeMove(char input){
+/**
+* returns the string of the room after a move.
+*@return string that displays the room after a move
+*@param input input from player
+*/
+
+    public String makeMove(char input) {
       //TODO MAKE IT MOVE
       return "NOT WORKING";
     }
-
-    public String getNextDisplay(){
+/**
+* returns the string that displays the room.
+*@return string that displays the next display
+*/
+    public String getNextDisplay() {
       //GET STRING OF NEXT MOVE
       return "NOT DONE";
     }

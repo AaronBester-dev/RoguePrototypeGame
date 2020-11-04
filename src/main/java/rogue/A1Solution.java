@@ -21,11 +21,11 @@ public class A1Solution {
 *@param args array of command line arguments
 */
     public static void main(String[] args) {
-     
+
       // Hardcoded configuration file location/name
       //please don't change this for this version of the assignment
       String configurationFileLocation = "fileLocations.json";
-       
+
       String roomFileLocation = "";
       String symbolFileLocation = "";
  // reading the input file locations using the configuration file
@@ -47,7 +47,7 @@ public class A1Solution {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-  
+
 // instantiate a new Rogue object and call methods to do the required things
       Rogue rogueGame = new Rogue(configurationFileLocation);
       System.out.println(rogueGame.displayAll());
