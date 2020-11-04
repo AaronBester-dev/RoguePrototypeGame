@@ -20,8 +20,8 @@ public class Rogue {
     private String nextDisplay = "-----\n|.@..|\n|....|\n-----";
 
     private Player player;
-    private ArrayList<Room> roomArray;
-    private ArrayList<Item> rogueItems;
+    private ArrayList<Room> roomArray = new ArrayList<Room>();
+    private ArrayList<Item> rogueItems = new ArrayList<Item>();
     private Map<String, Character> symbolMap;
     private RogueParser parser;
     private Map<String, String> tempRoomMap;
@@ -32,8 +32,6 @@ public class Rogue {
 */
     public Rogue() {
       player = null;
-      roomArray = new ArrayList<Room>();
-      rogueItems = new ArrayList<Item>();
       symbolMap = null;
       tempRoomMap = null;
       parser = new RogueParser();
@@ -174,24 +172,32 @@ public class Rogue {
     public void addItem(Map<String, String> toAdd) {
 
       Item newItem = new Item();
+      System.out.println(toAdd);
       int itemId = Integer.decode(toAdd.get("id"));
-      int roomId = Integer.decode(toAdd.get("room"));
-      int itemX = Integer.decode(toAdd.get("x"));
-      int itemY = Integer.decode(toAdd.get("y"));
+      
       newItem.setId(itemId);
       newItem.setName(toAdd.get("name"));
       newItem.setType(toAdd.get("type"));
       newItem.setDescription(toAdd.get("description"));
-      Point newItemLocation = new Point(itemX, itemY);
-      newItem.setXyLocation(newItemLocation);
-      rogueItems.add(newItem);
-      try {
-        roomArray.get(roomId).addItem(newItem);
-      } catch (ImpossiblePositionException e) {
-        //TODO MAKE IT WORK
-      } catch (NoSuchItemException f) {
-        roomArray.get(roomId).getRoomItems().remove(itemId);
+
+      if(toAdd.get("room") != null){
+        int roomId = Integer.decode(toAdd.get("room"));
+        int itemX = Integer.decode(toAdd.get("x"));
+        int itemY = Integer.decode(toAdd.get("y"));
+         Point newItemLocation = new Point(itemX, itemY);
+        newItem.setXyLocation(newItemLocation);
+        rogueItems.add(newItem);
+        try {
+          roomArray.get(roomId-1).addItem(newItem);
+        } catch (ImpossiblePositionException e) {
+          //TODO MAKE IT WORK
+        } catch (NoSuchItemException f) {
+          roomArray.get(roomId-1).getRoomItems().remove(itemId);
+        }
       }
+     
+     
+     
     }
 
 /**
@@ -205,14 +211,12 @@ public class Rogue {
       String[] doorStringArray;
       int doorConnectedRoomId = 0;
       int wallPosition = 0;
-
       if (toAdd.equals("-1")) {
         return (null);
       } else {
-        System.out.println(toAdd);
+       
         doorStringArray = toAdd.split(" ");
         doorConnectedRoomId = Integer.decode(doorStringArray[0]);
-         
         wallPosition = Integer.decode(doorStringArray[1]);
        
         return (new Door(newRoom, doorConnectedRoomId, wallPosition));
@@ -228,19 +232,19 @@ public class Rogue {
       for (Room tempRoom : roomArray) {
         doorHolder = tempRoom.getDoor("N");
         if (doorHolder != null) {
-          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid()));
+          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid()-1));
         }
         doorHolder = tempRoom.getDoor("W");
         if (doorHolder != null) {
-          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid()));
+          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid()-1));
         }
         doorHolder = tempRoom.getDoor("S");
         if (doorHolder != null) {
-          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid()));
+          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid()-1));
         }
         doorHolder = tempRoom.getDoor("E");
         if (doorHolder != null) {
-          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid()));
+          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid()-1));
         }
       }
     }

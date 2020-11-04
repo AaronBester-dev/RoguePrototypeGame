@@ -23,9 +23,6 @@ public class Room  {
  * Default constructor for room that intializes room to default values.
  */
     public Room() {
-      setWidth(2);
-      setHeight(2);
-      setId(0);
       roomDisplayArray = new String[roomHeight][roomWidth];
     }
 
@@ -101,7 +98,7 @@ public class Room  {
       if (itemX > roomWidth || itemX < 0 || itemY > roomHeight
       || itemY < 0 || !(roomDisplayArray[itemX][itemY].equals("FLOOR"))) {
         throw new ImpossiblePositionException();
-      } else if (itemX != -1) {
+      } else if (itemX == -1) {
         throw new NoSuchItemException();
       } else {
         roomItems.add(toAdd);
@@ -175,6 +172,7 @@ location is a number between 0 and the length of the wall
     * Updates the roomDisplayArray when changes are made.
     */
     public void updateDisplayRoom() {
+      roomDisplayArray = new String[roomHeight][roomWidth];
       initalizeRoomDisplayArray();
       addDoorsToRoomDisplayArray();
       addContentsToRoomDisplayArray();
@@ -187,7 +185,7 @@ location is a number between 0 and the length of the wall
 
     public String displayRoom() {
       String roomDisplayString = "";
-
+      roomDisplayArray = new String[roomHeight][roomWidth];
       initalizeRoomDisplayArray();
       addDoorsToRoomDisplayArray();
       addContentsToRoomDisplayArray();
