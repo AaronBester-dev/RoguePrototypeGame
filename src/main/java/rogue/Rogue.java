@@ -39,19 +39,6 @@ public class Rogue {
     }
 
 /**
-*constructor for rogue that sets everything to default values and sets up the parser.
-*@param filename name of the file that contains the config settings
-*/
-
-    public Rogue(String filename) {
-      player = null;
-      roomArray = new ArrayList<Room>();
-      rogueItems = new ArrayList<Item>();
-      symbolMap = null;
-      parser = new RogueParser(filename);
-    }
-
-/**
 *constructor for rogue sets up room to the values in the room file.
 *@param theDungeonInfo parser that gets all values from the file
 */
@@ -73,6 +60,7 @@ public class Rogue {
         }
         setSymbols();
         connectDoors();
+
 
     }
 
@@ -146,9 +134,9 @@ public class Rogue {
       Integer integerWidth = Integer.decode(toAdd.get("width").toString());
 
       if (isPlayer.booleanValue()) {
-        Player roomPlayer = new Player();
-        newRoom.setPlayer(roomPlayer);
-        roomPlayer.setCurrentRoom(newRoom);
+        setPlayer(new Player());
+        newRoom.setPlayer(player);
+        player.setCurrentRoom(newRoom);
       }
 
       newRoom.setId(integerId);
@@ -273,8 +261,14 @@ public class Rogue {
 */
 
     public String makeMove(char input) throws InvalidMoveException {
-      //TODO MAKE IT MOVE
+      /* this method assesses a move to ensure it is valid.
+        If the move is valid, then the display resulting from the move
+        is calculated and set as the 'nextDisplay' (probably a private member variable)
+        If the move is not valid, an InvalidMoveException is thrown
+        and the nextDisplay is unchanged
+      */
       if (input == UP) {
+
         return ("MOVED UP");
       } else if (input == LEFT) {
         return ("MOVED LEFT");
@@ -291,8 +285,7 @@ public class Rogue {
 *@return string that displays the next display
 */
     public String getNextDisplay() {
-      //GET STRING OF NEXT MOVE
-      return "NOT DONE";
+      return nextDisplay;
     }
 
 
