@@ -161,10 +161,46 @@ location is a number between 0 and the length of the wall
 /**
  * checks to see if room meets all requirements to be a room.
  *@return true if room is a valid room and false if otherwise.
+ *@throws NotEnoughDoorsException throws if there is no doors in room
  */
 
-    public boolean verifyRoom() {
+    public boolean verifyRoom() throws NotEnoughDoorsException {
       //TO DO VERIFY IF ITEMS DOORS AND EVERYTHING IS VALID;
+      if (doors.get("N") == null && doors.get("W") == null && doors.get("S") == null && doors.get("E") == null) {
+        throw new NotEnoughDoorsException();
+      }
+
+      for (String key: doors.keySet()) {
+        Door doorHolder = doors.get(key);
+        if (doorHolder != null) {
+          if (doorHolder.getConnectedRooms().size() != 2) {
+            return false;
+          }
+        }
+      }
+
+      for (Item singleItem: roomItems) {
+        int itemX = (int) singleItem.getXyLocation().getX();
+        int itemY = (int) singleItem.getXyLocation().getY();
+        if (itemX >= this.getWidth() || itemX <= 0) {
+          return false;
+        }
+        if (itemY >= this.getHeight() || itemY <= 0) {
+          return false;
+        }
+      }
+
+      if (isPlayerInRoom()) {
+        int playerX = (int) getPlayer().getXyLocation().getX();
+        int playerY = (int) getPlayer().getXyLocation().getY();
+        if (playerX >= this.getWidth() || playerX <= 0) {
+          return false;
+        }
+        if (playerY >= this.getHeight() || playerY <= 0) {
+          return false;
+        }
+      }
+
       return true;
     }
 
