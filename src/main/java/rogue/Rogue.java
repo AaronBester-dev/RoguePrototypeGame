@@ -302,8 +302,6 @@ public class Rogue {
       int newPlayerY = (int) wherePlayerWantsToGo.getY();
       String[][] roomDisplayArray = getPlayer().getCurrentRoom().getRoomDisplayArray();
 
-      getPlayer().setXyLocation(wherePlayerWantsToGo);
-
       if (roomDisplayArray[newPlayerY][newPlayerX] == "NS_WALL"
       || roomDisplayArray[newPlayerY][newPlayerX] == "EW_WALL") {
         return false;
@@ -312,6 +310,9 @@ public class Rogue {
       if (roomDisplayArray[newPlayerY][newPlayerX] == "NDOOR") {
           return false;
       }
+
+      getPlayer().setXyLocation(wherePlayerWantsToGo);
+
       return true;
 
     }
