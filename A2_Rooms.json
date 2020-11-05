@@ -42,6 +42,11 @@
                 	"wall_pos": 3
                 },
                 {
+                    "dir": "E",
+                    "con_room": 1,
+                    "wall_pos": 7
+                },
+                {
                     "dir": "S",
                		"con_room": 1,
                 	"wall_pos": 5

@@ -276,17 +276,17 @@ location is a number between 0 and the length of the wall
       if (doorHolder != null) {
         roomDisplayArray[0][doorHolder.getWallPosition()] = "NDOOR";
       }
-      doorHolder = getDoor("E");
+      doorHolder = getDoor("W");
       if (doorHolder  != null) {
-        roomDisplayArray[doorHolder.getWallPosition()][0] = "EDOOR";
+        roomDisplayArray[doorHolder.getWallPosition()][0] = "WDOOR";
       }
       doorHolder = getDoor("S");
       if (doorHolder != null) {
         roomDisplayArray[roomHeight - 1][doorHolder.getWallPosition()] = "SDOOR";
       }
-      doorHolder = getDoor("W");
+      doorHolder = getDoor("E");
       if (doorHolder != null) {
-        roomDisplayArray[doorHolder.getWallPosition()][roomWidth - 1] = "WDOOR";
+        roomDisplayArray[doorHolder.getWallPosition()][roomWidth - 1] = "EDOOR";
       }
     }
 
