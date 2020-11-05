@@ -267,25 +267,65 @@ public class Rogue {
         If the move is not valid, an InvalidMoveException is thrown
         and the nextDisplay is unchanged
       */
+      int playerX = (int) getPlayer().getXyLocation().getX();
+      int playerY = (int) getPlayer().getXyLocation().getY();
       if (input == UP) {
-
+        checkCollision(getPlayer().getXyLocation(), new Point(playerX, --playerY));
+        getNextDisplay();
         return ("MOVED UP");
       } else if (input == LEFT) {
+        checkCollision(getPlayer().getXyLocation(), new Point(--playerX, playerY));
+        getNextDisplay();
         return ("MOVED LEFT");
       } else if (input == RIGHT) {
+        checkCollision(getPlayer().getXyLocation(), new Point(++playerX, playerY));
+        getNextDisplay();
         return ("MOVED RIGHT");
       } else if (input == DOWN) {
+        checkCollision(getPlayer().getXyLocation(), new Point(playerX, ++playerY));
+        getNextDisplay();
         return ("MOVED DOWN");
       } else {
         throw new InvalidMoveException();
       }
     }
 /**
+* checks.
+*@return true or false depending on whether a move was made
+*@param playerLocation current location of player
+*@param wherePlayerWantsToGo location of where player wants to move
+*/
+    public boolean checkCollision(Point playerLocation, Point wherePlayerWantsToGo) {
+      int playerX = (int) playerLocation.getX();
+      int playerY = (int) playerLocation.getY();
+      int newPlayerX = (int) wherePlayerWantsToGo.getX();
+      int newPlayerY = (int) wherePlayerWantsToGo.getY();
+      String[][] roomDisplayArray = getPlayer().getCurrentRoom().getRoomDisplayArray();
+
+      getPlayer().setXyLocation(wherePlayerWantsToGo);
+
+      if (roomDisplayArray[newPlayerY][newPlayerX] == "NS_WALL"
+      || roomDisplayArray[newPlayerY][newPlayerX] == "EW_WALL") {
+        return false;
+      }
+
+      if (roomDisplayArray[newPlayerY][newPlayerX] == "NDOOR") {
+          return false;
+      }
+      return true;
+
+    }
+
+/**
 * returns the string that displays the room.
 *@return string that displays the next display
 */
     public String getNextDisplay() {
-      return nextDisplay;
+      String displayRoom = getPlayer().getCurrentRoom().displayRoom();
+      for (String key : symbolMap.keySet()) {
+        displayRoom = displayRoom.replaceAll(key.trim(), symbolMap.get(key).toString());
+      }
+      return displayRoom;
     }
 
 

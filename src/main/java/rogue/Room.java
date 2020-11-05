@@ -84,6 +84,20 @@ public class Room  {
     public void setRoomItems(ArrayList<Item> newRoomItems) {
       roomItems = newRoomItems;
     }
+/**
+ * getter that gets room display array.
+ *@return room display array.
+ */
+    public String[][] getRoomDisplayArray() {
+      return roomDisplayArray;
+    }
+/**
+ * setter that sets roomDisplayArray to a new roomDisplayArray.
+ *@param newRoomDisplayArray new RoomDisplayArray
+ */
+    public void setRoomDisplayArray(String[][] newRoomDisplayArray) {
+      roomDisplayArray = newRoomDisplayArray;
+    }
 
 /**
  * adds Item to a room.

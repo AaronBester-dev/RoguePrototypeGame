@@ -16,7 +16,6 @@ public class Player {
     public Player() {
       setName("Aaron");
       setXyLocation(new Point(1, 1));
-      setCurrentRoom(currentRoom);
     }
 /**
  * player constructor that sets player to values of variables.
