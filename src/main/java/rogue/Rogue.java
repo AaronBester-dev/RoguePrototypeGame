@@ -246,8 +246,8 @@ public class Rogue {
       for (int i = 0; i < roomArray.size(); i++) {
         roomsDisplay += roomArray.get(i).displayRoom();
       }
-      for (HashMap.Entry<String, Character> symbolString : symbolMap.entrySet()) {
-        roomsDisplay = roomsDisplay.replaceAll(symbolString.getKey(), symbolString.getValue().toString());
+      for (String key : symbolMap.keySet()) {
+        roomsDisplay = roomsDisplay.replaceAll(key.trim(), symbolMap.get(key).toString());
       }
 
       return roomsDisplay;

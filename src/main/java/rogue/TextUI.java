@@ -123,13 +123,14 @@ public static void main(String[] args) {
     //Parse the json files
     RogueParser parser = new RogueParser(configurationFileLocation);
     //allocate memory for the GUI
-
+    /*
     TextUI theGameUI = new TextUI();
     // allocate memory for the game and set it up
-
+    */
     Rogue theGame = new Rogue(parser);
+    System.out.println(theGame.displayAll());
    //set up the initial game display
-
+    /*
     message = "Welcome to my Rogue game";
 
     theGameUI.draw(message, theGame.getNextDisplay());
@@ -150,7 +151,7 @@ public static void main(String[] args) {
     }
 
     // do something here to say goodbye to the user
-
+    */
 
 
 
