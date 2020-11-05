@@ -261,12 +261,6 @@ public class Rogue {
 */
 
     public String makeMove(char input) throws InvalidMoveException {
-      /* this method assesses a move to ensure it is valid.
-        If the move is valid, then the display resulting from the move
-        is calculated and set as the 'nextDisplay' (probably a private member variable)
-        If the move is not valid, an InvalidMoveException is thrown
-        and the nextDisplay is unchanged
-      */
       Player currentPlayer = getPlayer();
       Room currentRoom = currentPlayer.getCurrentRoom();
       String[][] currentRoomDisplayArray = currentPlayer.getCurrentRoom().getRoomDisplayArray();
@@ -294,15 +288,17 @@ public class Rogue {
           Item itemToBePickedUp = getItemFromRoom(currentRoom, wherePlayerWantsToGo);
           currentPlayer.pickUpItem(itemToBePickedUp);
           movePlayer(currentPlayer, wherePlayerWantsToGo);
-          return ("Picked up a" + itemToBePickedUp.getType());
+          return ("Picked up a " + itemToBePickedUp.getType());
         } else {
+          Door doorToWalkThrough = currentRoom.getDoor(String.valueOf(collisionObject.charAt(0)));
+          movePlayerToOtherRoom(currentPlayer, doorToWalkThrough, String.valueOf(collisionObject.charAt(0)));
           return ("DOOR");
         }
       } else {
         return ("Hit a wall");
       }
 
-      return ("Valid Move");
+      return ("You walk " + input);
     }
 /**
 * checks whether or not a player has collided with a wall.
@@ -336,7 +332,7 @@ public class Rogue {
       } else if (Character.isDigit(collisionObject.charAt(0))) {
         return ("ITEM");
       } else {
-        return ("DOOR");
+        return (collisionObject);
       }
     }
 /**
@@ -351,7 +347,6 @@ public class Rogue {
       String[][] currentRoomDisplayArray = currentRoom.getRoomDisplayArray();
       int itemId = Integer.decode(currentRoomDisplayArray[itemY][itemX]);
       Item returnedItem = null;
-      System.out.println(itemId);
       for (Item singleItem : currentRoom.getRoomItems()) {
         if (singleItem.getId() == itemId) {
           returnedItem = singleItem;
@@ -362,12 +357,43 @@ public class Rogue {
     }
 
 /**
-* moves player to location they want to go to.
+* moves player to location they want to go to within a room.
 *@param currentPlayer current player object.
 *@param wherePlayerWantsToGo location of where player wants to move
 */
     public void movePlayer(Player currentPlayer, Point wherePlayerWantsToGo) {
       currentPlayer.setXyLocation(wherePlayerWantsToGo);
+    }
+
+/**
+* moves player from one room to another.
+*@param currentPlayer current player object.
+*@param doorToWalkThrough current door to move through.
+*@param direction direction of original door.
+*/
+    public void movePlayerToOtherRoom(Player currentPlayer, Door doorToWalkThrough, String direction) {
+      Room currentRoom = currentPlayer.getCurrentRoom();
+      Room otherRoom = doorToWalkThrough.getOtherRoom(currentRoom);
+      Door otherDoor = null;
+      Point newXyLocation = new Point(0, 0);
+      otherRoom.setPlayer(currentPlayer);
+      currentRoom.setPlayer(null);
+      currentPlayer.setCurrentRoom(otherRoom);
+      if (direction.equals("N")) {
+        otherDoor = otherRoom.getDoor("S");
+        newXyLocation.setLocation(otherDoor.getWallPosition(), otherRoom.getHeight() - 2);
+      } else if (direction.equals("S")) {
+        otherDoor = otherRoom.getDoor("N");
+        newXyLocation.setLocation(otherDoor.getWallPosition(), 1);
+      } else if (direction.equals("W")) {
+        otherDoor = otherRoom.getDoor("E");
+        newXyLocation.setLocation(otherRoom.getWidth() - 2, otherDoor.getWallPosition());
+      } else {
+        otherDoor = otherRoom.getDoor("W");
+        newXyLocation.setLocation(1, otherDoor.getWallPosition());
+      }
+
+      movePlayer(currentPlayer, newXyLocation);
     }
 
 /**

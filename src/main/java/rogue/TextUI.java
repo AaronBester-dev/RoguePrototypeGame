@@ -151,7 +151,8 @@ public static void main(String[] args) {
     }
 
     // do something here to say goodbye to the user
-
+    message = "Goodbye!";
+    theGameUI.draw(message, theGame.getNextDisplay());
 
 
 }
