@@ -1,5 +1,7 @@
 package rogue;
 
+import java.util.ArrayList;
+
 import java.awt.Point;
 /**
  * The player character.
@@ -9,6 +11,7 @@ public class Player {
     private String playerName;
     private Point playerLocation;
     private Room currentRoom;
+    private ArrayList<Item> inventory = new ArrayList<Item>();
 
 /**
  * Default player constructor that sets player to default values.
@@ -76,5 +79,12 @@ public class Player {
  */
     public void setCurrentRoom(Room newRoom) {
       currentRoom = newRoom;
+    }
+/**
+ *picks up the item for the player and adds it to the inventory.
+ *@param itemToBePickedUp item that is going to be added.
+ */
+    public void pickUpItem(Item itemToBePickedUp) {
+      inventory.add(itemToBePickedUp);
     }
 }

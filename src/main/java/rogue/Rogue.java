@@ -268,10 +268,12 @@ public class Rogue {
         and the nextDisplay is unchanged
       */
       Player currentPlayer = getPlayer();
+      Room currentRoom = currentPlayer.getCurrentRoom();
       String[][] currentRoomDisplayArray = currentPlayer.getCurrentRoom().getRoomDisplayArray();
       int playerX = (int) getPlayer().getXyLocation().getX();
       int playerY = (int) getPlayer().getXyLocation().getY();
       Point wherePlayerWantsToGo = new Point(playerX, playerY);
+
       if (input == UP) {
         wherePlayerWantsToGo.setLocation(playerX, --playerY);
       } else if (input == LEFT) {
@@ -288,6 +290,13 @@ public class Rogue {
         String collisionObject = whatDidICollideWith(currentRoomDisplayArray, wherePlayerWantsToGo);
         if (collisionObject == "FLOOR") {
           movePlayer(currentPlayer, wherePlayerWantsToGo);
+        } else if (collisionObject == "ITEM") {
+          Item itemToBePickedUp = getItemFromRoom(currentRoom, wherePlayerWantsToGo);
+          currentPlayer.pickUpItem(itemToBePickedUp);
+          movePlayer(currentPlayer, wherePlayerWantsToGo);
+          return ("Picked up a" + itemToBePickedUp.getType());
+        } else {
+          return ("DOOR");
         }
       } else {
         return ("Hit a wall");
@@ -320,12 +329,38 @@ public class Rogue {
     public String whatDidICollideWith(String[][]roomDisplayArray, Point wherePlayerWantsToGo) {
       int newPlayerX = (int) wherePlayerWantsToGo.getX();
       int newPlayerY = (int) wherePlayerWantsToGo.getY();
+      String collisionObject = roomDisplayArray[newPlayerY][newPlayerX];
 
-      if (roomDisplayArray[newPlayerY][newPlayerX].equals("FLOOR")) {
+      if (collisionObject.equals("FLOOR")) {
         return ("FLOOR");
+      } else if (Character.isDigit(collisionObject.charAt(0))) {
+        return ("ITEM");
+      } else {
+        return ("DOOR");
       }
-      return ("NOTHING");
     }
+/**
+* gets item from room and returns it.
+*@return item the player is going to pick up
+*@param currentRoom current room the player is in
+*@param wherePlayerWantsToGo location of where player wants to move
+*/
+    public Item getItemFromRoom(Room currentRoom, Point wherePlayerWantsToGo) {
+      int itemX = (int) wherePlayerWantsToGo.getX();
+      int itemY = (int) wherePlayerWantsToGo.getY();
+      String[][] currentRoomDisplayArray = currentRoom.getRoomDisplayArray();
+      int itemId = Integer.decode(currentRoomDisplayArray[itemY][itemX]);
+      Item returnedItem = null;
+      System.out.println(itemId);
+      for (Item singleItem : currentRoom.getRoomItems()) {
+        if (singleItem.getId() == itemId) {
+          returnedItem = singleItem;
+        }
+      }
+      currentRoom.getRoomItems().remove(returnedItem);
+      return (returnedItem);
+    }
+
 /**
 * moves player to location they want to go to.
 *@param currentPlayer current player object.
