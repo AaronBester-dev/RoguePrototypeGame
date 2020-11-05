@@ -196,10 +196,10 @@ location is a number between 0 and the length of the wall
       for (Item singleItem: roomItems) {
         int itemX = (int) singleItem.getXyLocation().getX();
         int itemY = (int) singleItem.getXyLocation().getY();
-        if (itemX >= this.getWidth() || itemX <= 0) {
+        if (itemX >= this.getWidth() - 1 || itemX <= 0) {
           return false;
         }
-        if (itemY >= this.getHeight() || itemY <= 0) {
+        if (itemY >= this.getHeight() - 1 || itemY <= 0) {
           return false;
         }
       }
@@ -207,10 +207,10 @@ location is a number between 0 and the length of the wall
       if (isPlayerInRoom()) {
         int playerX = (int) getPlayer().getXyLocation().getX();
         int playerY = (int) getPlayer().getXyLocation().getY();
-        if (playerX >= this.getWidth() || playerX <= 0) {
+        if (playerX >= this.getWidth() - 1 || playerX <= 0) {
           return false;
         }
-        if (playerY >= this.getHeight() || playerY <= 0) {
+        if (playerY >= this.getHeight() - 1 || playerY <= 0) {
           return false;
         }
       }

@@ -12,7 +12,7 @@ import java.io.IOException;
 public class TextUI {
 
    private TerminalScreen screen;
-   private final char startCol = 1;
+   private final char startCol = 0;
    private final char msgRow = 1;
    private final char roomRow = 3;
 
