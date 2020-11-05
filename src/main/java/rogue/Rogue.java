@@ -267,54 +267,72 @@ public class Rogue {
         If the move is not valid, an InvalidMoveException is thrown
         and the nextDisplay is unchanged
       */
+      Player currentPlayer = getPlayer();
+      String[][] currentRoomDisplayArray = currentPlayer.getCurrentRoom().getRoomDisplayArray();
       int playerX = (int) getPlayer().getXyLocation().getX();
       int playerY = (int) getPlayer().getXyLocation().getY();
+      Point wherePlayerWantsToGo = new Point(playerX, playerY);
       if (input == UP) {
-        checkCollision(getPlayer().getXyLocation(), new Point(playerX, --playerY));
-        getNextDisplay();
-        return ("MOVED UP");
+        wherePlayerWantsToGo.setLocation(playerX, --playerY);
       } else if (input == LEFT) {
-        checkCollision(getPlayer().getXyLocation(), new Point(--playerX, playerY));
-        getNextDisplay();
-        return ("MOVED LEFT");
+        wherePlayerWantsToGo.setLocation(--playerX, playerY);
       } else if (input == RIGHT) {
-        checkCollision(getPlayer().getXyLocation(), new Point(++playerX, playerY));
-        getNextDisplay();
-        return ("MOVED RIGHT");
+        wherePlayerWantsToGo.setLocation(++playerX, playerY);
       } else if (input == DOWN) {
-        checkCollision(getPlayer().getXyLocation(), new Point(playerX, ++playerY));
-        getNextDisplay();
-        return ("MOVED DOWN");
+        wherePlayerWantsToGo.setLocation(playerX, ++playerY);
       } else {
         throw new InvalidMoveException();
       }
+
+      if (!(checkWallCollision(currentRoomDisplayArray, wherePlayerWantsToGo))) {
+        String collisionObject = whatDidICollideWith(currentRoomDisplayArray, wherePlayerWantsToGo);
+        if (collisionObject == "FLOOR") {
+          movePlayer(currentPlayer, wherePlayerWantsToGo);
+        }
+      } else {
+        return ("Hit a wall");
+      }
+
+      return ("Valid Move");
     }
 /**
-* checks.
-*@return true or false depending on whether a move was made
-*@param playerLocation current location of player
+* checks whether or not a player has collided with a wall.
+*@return true if player has false if player hasn't
+*@param roomDisplayArray current list of how the room looks
 *@param wherePlayerWantsToGo location of where player wants to move
 */
-    public boolean checkCollision(Point playerLocation, Point wherePlayerWantsToGo) {
-      int playerX = (int) playerLocation.getX();
-      int playerY = (int) playerLocation.getY();
+    public boolean checkWallCollision(String[][]roomDisplayArray, Point wherePlayerWantsToGo) {
       int newPlayerX = (int) wherePlayerWantsToGo.getX();
       int newPlayerY = (int) wherePlayerWantsToGo.getY();
-      String[][] roomDisplayArray = getPlayer().getCurrentRoom().getRoomDisplayArray();
 
       if (roomDisplayArray[newPlayerY][newPlayerX] == "NS_WALL"
       || roomDisplayArray[newPlayerY][newPlayerX] == "EW_WALL") {
-        return false;
+        return true;
       }
+      return false;
+    }
+/**
+* checks to see what the player has collided with.
+*@return type of object player has collided with.
+*@param roomDisplayArray current list of how the room looks
+*@param wherePlayerWantsToGo location of where player wants to move
+*/
+    public String whatDidICollideWith(String[][]roomDisplayArray, Point wherePlayerWantsToGo) {
+      int newPlayerX = (int) wherePlayerWantsToGo.getX();
+      int newPlayerY = (int) wherePlayerWantsToGo.getY();
 
-      if (roomDisplayArray[newPlayerY][newPlayerX] == "NDOOR") {
-          return false;
+      if (roomDisplayArray[newPlayerY][newPlayerX].equals("FLOOR")) {
+        return ("FLOOR");
       }
-
-      getPlayer().setXyLocation(wherePlayerWantsToGo);
-
-      return true;
-
+      return ("NOTHING");
+    }
+/**
+* moves player to location they want to go to.
+*@param currentPlayer current player object.
+*@param wherePlayerWantsToGo location of where player wants to move
+*/
+    public void movePlayer(Player currentPlayer, Point wherePlayerWantsToGo) {
+      currentPlayer.setXyLocation(wherePlayerWantsToGo);
     }
 
 /**
@@ -322,11 +340,11 @@ public class Rogue {
 *@return string that displays the next display
 */
     public String getNextDisplay() {
-      String displayRoom = getPlayer().getCurrentRoom().displayRoom();
+      nextDisplay = getPlayer().getCurrentRoom().displayRoom();
       for (String key : symbolMap.keySet()) {
-        displayRoom = displayRoom.replaceAll(key.trim(), symbolMap.get(key).toString());
+        nextDisplay = nextDisplay.replaceAll(key.trim(), symbolMap.get(key).toString());
       }
-      return displayRoom;
+      return nextDisplay;
     }
 
 
