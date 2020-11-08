@@ -159,7 +159,7 @@ public class Rogue {
 
       Item newItem = new Item();
       int itemId = Integer.decode(toAdd.get("id"));
-      int x = 1;
+      int x = 0;
       int y = 1;
       boolean itemIsInCorrectLocation = false;
       newItem.setId(itemId);
@@ -180,19 +180,17 @@ public class Rogue {
             roomToAddTo = singleRoom;
           }
         }
+        roomToAddTo.updateDisplayRoom();
         while (!itemIsInCorrectLocation) {
           try {
             roomToAddTo.addItem(newItem);
             itemIsInCorrectLocation = true;
           } catch (ImpossiblePositionException e) {
-            while (y < roomToAddTo.getHeight() - 2) {
-              while (x < roomToAddTo.getWidth() - 2) {
-                itemIsInCorrectLocation = false;
-                newItem.setXyLocation(new Point(x, y));
-                x++;
-              }
+            x++;
+            if (x >= roomToAddTo.getWidth() - 1) {
               y++;
             }
+            newItem.setXyLocation(new Point(x, y));
           } catch (NoSuchItemException f) {
             roomToAddTo.getRoomItems().remove(toAdd);
             itemIsInCorrectLocation = true;

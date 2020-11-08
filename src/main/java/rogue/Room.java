@@ -128,8 +128,8 @@ public class Room  {
       int itemY = (int) toAdd.getXyLocation().getY();
       ArrayList<Item> rogueItems = getRogue().getItems();
       int itemFound = 0;
-      if (itemX > getWidth() - 1 || itemX < 0 || itemY > getHeight() - 1
-      || itemY < 0 || !(roomDisplayArray[itemX][itemY].equals("FLOOR"))) {
+      if ((itemX >= getWidth() - 1) || (itemX <= 0) || (itemY >= getHeight() - 1)
+      || (itemY <= 0) || !(roomDisplayArray[itemY][itemX].equals("FLOOR"))) {
         throw new ImpossiblePositionException();
       } else {
         roomItems.add(toAdd);
@@ -221,10 +221,10 @@ location is a number between 0 and the length of the wall
       for (Item singleItem: roomItems) {
         int itemX = (int) singleItem.getXyLocation().getX();
         int itemY = (int) singleItem.getXyLocation().getY();
-        if (itemX >= this.getWidth() - 1 || itemX <= 0) {
+        if (itemX >= getWidth() - 1 || itemX <= 0) {
           return false;
         }
-        if (itemY >= this.getHeight() - 1 || itemY <= 0) {
+        if (itemY >= getHeight() - 1 || itemY <= 0) {
           return false;
         }
       }

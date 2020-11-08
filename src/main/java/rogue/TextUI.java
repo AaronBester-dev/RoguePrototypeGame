@@ -9,6 +9,7 @@ import com.googlecode.lanterna.TerminalPosition;
 
 import java.io.IOException;
 
+
 public class TextUI {
 
    private TerminalScreen screen;
