@@ -11,10 +11,10 @@ import java.awt.Point;
 */
 
 public class Rogue {
-    public static final char UP = 'h';
-    public static final char DOWN = 'l';
-    public static final char LEFT = 'j';
-    public static final char RIGHT = 'k';
+    public static final char UP = 'w';
+    public static final char DOWN = 's';
+    public static final char LEFT = 'a';
+    public static final char RIGHT = 'd';
     private String nextDisplay = "-----\n|.@..|\n|....|\n-----";
 
     private Player player;
@@ -192,7 +192,7 @@ public class Rogue {
             }
             newItem.setXyLocation(new Point(x, y));
           } catch (NoSuchItemException f) {
-            roomToAddTo.getRoomItems().remove(toAdd);
+            roomToAddTo.getRoomItems().remove(newItem);
             itemIsInCorrectLocation = true;
           }
         }
@@ -231,19 +231,35 @@ public class Rogue {
       for (Room tempRoom : roomArray) {
         doorHolder = tempRoom.getDoor("N");
         if (doorHolder != null) {
-          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid() - 1));
+          for (Room singleRoom : roomArray) {
+            if (doorHolder.getOtherRoomid() == singleRoom.getId()) {
+              doorHolder.connectRoom(singleRoom);
+            }
+          }
         }
         doorHolder = tempRoom.getDoor("W");
         if (doorHolder != null) {
-          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid() - 1));
+          for (Room singleRoom : roomArray) {
+            if (doorHolder.getOtherRoomid() == singleRoom.getId()) {
+              doorHolder.connectRoom(singleRoom);
+            }
+          }
         }
         doorHolder = tempRoom.getDoor("S");
         if (doorHolder != null) {
-          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid() - 1));
+          for (Room singleRoom : roomArray) {
+            if (doorHolder.getOtherRoomid() == singleRoom.getId()) {
+              doorHolder.connectRoom(singleRoom);
+            }
+          }
         }
         doorHolder = tempRoom.getDoor("E");
         if (doorHolder != null) {
-          doorHolder.connectRoom(roomArray.get(doorHolder.getOtherRoomid() - 1));
+          for (Room singleRoom : roomArray) {
+            if (doorHolder.getOtherRoomid() == singleRoom.getId()) {
+              doorHolder.connectRoom(singleRoom);
+            }
+          }
         }
       }
     }
@@ -420,6 +436,11 @@ public class Rogue {
         nextDisplay = nextDisplay.replaceAll(key.trim(), symbolMap.get(key).toString());
       }
       return nextDisplay;
+    }
+
+    private void checkRooms() {
+      ArrayList<Room> roomsHolder = getRooms();
+
     }
 
 
