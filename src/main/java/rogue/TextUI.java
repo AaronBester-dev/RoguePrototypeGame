@@ -113,6 +113,18 @@ keys to the equivalent movement keys in rogue.
     }
 
 /**
+*clears the screen.
+*/
+    public void clearScreen() {
+      try {
+        screen.clear();
+        screen.refresh();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+/**
 the main method.
 @param args command line arguments are unused at this point.
 **/
@@ -143,6 +155,7 @@ public static void main(String[] args) {
 
     //ask the game if the user can move there
     try {
+        theGameUI.clearScreen();
         message = theGame.makeMove(userInput);
         theGameUI.draw(message, theGame.getNextDisplay());
     } catch (InvalidMoveException badMove) {

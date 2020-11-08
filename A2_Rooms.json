@@ -34,7 +34,7 @@
         {
             "id": 2,
             "start": false,
-            "height": 10,
+            "height": 50,
             "width": 20,
             "doors": [{
                     "dir": "N",
