@@ -164,13 +164,13 @@ public class RogueParser {
     private void extractSymbolInfo(JSONObject symbolsJSON) {
 
 
-        JSONArray symbolsJSONArray = (JSONArray) symbolsJSON.get("symbols");
+      JSONArray symbolsJSONArray = (JSONArray) symbolsJSON.get("symbols");
 
         // Make an array list of room information as maps
-        for (int i = 0; i < symbolsJSONArray.size(); i++) {
-            JSONObject symbolObj = (JSONObject) symbolsJSONArray.get(i);
-            symbols.put(symbolObj.get("name").toString(), String.valueOf(symbolObj.get("symbol")).charAt(0));
-        }
+      for (int i = 0; i < symbolsJSONArray.size(); i++) {
+        JSONObject symbolObj = (JSONObject) symbolsJSONArray.get(i);
+        symbols.put(symbolObj.get("name").toString(), String.valueOf(symbolObj.get("symbol")).charAt(0));
+      }
     }
 
     /**
@@ -178,15 +178,13 @@ public class RogueParser {
      * @param roomsJSON (JSONObject) Contains information about the rooms
      */
     private void extractRoomInfo(JSONObject roomsJSON) {
-
-
-        JSONArray roomsJSONArray = (JSONArray) roomsJSON.get("room");
+      JSONArray roomsJSONArray = (JSONArray) roomsJSON.get("room");
 
         // Make an array list of room information as maps
-        for (int i = 0; i < roomsJSONArray.size(); i++) {
-            rooms.add(singleRoom((JSONObject) roomsJSONArray.get(i)));
-            numOfRooms += 1;
-        }
+      for (int i = 0; i < roomsJSONArray.size(); i++) {
+        rooms.add(singleRoom((JSONObject) roomsJSONArray.get(i)));
+        numOfRooms += 1;
+      }
     }
 
     /**
@@ -267,23 +265,23 @@ public class RogueParser {
      */
     private Map<String, String>  singleItem(JSONObject itemsJSON) {
 
-        HashMap<String, String> item = new HashMap<>();
-        item.put("id", itemsJSON.get("id").toString());
-        item.put("name", itemsJSON.get("name").toString());
-        item.put("type", itemsJSON.get("type").toString());
-        item.put("description", itemsJSON.get("description").toString());
+      HashMap<String, String> item = new HashMap<>();
+      item.put("id", itemsJSON.get("id").toString());
+      item.put("name", itemsJSON.get("name").toString());
+      item.put("type", itemsJSON.get("type").toString());
+      item.put("description", itemsJSON.get("description").toString());
 
-        for (Map<String, String> itemLocation : itemLocations) {
-            if (itemLocation.get("id").toString().equals(item.get("id").toString())) {
-                item.put("room", itemLocation.get("room"));
-                item.put("x", itemLocation.get("x"));
-                item.put("y", itemLocation.get("y"));
-                break;
-            }
-
+      for (Map<String, String> itemLocation : itemLocations) {
+        if (itemLocation.get("id").toString().equals(item.get("id").toString())) {
+          item.put("room", itemLocation.get("room"));
+          item.put("x", itemLocation.get("x"));
+          item.put("y", itemLocation.get("y"));
+          break;
         }
 
-        return item;
+      }
+
+      return item;
 
     }
 

@@ -6,9 +6,6 @@ import java.util.Map;
 
 import java.awt.Point;
 
-
-
-
 /**
 *Rogue is the class that sets up the rogue game.
 */
@@ -147,7 +144,7 @@ public class Rogue {
       newRoom.setDoor("W", addDoor(toAdd.get("W"), newRoom));
       newRoom.setDoor("E", addDoor(toAdd.get("E"), newRoom));
       newRoom.setDoor("S", addDoor(toAdd.get("S"), newRoom));
-
+      newRoom.setRogue(this);
       newRoom.updateDisplayRoom();
       roomArray.add(newRoom);
 
@@ -162,7 +159,9 @@ public class Rogue {
 
       Item newItem = new Item();
       int itemId = Integer.decode(toAdd.get("id"));
-
+      int x = 1;
+      int y = 1;
+      boolean itemIsInCorrectLocation = false;
       newItem.setId(itemId);
       newItem.setName(toAdd.get("name"));
       newItem.setType(toAdd.get("type"));
@@ -172,15 +171,32 @@ public class Rogue {
         int roomId = Integer.decode(toAdd.get("room"));
         int itemX = Integer.decode(toAdd.get("x"));
         int itemY = Integer.decode(toAdd.get("y"));
-         Point newItemLocation = new Point(itemX, itemY);
+        Point newItemLocation = new Point(itemX, itemY);
+        Room roomToAddTo = null;
         newItem.setXyLocation(newItemLocation);
         rogueItems.add(newItem);
-        try {
-          roomArray.get(roomId - 1).addItem(newItem);
-        } catch (ImpossiblePositionException e) {
-          //TODO MAKE IT WORK
-        } catch (NoSuchItemException f) {
-          roomArray.get(roomId - 1).getRoomItems().remove(itemId);
+        for (Room singleRoom : getRooms()) {
+          if (roomId == singleRoom.getId()) {
+            roomToAddTo = singleRoom;
+          }
+        }
+        while (!itemIsInCorrectLocation) {
+          try {
+            roomToAddTo.addItem(newItem);
+            itemIsInCorrectLocation = true;
+          } catch (ImpossiblePositionException e) {
+            while (y < roomToAddTo.getHeight() - 2) {
+              while (x < roomToAddTo.getWidth() - 2) {
+                itemIsInCorrectLocation = false;
+                newItem.setXyLocation(new Point(x, y));
+                x++;
+              }
+              y++;
+            }
+          } catch (NoSuchItemException f) {
+            roomToAddTo.getRoomItems().remove(toAdd);
+            itemIsInCorrectLocation = true;
+          }
         }
       }
     }

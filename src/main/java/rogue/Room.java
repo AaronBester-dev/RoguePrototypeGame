@@ -17,6 +17,7 @@ public class Room  {
     private ArrayList<Item> roomItems = new ArrayList<Item>();
     private Player roomPlayer = null;
     private HashMap<String, Door> doors = new HashMap<>();
+    private Rogue gameRoomBelongsTo;
     private String[][] roomDisplayArray;
 
 /**
@@ -99,6 +100,22 @@ public class Room  {
       roomDisplayArray = newRoomDisplayArray;
     }
 
+  /**
+ * setter that sets the rogue game the room belongs to.
+ *@param newRogue new rogue of room
+ */
+    public void setRogue(Rogue newRogue) {
+      gameRoomBelongsTo = newRogue;
+    }
+
+      /**
+ *getter that gets the rogue game the room belongs to.
+ *@return rogue game room is attached to.
+ */
+    public Rogue getRogue() {
+      return (gameRoomBelongsTo);
+    }
+
 /**
  * adds Item to a room.
  *@param toAdd item to be added.
@@ -109,13 +126,21 @@ public class Room  {
     public void addItem(Item toAdd) throws ImpossiblePositionException, NoSuchItemException {
       int itemX = (int) toAdd.getXyLocation().getX();
       int itemY = (int) toAdd.getXyLocation().getY();
-      if (itemX > roomWidth || itemX < 0 || itemY > roomHeight
+      ArrayList<Item> rogueItems = getRogue().getItems();
+      int itemFound = 0;
+      if (itemX > getWidth() - 1 || itemX < 0 || itemY > getHeight() - 1
       || itemY < 0 || !(roomDisplayArray[itemX][itemY].equals("FLOOR"))) {
         throw new ImpossiblePositionException();
-      } else if (itemX == -1) {
-        throw new NoSuchItemException();
       } else {
         roomItems.add(toAdd);
+      }
+      for (Item singleItem : rogueItems) {
+        if (toAdd.getId() == singleItem.getId()) {
+          itemFound = 1;
+        }
+      }
+      if (itemFound != 1) {
+        throw new NoSuchItemException();
       }
 
     }
@@ -187,7 +212,7 @@ location is a number between 0 and the length of the wall
       for (String key: doors.keySet()) {
         Door doorHolder = doors.get(key);
         if (doorHolder != null) {
-          if (doorHolder.getConnectedRooms().size() != 2) {
+          if (doorHolder.getOtherRoomid() == -1) {
             return false;
           }
         }
@@ -207,10 +232,10 @@ location is a number between 0 and the length of the wall
       if (isPlayerInRoom()) {
         int playerX = (int) getPlayer().getXyLocation().getX();
         int playerY = (int) getPlayer().getXyLocation().getY();
-        if (playerX >= this.getWidth() - 1 || playerX <= 0) {
+        if (playerX >= getWidth() - 1 || playerX <= 0) {
           return false;
         }
-        if (playerY >= this.getHeight() - 1 || playerY <= 0) {
+        if (playerY >= getHeight() - 1 || playerY <= 0) {
           return false;
         }
       }
