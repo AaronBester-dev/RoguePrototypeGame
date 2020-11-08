@@ -57,6 +57,7 @@ public class Rogue {
         }
         setSymbols();
         connectDoors();
+        checkRooms();
 
 
     }
@@ -440,8 +441,19 @@ public class Rogue {
 
     private void checkRooms() {
       ArrayList<Room> roomsHolder = getRooms();
-
+      ArrayList<Room> newRoomHolder = new ArrayList<Room>();
+      for (Room singleRoom : roomsHolder) {
+        try {
+          if (!(singleRoom.verifyRoom())) {
+            newRoomHolder.add(singleRoom);
+          }
+        } catch (NotEnoughDoorsException d) {
+          
+        }
+      }
+      for (int i = 0; i < newRoomHolder.size(); i++) {
+        roomsHolder.remove(newRoomHolder.get(i));
+      }
     }
-
 
 }
