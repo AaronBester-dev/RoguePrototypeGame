@@ -57,9 +57,6 @@ public class Rogue {
         }
         setSymbols();
         connectDoors();
-        checkRooms();
-
-
     }
 
 /**
@@ -125,7 +122,6 @@ public class Rogue {
 
     public void addRoom(Map<String, String> toAdd) {
       Room newRoom = new Room();
-
       Integer integerId = Integer.decode(toAdd.get("id"));
       Boolean isPlayer = Boolean.parseBoolean(toAdd.get("start").toString());
       Integer integerHeight = Integer.decode(toAdd.get("height").toString());
@@ -147,8 +143,59 @@ public class Rogue {
       newRoom.setDoor("S", addDoor(toAdd.get("S"), newRoom));
       newRoom.setRogue(this);
       newRoom.updateDisplayRoom();
-      roomArray.add(newRoom);
 
+      try {
+        if (newRoom.verifyRoom() || getRooms().size() == 0) {
+          getRooms().add(newRoom);
+        }
+      } catch (NotEnoughDoorsException e) {
+        if (notEnoughDoorsExceptionFix(newRoom)) {
+          getRooms().add(newRoom);
+        } else {
+          System.out.println("Error: Dungeon File Can't Be Used.");
+        }
+      }
+      connectDoors();
+    }
+
+    private boolean notEnoughDoorsExceptionFix(Room roomToFix) {
+       String keyOfDoorToConnectTo = "";
+        Room roomToConnectDoorTo = null;
+        if (getRooms().size() != 0) {
+          for (Room singleRoom : getRooms()) {
+            for (String key : singleRoom.getDoors().keySet()) {
+              if (singleRoom.getDoor(key) == null) {
+                keyOfDoorToConnectTo = key;
+                roomToConnectDoorTo = singleRoom;
+              }
+            }
+            if (singleRoom.getDoor(keyOfDoorToConnectTo).equals("")) {
+              return (false);
+            } else {
+              if (keyOfDoorToConnectTo.equals("N")) {
+                roomToConnectDoorTo.setDoor("N", new Door(roomToConnectDoorTo, roomToFix.getId(), 1));
+                roomToFix.setDoor("S", new Door(roomToFix, roomToConnectDoorTo.getId(), 1));
+              }
+              if (keyOfDoorToConnectTo.equals("S")) {
+                roomToConnectDoorTo.setDoor("S", new Door(roomToConnectDoorTo, roomToFix.getId(), 1));
+                roomToFix.setDoor("N", new Door(roomToFix, roomToConnectDoorTo.getId(), 1));
+              }
+               if (keyOfDoorToConnectTo.equals("W")) {
+                roomToConnectDoorTo.setDoor("W", new Door(roomToConnectDoorTo, roomToFix.getId(), 1));
+                roomToFix.setDoor("E", new Door(roomToFix, roomToConnectDoorTo.getId(), 1));
+              }
+               if (keyOfDoorToConnectTo.equals("E")) {
+                roomToConnectDoorTo.setDoor("E", new Door(roomToConnectDoorTo, roomToFix.getId(), 1));
+                roomToFix.setDoor("W", new Door(roomToFix, roomToConnectDoorTo.getId(), 1));
+              }
+            }
+            return (true);
+
+          }
+        } else {
+          return (false);
+        }
+      return (true);
     }
 
 /**
@@ -229,36 +276,15 @@ public class Rogue {
 
     public void connectDoors() {
       Door doorHolder = null;
-      for (Room tempRoom : roomArray) {
-        doorHolder = tempRoom.getDoor("N");
-        if (doorHolder != null) {
-          for (Room singleRoom : roomArray) {
-            if (doorHolder.getOtherRoomid() == singleRoom.getId()) {
-              doorHolder.connectRoom(singleRoom);
-            }
-          }
-        }
-        doorHolder = tempRoom.getDoor("W");
-        if (doorHolder != null) {
-          for (Room singleRoom : roomArray) {
-            if (doorHolder.getOtherRoomid() == singleRoom.getId()) {
-              doorHolder.connectRoom(singleRoom);
-            }
-          }
-        }
-        doorHolder = tempRoom.getDoor("S");
-        if (doorHolder != null) {
-          for (Room singleRoom : roomArray) {
-            if (doorHolder.getOtherRoomid() == singleRoom.getId()) {
-              doorHolder.connectRoom(singleRoom);
-            }
-          }
-        }
-        doorHolder = tempRoom.getDoor("E");
-        if (doorHolder != null) {
-          for (Room singleRoom : roomArray) {
-            if (doorHolder.getOtherRoomid() == singleRoom.getId()) {
-              doorHolder.connectRoom(singleRoom);
+      for (Room tempRoom : getRooms()) {
+        for (String key : tempRoom.getDoors().keySet()) {
+          doorHolder = tempRoom.getDoor(key);
+          if (doorHolder != null) {
+            for (Room singleRoom : roomArray) {
+              if ((doorHolder.getOtherRoomid() == singleRoom.getId()) && (singleRoom != tempRoom)
+              && doorHolder.getConnectedRooms().size() == 1) {
+                doorHolder.connectRoom(singleRoom);
+              }
             }
           }
         }
@@ -437,23 +463,6 @@ public class Rogue {
         nextDisplay = nextDisplay.replaceAll(key.trim(), symbolMap.get(key).toString());
       }
       return nextDisplay;
-    }
-
-    private void checkRooms() {
-      ArrayList<Room> roomsHolder = getRooms();
-      ArrayList<Room> newRoomHolder = new ArrayList<Room>();
-      for (Room singleRoom : roomsHolder) {
-        try {
-          if (!(singleRoom.verifyRoom())) {
-            newRoomHolder.add(singleRoom);
-          }
-        } catch (NotEnoughDoorsException d) {
-          
-        }
-      }
-      for (int i = 0; i < newRoomHolder.size(); i++) {
-        roomsHolder.remove(newRoomHolder.get(i));
-      }
     }
 
 }

@@ -173,6 +173,14 @@ public class Room  {
 
     }
 
+    /**
+ * getter that gets hashmap of every door in the room.
+ *@return Hashmap of doors that are in the room.
+ */
+    public HashMap<String, Door> getDoors() {
+      return (doors);
+    }
+
 /*
 direction is one of NSEW
 location is a number between 0 and the length of the wall
@@ -212,7 +220,7 @@ location is a number between 0 and the length of the wall
       for (String key: doors.keySet()) {
         Door doorHolder = doors.get(key);
         if (doorHolder != null) {
-          if (doorHolder.getOtherRoomid() == -1) {
+          if (doorHolder.getConnectedRooms().size() < 2) {
             return false;
           }
         }
