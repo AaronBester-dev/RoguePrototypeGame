@@ -16,7 +16,6 @@ public class Rogue {
     public static final char LEFT = 'a';
     public static final char RIGHT = 'd';
     private String nextDisplay = "-----\n|.@..|\n|....|\n-----";
-
     private Player player;
     private ArrayList<Room> roomArray = new ArrayList<Room>();
     private ArrayList<Item> rogueItems = new ArrayList<Item>();
@@ -73,7 +72,6 @@ public class Rogue {
 */
 
     public void setSymbols() {
-        //TODO Read stuff from symbols file
       symbolMap = parser.getSymbols();
     }
 
@@ -108,11 +106,9 @@ public class Rogue {
 *@param filename name of the room file
 */
     public void createRooms(String filename) {
-
       while ((tempRoomMap = parser.nextRoom()) != null) {
         addRoom(tempRoomMap);
       }
-      //TO DO ADD ITEMS TO ROOM
     }
 
 /**
@@ -143,7 +139,8 @@ public class Rogue {
       newRoom.setDoor("S", addDoor(toAdd.get("S"), newRoom));
       newRoom.setRogue(this);
       newRoom.updateDisplayRoom();
-
+      getRooms().add(newRoom);
+      /*
       try {
         if (newRoom.verifyRoom() || getRooms().size() == 0) {
           getRooms().add(newRoom);
@@ -156,6 +153,7 @@ public class Rogue {
         }
       }
       connectDoors();
+      */
     }
 
     private boolean notEnoughDoorsExceptionFix(Room roomToFix) {
@@ -261,7 +259,6 @@ public class Rogue {
       if (toAdd.equals("-1")) {
         return (null);
       } else {
-
         doorStringArray = toAdd.split(" ");
         doorConnectedRoomId = Integer.decode(doorStringArray[0]);
         wallPosition = Integer.decode(doorStringArray[1]);
@@ -295,9 +292,7 @@ public class Rogue {
 * returns the string that displays the current rooms in the dungeon.
 *@return string that displays the current rooms in the dungeon
 */
-
     public String displayAll() {
-        //creates a string that displays all the rooms in the dungeon
       String roomsDisplay = "";
 
       for (int i = 0; i < roomArray.size(); i++) {
@@ -324,15 +319,19 @@ public class Rogue {
       int playerX = (int) getPlayer().getXyLocation().getX();
       int playerY = (int) getPlayer().getXyLocation().getY();
       Point wherePlayerWantsToGo = new Point(playerX, playerY);
-
+      String moveMessage = "";
       if (input == UP) {
         wherePlayerWantsToGo.setLocation(playerX, --playerY);
+        moveMessage = "up";
       } else if (input == LEFT) {
         wherePlayerWantsToGo.setLocation(--playerX, playerY);
+        moveMessage = "left";
       } else if (input == RIGHT) {
         wherePlayerWantsToGo.setLocation(++playerX, playerY);
+        moveMessage = "right";
       } else if (input == DOWN) {
         wherePlayerWantsToGo.setLocation(playerX, ++playerY);
+        moveMessage = "down";
       } else {
         throw new InvalidMoveException();
       }
@@ -354,8 +353,7 @@ public class Rogue {
       } else {
         return ("Hit a wall");
       }
-
-      return ("You walk " + input);
+      return ("You walk " + moveMessage);
     }
 /**
 * checks whether or not a player has collided with a wall.
@@ -371,6 +369,7 @@ public class Rogue {
       || roomDisplayArray[newPlayerY][newPlayerX] == "EW_WALL") {
         return true;
       }
+
       return false;
     }
 /**
