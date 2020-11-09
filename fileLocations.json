@@ -1,4 +1,4 @@
 {
-    "Rooms":"./rooms_ImpossiblePositionException.json",
+    "Rooms":"./A2_Rooms.json",
     "Symbols":"./symbols-map.json"
 }
