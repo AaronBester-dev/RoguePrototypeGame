@@ -348,7 +348,7 @@ public class Rogue {
         } else {
           Door doorToWalkThrough = currentRoom.getDoor(String.valueOf(collisionObject.charAt(0)));
           movePlayerToOtherRoom(currentPlayer, doorToWalkThrough, String.valueOf(collisionObject.charAt(0)));
-          return ("DOOR");
+          return ("You walk through a door.");
         }
       } else {
         return ("Hit a wall");

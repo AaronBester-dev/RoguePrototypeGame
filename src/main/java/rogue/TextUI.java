@@ -16,7 +16,7 @@ public class TextUI {
    private final char startCol = 0;
    private final char msgRow = 1;
    private final char roomRow = 3;
-
+   private static final int SLEEPTIME = 2000;
 
 
 /**
@@ -113,15 +113,16 @@ keys to the equivalent movement keys in rogue.
     }
 
 /**
-*clears the screen.
+*Clears the entire display.
 */
-    public void clearScreen() {
-      try {
+    public void clearDisplay() {
         screen.clear();
-        screen.refresh();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+        try {
+          screen.refresh();
+        } catch (IOException p) {
+          p.printStackTrace();
+        }
+
     }
 
 /**
@@ -132,16 +133,16 @@ the main method.
 public static void main(String[] args) {
     char userInput = 'h';
     String message;
+    Room oldRoom = null;
     String configurationFileLocation = "fileLocations.json";
     //Parse the json files
     RogueParser parser = new RogueParser(configurationFileLocation);
     //allocate memory for the GUI
-
     TextUI theGameUI = new TextUI();
     // allocate memory for the game and set it up
 
     Rogue theGame = new Rogue(parser);
-
+    oldRoom = theGame.getPlayer().getCurrentRoom();
    //set up the initial game display
 
     message = "Welcome to my Rogue game";
@@ -151,22 +152,31 @@ public static void main(String[] args) {
 
     while (userInput != 'q') {
     //get input from the user
-    userInput = theGameUI.getInput();
+      userInput = theGameUI.getInput();
 
     //ask the game if the user can move there
-    try {
-        theGameUI.clearScreen();
+      try {
         message = theGame.makeMove(userInput);
+        if (oldRoom != theGame.getPlayer().getCurrentRoom()) {
+          theGameUI.clearDisplay();
+        }
         theGameUI.draw(message, theGame.getNextDisplay());
-    } catch (InvalidMoveException badMove) {
-        message = "I didn't understand what you meant, please enter a command";
-        theGameUI.setMessage(message);
-    }
+      } catch (InvalidMoveException badMove) {
+          message = "I didn't understand what you meant, please enter a command";
+          theGameUI.setMessage(message);
+      }
+      oldRoom = theGame.getPlayer().getCurrentRoom();
     }
 
     // do something here to say goodbye to the user
-    message = "Goodbye!";
-    theGameUI.draw(message, theGame.getNextDisplay());
+    theGameUI.clearDisplay();
+    theGameUI.draw("Goodbye! Hope you had fun!\n", "");
+    try {
+      Thread.sleep(SLEEPTIME);
+    } catch (InterruptedException q) {
+      q.printStackTrace();
+    }
+
 
 
 }
