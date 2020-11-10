@@ -441,7 +441,11 @@ public class Rogue {
           roomArray.remove(badRoomList.get(i));
         }
         if (badRoomList.get(i).isPlayerInRoom() && roomArray.size() >= 2) {
-          player.setCurrentRoom(roomArray.get(0));
+          for (Room singleRoom : roomArray) {
+            player.setCurrentRoom(singleRoom);
+            singleRoom.setPlayer(player);
+            break;
+          }
         } else {
           player.setCurrentRoom(null);
         }
