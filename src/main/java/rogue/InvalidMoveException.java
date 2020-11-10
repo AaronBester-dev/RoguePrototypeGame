@@ -3,7 +3,6 @@ package rogue;
 /**
 *exception for when a move can't be made.
 */
-
 public class InvalidMoveException extends Exception {
 
 /**

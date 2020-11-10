@@ -5,7 +5,6 @@ import java.util.ArrayList;
 /**
 *Class that holds all the information for a door.
 */
-
 public class Door {
 
     private ArrayList<Room> connectedRooms;
