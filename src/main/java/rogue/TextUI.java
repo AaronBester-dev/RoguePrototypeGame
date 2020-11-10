@@ -124,6 +124,18 @@ keys to the equivalent movement keys in rogue.
         }
 
     }
+/**
+*Says goodbye to user.
+*/
+    public void goodbyeToUser() {
+      clearDisplay();
+      draw("Goodbye! Hope you had fun!\n", "");
+      try {
+        Thread.sleep(SLEEPTIME);
+      } catch (InterruptedException q) {
+        q.printStackTrace();
+      }
+    }
 
 /**
 the main method.
@@ -144,7 +156,15 @@ public static void main(String[] args) {
     Rogue theGame = new Rogue(parser);
     oldRoom = theGame.getPlayer().getCurrentRoom();
    //set up the initial game display
-
+    if (oldRoom == null) {
+        theGameUI.draw("Error: Dungeon file can't be used", "");
+        try {
+          Thread.sleep(SLEEPTIME);
+        } catch (InterruptedException q) {
+          q.printStackTrace();
+        }
+        System.exit(-1);
+    }
     message = "Welcome to my Rogue game";
 
     theGameUI.draw(message, theGame.getNextDisplay());
@@ -168,17 +188,7 @@ public static void main(String[] args) {
       oldRoom = theGame.getPlayer().getCurrentRoom();
     }
 
-    // do something here to say goodbye to the user
-    theGameUI.clearDisplay();
-    theGameUI.draw("Goodbye! Hope you had fun!\n", "");
-    try {
-      Thread.sleep(SLEEPTIME);
-    } catch (InterruptedException q) {
-      q.printStackTrace();
-    }
-
-
-
+    theGameUI.goodbyeToUser();
 }
 
 }

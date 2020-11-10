@@ -212,7 +212,6 @@ location is a number between 0 and the length of the wall
  */
 
     public boolean verifyRoom() throws NotEnoughDoorsException {
-      //TO DO VERIFY IF ITEMS DOORS AND EVERYTHING IS VALID;
       if (doors.get("N") == null && doors.get("W") == null && doors.get("S") == null && doors.get("E") == null) {
         throw new NotEnoughDoorsException();
       }
@@ -220,7 +219,7 @@ location is a number between 0 and the length of the wall
       for (String key: doors.keySet()) {
         Door doorHolder = doors.get(key);
         if (doorHolder != null) {
-          if (doorHolder.getConnectedRooms().size() < 2) {
+          if (doorHolder.getConnectedRooms().size() < 2 || doorHolder.getOtherRoom(this) == null) {
             return false;
           }
         }

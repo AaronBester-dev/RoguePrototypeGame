@@ -11,7 +11,7 @@
             },
             {
                 "dir": "W",
-                "con_room": 2,
+                "con_room": 6,
                 "wall_pos": 1
             },
             {
@@ -30,17 +30,17 @@
             "width": 20,
             "doors": [{
                     "dir": "N",
-                	"con_room": 1,
+                	"con_room": 3,
                 	"wall_pos": 3
                 },
                 {
                     "dir": "E",
-                    "con_room": 1,
+                    "con_room": 3,
                     "wall_pos": 7
                 },
                 {
                     "dir": "S",
-               		"con_room": 1,
+               		"con_room": 3,
                 	"wall_pos": 5
                 }
             ],
@@ -55,6 +55,30 @@
                     "x": 3,
                     "y": 2
                 },   
+            ]
+        },
+        {
+            "id": 3,
+            "start": true,
+            "height": 3,
+            "width": 3,
+            "doors": [{
+                "dir": "S",
+                "con_room": 2,
+                "wall_pos": 1
+            },
+            {
+                "dir": "W",
+                "con_room": 2,
+                "wall_pos": 1
+            },
+            {
+                "dir": "N",
+                "con_room": 2,
+                "wall_pos": 1
+            }],
+            "loot": [
+                  
             ]
         }
     ],

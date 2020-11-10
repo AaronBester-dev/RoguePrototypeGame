@@ -15,7 +15,7 @@ public class Rogue {
     public static final char DOWN = 's';
     public static final char LEFT = 'a';
     public static final char RIGHT = 'd';
-    private String nextDisplay = "-----\n|.@..|\n|....|\n-----";
+    private String nextDisplay = "";
     private Player player;
     private ArrayList<Room> roomArray = new ArrayList<Room>();
     private ArrayList<Item> rogueItems = new ArrayList<Item>();
@@ -54,8 +54,15 @@ public class Rogue {
             addItem(itemInfo);
             itemInfo = parser.nextItem();
         }
+
         setSymbols();
         connectDoors();
+        checkRooms();
+        checkRooms();
+        if (player.getCurrentRoom() != null) {
+          nextDisplay = player.getCurrentRoom().displayRoom();
+          convertStringToSymbols();
+        }
     }
 
 /**
@@ -140,60 +147,6 @@ public class Rogue {
       newRoom.setRogue(this);
       newRoom.updateDisplayRoom();
       getRooms().add(newRoom);
-      /*
-      try {
-        if (newRoom.verifyRoom() || getRooms().size() == 0) {
-          getRooms().add(newRoom);
-        }
-      } catch (NotEnoughDoorsException e) {
-        if (notEnoughDoorsExceptionFix(newRoom)) {
-          getRooms().add(newRoom);
-        } else {
-          System.out.println("Error: Dungeon File Can't Be Used.");
-        }
-      }
-      connectDoors();
-      */
-    }
-
-    private boolean notEnoughDoorsExceptionFix(Room roomToFix) {
-       String keyOfDoorToConnectTo = "";
-        Room roomToConnectDoorTo = null;
-        if (getRooms().size() != 0) {
-          for (Room singleRoom : getRooms()) {
-            for (String key : singleRoom.getDoors().keySet()) {
-              if (singleRoom.getDoor(key) == null) {
-                keyOfDoorToConnectTo = key;
-                roomToConnectDoorTo = singleRoom;
-              }
-            }
-            if (singleRoom.getDoor(keyOfDoorToConnectTo).equals("")) {
-              return (false);
-            } else {
-              if (keyOfDoorToConnectTo.equals("N")) {
-                roomToConnectDoorTo.setDoor("N", new Door(roomToConnectDoorTo, roomToFix.getId(), 1));
-                roomToFix.setDoor("S", new Door(roomToFix, roomToConnectDoorTo.getId(), 1));
-              }
-              if (keyOfDoorToConnectTo.equals("S")) {
-                roomToConnectDoorTo.setDoor("S", new Door(roomToConnectDoorTo, roomToFix.getId(), 1));
-                roomToFix.setDoor("N", new Door(roomToFix, roomToConnectDoorTo.getId(), 1));
-              }
-               if (keyOfDoorToConnectTo.equals("W")) {
-                roomToConnectDoorTo.setDoor("W", new Door(roomToConnectDoorTo, roomToFix.getId(), 1));
-                roomToFix.setDoor("E", new Door(roomToFix, roomToConnectDoorTo.getId(), 1));
-              }
-               if (keyOfDoorToConnectTo.equals("E")) {
-                roomToConnectDoorTo.setDoor("E", new Door(roomToConnectDoorTo, roomToFix.getId(), 1));
-                roomToFix.setDoor("W", new Door(roomToFix, roomToConnectDoorTo.getId(), 1));
-              }
-            }
-            return (true);
-
-          }
-        } else {
-          return (false);
-        }
-      return (true);
     }
 
 /**
@@ -313,25 +266,24 @@ public class Rogue {
 */
 
     public String makeMove(char input) throws InvalidMoveException {
-      Player currentPlayer = getPlayer();
-      Room currentRoom = currentPlayer.getCurrentRoom();
-      String[][] currentRoomDisplayArray = currentPlayer.getCurrentRoom().getRoomDisplayArray();
-      int playerX = (int) getPlayer().getXyLocation().getX();
-      int playerY = (int) getPlayer().getXyLocation().getY();
+      Room currentRoom = player.getCurrentRoom();
+      String[][] currentRoomDisplayArray = player.getCurrentRoom().getRoomDisplayArray();
+      int playerX = (int) player.getXyLocation().getX();
+      int playerY = (int) player.getXyLocation().getY();
       Point wherePlayerWantsToGo = new Point(playerX, playerY);
       String moveMessage = "";
       if (input == UP) {
         wherePlayerWantsToGo.setLocation(playerX, --playerY);
-        moveMessage = "up";
+        moveMessage = "You walk up";
       } else if (input == LEFT) {
         wherePlayerWantsToGo.setLocation(--playerX, playerY);
-        moveMessage = "left";
+        moveMessage = "You walk left";
       } else if (input == RIGHT) {
         wherePlayerWantsToGo.setLocation(++playerX, playerY);
-        moveMessage = "right";
+        moveMessage = "You walk right";
       } else if (input == DOWN) {
         wherePlayerWantsToGo.setLocation(playerX, ++playerY);
-        moveMessage = "down";
+        moveMessage = "You walk down";
       } else {
         throw new InvalidMoveException();
       }
@@ -339,21 +291,23 @@ public class Rogue {
       if (!(checkWallCollision(currentRoomDisplayArray, wherePlayerWantsToGo))) {
         String collisionObject = whatDidICollideWith(currentRoomDisplayArray, wherePlayerWantsToGo);
         if (collisionObject == "FLOOR") {
-          movePlayer(currentPlayer, wherePlayerWantsToGo);
+          movePlayer(player, wherePlayerWantsToGo);
         } else if (collisionObject == "ITEM") {
           Item itemToBePickedUp = getItemFromRoom(currentRoom, wherePlayerWantsToGo);
-          currentPlayer.pickUpItem(itemToBePickedUp);
-          movePlayer(currentPlayer, wherePlayerWantsToGo);
-          return ("Picked up a " + itemToBePickedUp.getType());
+          player.pickUpItem(itemToBePickedUp);
+          movePlayer(player, wherePlayerWantsToGo);
+          moveMessage = "Picked up a " + itemToBePickedUp.getType();
         } else {
           Door doorToWalkThrough = currentRoom.getDoor(String.valueOf(collisionObject.charAt(0)));
-          movePlayerToOtherRoom(currentPlayer, doorToWalkThrough, String.valueOf(collisionObject.charAt(0)));
-          return ("You walk through a door.");
+          movePlayerToOtherRoom(player, doorToWalkThrough, String.valueOf(collisionObject.charAt(0)));
+          moveMessage = "You walk through a door.";
         }
       } else {
-        return ("Hit a wall");
+        moveMessage = "You hit a wall";
       }
-      return ("You walk " + moveMessage);
+      nextDisplay = player.getCurrentRoom().displayRoom();
+      convertStringToSymbols();
+      return (moveMessage);
     }
 /**
 * checks whether or not a player has collided with a wall.
@@ -452,16 +406,86 @@ public class Rogue {
       movePlayer(currentPlayer, newXyLocation);
     }
 
+    private void convertStringToSymbols() {
+      for (String key : symbolMap.keySet()) {
+        nextDisplay = nextDisplay.replaceAll(key.trim(), symbolMap.get(key).toString());
+      }
+    }
+
 /**
 * returns the string that displays the room.
 *@return string that displays the next display
 */
     public String getNextDisplay() {
-      nextDisplay = getPlayer().getCurrentRoom().displayRoom();
-      for (String key : symbolMap.keySet()) {
-        nextDisplay = nextDisplay.replaceAll(key.trim(), symbolMap.get(key).toString());
-      }
       return nextDisplay;
+    }
+
+    private void checkRooms() {
+      ArrayList<Room> badRoomList = new ArrayList<>();
+      for (Room singleRoom : roomArray) {
+        try {
+          if (!(singleRoom.verifyRoom())) {
+            badRoomList.add(singleRoom);
+          }
+        } catch (NotEnoughDoorsException n) {
+          if (!(notEnoughDoorsExceptionFix(singleRoom))) {
+            player.setCurrentRoom(null);
+          } else {
+            connectDoors();
+          }
+        }
+      }
+
+      for (int i = 0; i < badRoomList.size(); i++) {
+        if (roomArray.contains(badRoomList.get(i))) {
+          roomArray.remove(badRoomList.get(i));
+        }
+        if (badRoomList.get(i).isPlayerInRoom() && roomArray.size() >= 2) {
+          player.setCurrentRoom(roomArray.get(0));
+        } else {
+          player.setCurrentRoom(null);
+        }
+      }
+    }
+
+     private boolean notEnoughDoorsExceptionFix(Room roomToFix) {
+       String keyOfDoorToConnectTo = "";
+       Room roomToConnectDoorTo = null;
+        if (roomArray.size() >= 2) {
+          for (Room singleRoom : roomArray) {
+            if (singleRoom != roomToFix) {
+              for (String key : singleRoom.getDoors().keySet()) {
+                if (singleRoom.getDoor(key) == null) {
+                  keyOfDoorToConnectTo = key;
+                  roomToConnectDoorTo = singleRoom;
+                }
+              }
+            }
+          }
+
+        if (roomToConnectDoorTo == null) {
+          return (false);
+        } else {
+          if (keyOfDoorToConnectTo.equals("N")) {
+            roomToConnectDoorTo.setDoor("N", new Door(roomToConnectDoorTo, roomToFix.getId(), 1));
+            roomToFix.setDoor("S", new Door(roomToFix, roomToConnectDoorTo.getId(), 1));
+          } else if (keyOfDoorToConnectTo.equals("S")) {
+            roomToConnectDoorTo.setDoor("S", new Door(roomToConnectDoorTo, roomToFix.getId(), 1));
+            roomToFix.setDoor("N", new Door(roomToFix, roomToConnectDoorTo.getId(), 1));
+          } else if (keyOfDoorToConnectTo.equals("W")) {
+            roomToConnectDoorTo.setDoor("W", new Door(roomToConnectDoorTo, roomToFix.getId(), 1));
+            roomToFix.setDoor("E", new Door(roomToFix, roomToConnectDoorTo.getId(), 1));
+          } else if (keyOfDoorToConnectTo.equals("E")) {
+            roomToConnectDoorTo.setDoor("E", new Door(roomToConnectDoorTo, roomToFix.getId(), 1));
+            roomToFix.setDoor("W", new Door(roomToFix, roomToConnectDoorTo.getId(), 1));
+          }
+          return true;
+        }
+
+
+        } else {
+          return (false);
+        }
     }
 
 }
