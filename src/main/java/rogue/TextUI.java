@@ -24,17 +24,15 @@ Constructor for TextUI class.  Creates the screens, sets
 cursor to top left corner and does nothing else.
 **/
     public TextUI() {
-        super();
-            try {
-            screen = new TerminalScreen(new UnixTerminal());
-            screen.setCursorPosition(TerminalPosition.TOP_LEFT_CORNER);
-            screen.startScreen();
-
-
-            screen.refresh();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+      super();
+      try {
+        screen = new TerminalScreen(new UnixTerminal());
+        screen.setCursorPosition(TerminalPosition.TOP_LEFT_CORNER);
+        screen.startScreen();
+        screen.refresh();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
 
 /**
@@ -43,152 +41,142 @@ Prints a string to the screen starting at the indicated column and row.
 @param column the column in which to start the display
 @param row the row in which to start the display
 **/
-        public void putString(String toDisplay, int column, int row) {
-            Terminal t = screen.getTerminal();
-            try {
-                t.setCursorPosition(column, row);
-            for (char ch: toDisplay.toCharArray()) {
-                t.putCharacter(ch);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void putString(String toDisplay, int column, int row) {
+      Terminal t = screen.getTerminal();
+      try {
+        t.setCursorPosition(column, row);
+        for (char ch: toDisplay.toCharArray()) {
+          t.putCharacter(ch);
         }
-        }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
 
 /**
 Changes the message at the top of the screen for the user.
 @param msg the message to be displayed
 **/
-            public void setMessage(String msg) {
-                putString("                                                ", 1, 1);
-                putString(msg, startCol, msgRow);
-            }
+    public void setMessage(String msg) {
+      putString("                                                ", 1, 1);
+      putString(msg, startCol, msgRow);
+    }
 
 /**
 Redraws the whole screen including the room and the message.
 @param message the message to be displayed at the top of the room
 @param room the room map to be drawn
 **/
-            public void draw(String message, String room) {
+    public void draw(String message, String room) {
+      try {
+        setMessage(message);
+        putString(room, startCol, roomRow);
+        screen.refresh();
+      } catch (IOException e) {
 
-                try {
-                    setMessage(message);
-                    putString(room, startCol, roomRow);
-                    screen.refresh();
-                } catch (IOException e) {
+      }
 
-                }
-
-        }
+    }
 
 /**
 Obtains input from the user and returns it as a char.  Converts arrow
 keys to the equivalent movement keys in rogue.
 @return the ascii value of the key pressed by the user
 **/
-        public char getInput() {
-            KeyStroke keyStroke = null;
-            char returnChar;
-            while (keyStroke == null) {
-            try {
-                keyStroke = screen.pollInput();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+    public char getInput() {
+      KeyStroke keyStroke = null;
+      char returnChar;
+      while (keyStroke == null) {
+        try {
+          keyStroke = screen.pollInput();
+        } catch (IOException e) {
+          e.printStackTrace();
         }
-         if (keyStroke.getKeyType() == KeyType.ArrowDown) {
-            returnChar = Rogue.DOWN;  //constant defined in rogue
-        } else if (keyStroke.getKeyType() == KeyType.ArrowUp) {
-            returnChar = Rogue.UP;
-        } else if (keyStroke.getKeyType() == KeyType.ArrowLeft) {
-            returnChar = Rogue.LEFT;
-        } else if (keyStroke.getKeyType() == KeyType.ArrowRight) {
-            returnChar = Rogue.RIGHT;
-        } else {
-            returnChar = keyStroke.getCharacter();
-        }
-        return returnChar;
+      }
+      if (keyStroke.getKeyType() == KeyType.ArrowDown) {
+        returnChar = Rogue.DOWN;  //constant defined in rogue
+      } else if (keyStroke.getKeyType() == KeyType.ArrowUp) {
+        returnChar = Rogue.UP;
+      } else if (keyStroke.getKeyType() == KeyType.ArrowLeft) {
+        returnChar = Rogue.LEFT;
+      } else if (keyStroke.getKeyType() == KeyType.ArrowRight) {
+        returnChar = Rogue.RIGHT;
+      } else {
+        returnChar = keyStroke.getCharacter();
+      }
+      return returnChar;
     }
 
 /**
 *Clears the entire display.
 */
     public void clearDisplay() {
-        screen.clear();
-        try {
-          screen.refresh();
-        } catch (IOException p) {
-          p.printStackTrace();
-        }
+      screen.clear();
+      try {
+        screen.refresh();
+      } catch (IOException p) {
+        p.printStackTrace();
+      }
 
     }
 /**
 *Says goodbye to user.
 */
-    public void goodbyeToUser() {
+    public void programExitError() {
       clearDisplay();
-      draw("Goodbye! Hope you had fun!\n", "");
+      draw("Error: Dungeon file doesn't work.", "");
       try {
         Thread.sleep(SLEEPTIME);
       } catch (InterruptedException q) {
         q.printStackTrace();
       }
+      System.exit(-1);
     }
+
 
 /**
 the main method.
 @param args command line arguments are unused at this point.
 **/
 
-public static void main(String[] args) {
-    char userInput = 'h';
-    String message;
-    Room oldRoom = null;
-    String configurationFileLocation = "fileLocations.json";
-    //Parse the json files
-    RogueParser parser = new RogueParser(configurationFileLocation);
-    //allocate memory for the GUI
-    TextUI theGameUI = new TextUI();
-    // allocate memory for the game and set it up
+    public static void main(String[] args) {
+      char userInput = 'h';
+      String message;
+      Room oldRoom = null;
+      String configurationFileLocation = "fileLocations.json";
+      RogueParser parser = new RogueParser(configurationFileLocation);
+      TextUI theGameUI = new TextUI();
+      Rogue theGame = new Rogue(parser);
 
-    Rogue theGame = new Rogue(parser);
-    oldRoom = theGame.getPlayer().getCurrentRoom();
+      oldRoom = theGame.getPlayer().getCurrentRoom();
 
-   //set up the initial game display
-    if (oldRoom == null) {
-        theGameUI.draw("Error: Dungeon file can't be used", "");
+      if (oldRoom == null) {
+        theGameUI.programExitError();
+      }
+      message = "Welcome to my Rogue game";
+      theGameUI.draw(message, theGame.getNextDisplay());
+
+      while (userInput != 'q') {
+        userInput = theGameUI.getInput();
         try {
-          Thread.sleep(SLEEPTIME);
-        } catch (InterruptedException q) {
-          q.printStackTrace();
-        }
-        System.exit(-1);
-    }
-    message = "Welcome to my Rogue game";
-    theGameUI.draw(message, theGame.getNextDisplay());
-
-
-    while (userInput != 'q') {
-    //get input from the user
-      userInput = theGameUI.getInput();
-
-    //ask the game if the user can move there
-      try {
-        message = theGame.makeMove(userInput);
-        if (oldRoom != theGame.getPlayer().getCurrentRoom()) {
-          theGameUI.clearDisplay();
-        }
-        theGameUI.draw(message, theGame.getNextDisplay());
-      } catch (InvalidMoveException badMove) {
+          message = theGame.makeMove(userInput);
+          if (oldRoom != theGame.getPlayer().getCurrentRoom()) {
+            theGameUI.clearDisplay();
+          }
+          theGameUI.draw(message, theGame.getNextDisplay());
+        } catch (InvalidMoveException badMove) {
           message = "I didn't understand what you meant, please enter a command";
           theGameUI.setMessage(message);
+        }
+        oldRoom = theGame.getPlayer().getCurrentRoom();
       }
-      oldRoom = theGame.getPlayer().getCurrentRoom();
+
+      clearDisplay();
+      draw("Goodbye! Hope you had fun!", "");
+      try {
+        Thread.sleep(SLEEPTIME);
+      } catch (InterruptedException q) {
+        q.printStackTrace();
+      }
     }
-
-    theGameUI.goodbyeToUser();
-}
-
 }

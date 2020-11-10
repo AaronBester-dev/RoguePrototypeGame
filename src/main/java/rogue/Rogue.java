@@ -41,28 +41,28 @@ public class Rogue {
 
     public Rogue(RogueParser theDungeonInfo) {
 
-        parser = theDungeonInfo;
+      parser = theDungeonInfo;
 
-        Map roomInfo = parser.nextRoom();
-        while (roomInfo != null) {
-            addRoom(roomInfo);
-            roomInfo = parser.nextRoom();
-        }
+      Map roomInfo = parser.nextRoom();
+      while (roomInfo != null) {
+        addRoom(roomInfo);
+        roomInfo = parser.nextRoom();
+      }
 
-        Map itemInfo = parser.nextItem();
-        while (itemInfo != null) {
-            addItem(itemInfo);
-            itemInfo = parser.nextItem();
-        }
+      Map itemInfo = parser.nextItem();
+      while (itemInfo != null) {
+        addItem(itemInfo);
+        itemInfo = parser.nextItem();
+      }
 
-        setSymbols();
-        connectDoors();
-        checkRooms();
-        checkRooms();
-        if (player.getCurrentRoom() != null) {
-          nextDisplay = player.getCurrentRoom().displayRoom();
-          convertStringToSymbols();
-        }
+      setSymbols();
+      connectDoors();
+      checkRooms();
+      checkRooms();
+      if (player.getCurrentRoom() != null) {
+        nextDisplay = player.getCurrentRoom().displayRoom();
+        convertStringToSymbols();
+      }
     }
 
 /**
@@ -436,20 +436,20 @@ public class Rogue {
       }
     }
 
-     private boolean notEnoughDoorsExceptionFix(Room roomToFix) {
-       String keyOfDoorToConnectTo = "";
-       Room roomToConnectDoorTo = null;
-        if (roomArray.size() >= 2) {
-          for (Room singleRoom : roomArray) {
-            if (singleRoom != roomToFix) {
-              for (String key : singleRoom.getDoors().keySet()) {
-                if (singleRoom.getDoor(key) == null) {
-                  keyOfDoorToConnectTo = key;
-                  roomToConnectDoorTo = singleRoom;
-                }
+    private boolean notEnoughDoorsExceptionFix(Room roomToFix) {
+      String keyOfDoorToConnectTo = "";
+      Room roomToConnectDoorTo = null;
+      if (roomArray.size() >= 2) {
+        for (Room singleRoom : roomArray) {
+          if (singleRoom != roomToFix) {
+            for (String key : singleRoom.getDoors().keySet()) {
+              if (singleRoom.getDoor(key) == null) {
+                keyOfDoorToConnectTo = key;
+                roomToConnectDoorTo = singleRoom;
               }
             }
           }
+        }
 
         if (roomToConnectDoorTo == null) {
           return (false);
@@ -471,9 +471,9 @@ public class Rogue {
         }
 
 
-        } else {
-          return (false);
-        }
+      } else {
+        return (false);
+      }
     }
 
 }
