@@ -272,6 +272,7 @@ public class Rogue {
       int playerY = (int) player.getXyLocation().getY();
       Point wherePlayerWantsToGo = new Point(playerX, playerY);
       String moveMessage = "";
+      String collisionObject = "";
       if (input == UP) {
         wherePlayerWantsToGo.setLocation(playerX, --playerY);
         moveMessage = "You walk up";
@@ -288,44 +289,27 @@ public class Rogue {
         throw new InvalidMoveException();
       }
 
-      if (!(checkWallCollision(currentRoomDisplayArray, wherePlayerWantsToGo))) {
-        String collisionObject = whatDidICollideWith(currentRoomDisplayArray, wherePlayerWantsToGo);
-        if (collisionObject == "FLOOR") {
-          movePlayer(player, wherePlayerWantsToGo);
-        } else if (collisionObject == "ITEM") {
-          Item itemToBePickedUp = getItemFromRoom(currentRoom, wherePlayerWantsToGo);
-          player.pickUpItem(itemToBePickedUp);
-          movePlayer(player, wherePlayerWantsToGo);
-          moveMessage = "Picked up a " + itemToBePickedUp.getType();
-        } else {
-          Door doorToWalkThrough = currentRoom.getDoor(String.valueOf(collisionObject.charAt(0)));
-          movePlayerToOtherRoom(player, doorToWalkThrough, String.valueOf(collisionObject.charAt(0)));
-          moveMessage = "You walk through a door.";
-        }
+      collisionObject = whatDidICollideWith(currentRoomDisplayArray, wherePlayerWantsToGo);
+      if (collisionObject == "NS_WALL" || collisionObject == "EW_WALL") {
+       moveMessage = "You hit a wall";
+      } else if (collisionObject == "FLOOR") {
+        movePlayer(player, wherePlayerWantsToGo);
+      } else if (collisionObject == "ITEM") {
+        Item itemToBePickedUp = getItemFromRoom(currentRoom, wherePlayerWantsToGo);
+        player.pickUpItem(itemToBePickedUp);
+        movePlayer(player, wherePlayerWantsToGo);
+        moveMessage = "Picked up a " + itemToBePickedUp.getType();
       } else {
-        moveMessage = "You hit a wall";
+         Door doorToWalkThrough = currentRoom.getDoor(String.valueOf(collisionObject.charAt(0)));
+         movePlayerToOtherRoom(player, doorToWalkThrough, String.valueOf(collisionObject.charAt(0)));
+         moveMessage = "You walk through a door.";
       }
+
       nextDisplay = player.getCurrentRoom().displayRoom();
       convertStringToSymbols();
       return (moveMessage);
     }
-/**
-* checks whether or not a player has collided with a wall.
-*@return true if player has false if player hasn't
-*@param roomDisplayArray current list of how the room looks
-*@param wherePlayerWantsToGo location of where player wants to move
-*/
-    public boolean checkWallCollision(String[][]roomDisplayArray, Point wherePlayerWantsToGo) {
-      int newPlayerX = (int) wherePlayerWantsToGo.getX();
-      int newPlayerY = (int) wherePlayerWantsToGo.getY();
 
-      if (roomDisplayArray[newPlayerY][newPlayerX] == "NS_WALL"
-      || roomDisplayArray[newPlayerY][newPlayerX] == "EW_WALL") {
-        return true;
-      }
-
-      return false;
-    }
 /**
 * checks to see what the player has collided with.
 *@return type of object player has collided with.
