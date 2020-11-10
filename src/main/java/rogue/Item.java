@@ -18,10 +18,10 @@ public class Item  {
 *Item is a basic constrictor that sets item to default values.
 */
     public Item() {
-      setId(0);
+      setId(-1);
       setName("Empty");
       setType("NOTYPE");
-      setXyLocation(new Point(0, 0));
+      setXyLocation(new Point(2, 2));
     }
 /**
 *Item is a basic constrictor that sets item to values based on jsonItem.

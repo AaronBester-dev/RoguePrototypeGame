@@ -155,6 +155,7 @@ public static void main(String[] args) {
 
     Rogue theGame = new Rogue(parser);
     oldRoom = theGame.getPlayer().getCurrentRoom();
+
    //set up the initial game display
     if (oldRoom == null) {
         theGameUI.draw("Error: Dungeon file can't be used", "");
@@ -166,7 +167,6 @@ public static void main(String[] args) {
         System.exit(-1);
     }
     message = "Welcome to my Rogue game";
-
     theGameUI.draw(message, theGame.getNextDisplay());
 
 
