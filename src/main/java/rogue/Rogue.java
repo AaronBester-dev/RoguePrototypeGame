@@ -57,6 +57,8 @@ public class Rogue {
 
       setSymbols();
       connectDoors();
+      /*Check rooms is ran twice in order to ensure that if any room depended on a
+      earlier room that was removed from the roomArray then those depended rooms are also removed*/
       checkRooms();
       checkRooms();
       if (player.getCurrentRoom() != null) {
@@ -410,7 +412,7 @@ public class Rogue {
         }
         if (badRoomList.get(i).isPlayerInRoom()) {
           player.setCurrentRoom(null);
-        } 
+        }
       }
     }
 

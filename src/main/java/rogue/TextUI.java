@@ -160,6 +160,7 @@ the main method.
         userInput = theGameUI.getInput();
         try {
           message = theGame.makeMove(userInput);
+          /*oldRoom is used to check if the player has moved rooms and then clears the display if they have*/
           if (oldRoom != theGame.getPlayer().getCurrentRoom()) {
             theGameUI.clearDisplay();
           }
