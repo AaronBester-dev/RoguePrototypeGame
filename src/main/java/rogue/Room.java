@@ -117,6 +117,63 @@ public class Room  {
     }
 
 /**
+ * getter that gets the player in the room.
+ *@return player in room
+ */
+    public Player getPlayer() {
+      return (roomPlayer);
+    }
+/**
+ * setter that sets player to a room.
+ *@param newPlayer new player in the room.
+ */
+    public void setPlayer(Player newPlayer) {
+      roomPlayer = newPlayer;
+    }
+/**
+ * getter that gets the door of direction you want in the room.
+ *@param direction direction that the door is in.
+ *@return door that is in the room in the direction you want.
+ */
+    public Door getDoor(String direction) {
+      if (getDoors().containsKey(direction)) {
+        return (getDoors().get(direction));
+      } else {
+        return (null);
+      }
+
+    }
+
+    /**
+ * setter that sets the door in the direction you want in the room.
+ *@param direction direction of the door you want to place.
+ *@param newDoor door item to add to map
+ */
+    public void setDoor(String direction, Door newDoor) {
+      if (getDoors().containsKey(direction)) {
+        getDoors().replace(direction, newDoor);
+      } else {
+        getDoors().put(direction, newDoor);
+      }
+    }
+
+/**
+ * getter that gets hashmap of every door in the room.
+ *@return Hashmap of doors that are in the room.
+ */
+    public HashMap<String, Door> getDoors() {
+      return (doors);
+    }
+
+/**
+ * checks whether or not the player is in the room.
+ *@return true if player is in room and false if otherwise.
+ */
+    public boolean isPlayerInRoom() {
+      return !(roomPlayer == null);
+    }
+
+ /**
  * adds Item to a room.
  *@param toAdd item to be added.
  *@throws ImpossiblePositionException when item is in a impossible location
@@ -146,78 +203,19 @@ public class Room  {
     }
 
 /**
- * getter that gets the player in the room.
- *@return player in room
- */
-    public Player getPlayer() {
-      return (roomPlayer);
-    }
-/**
- * setter that sets player to a room.
- *@param newPlayer new player in the room.
- */
-    public void setPlayer(Player newPlayer) {
-      roomPlayer = newPlayer;
-    }
-/**
- * getter that gets the door of direction you want in the room.
- *@param direction direction that the door is in.
- *@return door that is in the room in the direction you want.
- */
-    public Door getDoor(String direction) {
-      if (doors.containsKey(direction)) {
-        return (doors.get(direction));
-      } else {
-        return (null);
-      }
-
-    }
-
-    /**
- * getter that gets hashmap of every door in the room.
- *@return Hashmap of doors that are in the room.
- */
-    public HashMap<String, Door> getDoors() {
-      return (doors);
-    }
-
-/*
-direction is one of NSEW
-location is a number between 0 and the length of the wall
-*/
-/**
- * setter that sets the door in the direction you want in the room.
- *@param direction direction of the door you want to place.
- *@param newDoor door item to add to map
- */
-    public void setDoor(String direction, Door newDoor) {
-      if (doors.containsKey(direction)) {
-        doors.replace(direction, newDoor);
-      } else {
-        doors.put(direction, newDoor);
-      }
-    }
-/**
- * checks whether or not the player is in the room.
- *@return true if player is in room and false if otherwise.
- */
-    public boolean isPlayerInRoom() {
-      return !(roomPlayer == null);
-    }
-
-/**
  * checks to see if room meets all requirements to be a room.
  *@return true if room is a valid room and false if otherwise.
  *@throws NotEnoughDoorsException throws if there is no doors in room
  */
 
     public boolean verifyRoom() throws NotEnoughDoorsException {
-      if (doors.get("N") == null && doors.get("W") == null && doors.get("S") == null && doors.get("E") == null) {
+      if (getDoors().get("N") == null && getDoors().get("W") == null
+      && getDoors().get("S") == null && getDoors().get("E") == null) {
         throw new NotEnoughDoorsException();
       }
 
-      for (String key: doors.keySet()) {
-        Door doorHolder = doors.get(key);
+      for (String key: getDoors().keySet()) {
+        Door doorHolder = getDoors().get(key);
         if (doorHolder != null) {
           if (doorHolder.getConnectedRooms().size() < 2 || doorHolder.getOtherRoom(this) == null) {
             return false;
@@ -275,11 +273,7 @@ location is a number between 0 and the length of the wall
       return (roomDisplayString);
     }
 
-   /**
-    * Initializes roomDisplayArray to a empty room.
-    */
-
-    public void initalizeRoomDisplayArray() {
+    private void initalizeRoomDisplayArray() {
       for (int x = 0; x < roomWidth; x++) {
         roomDisplayArray[0][x] = "NS_WALL";
       }
@@ -298,12 +292,7 @@ location is a number between 0 and the length of the wall
       }
     }
 
-     /**
-    * Adds doors to the room.
-    *
-    */
-
-    public void addDoorsToRoomDisplayArray() {
+    private void addDoorsToRoomDisplayArray() {
       Door doorHolder = getDoor("N");
       if (doorHolder != null) {
         roomDisplayArray[0][doorHolder.getWallPosition()] = "NDOOR";
@@ -322,11 +311,7 @@ location is a number between 0 and the length of the wall
       }
     }
 
-      /**
-    * Adds player and items to the room.
-    */
-
-    public void addContentsToRoomDisplayArray() {
+    private void addContentsToRoomDisplayArray() {
       if (isPlayerInRoom()) {
         roomDisplayArray[(int) roomPlayer.getXyLocation().getY()][(int) roomPlayer.getXyLocation().getX()] = "PLAYER";
       }
@@ -337,13 +322,7 @@ location is a number between 0 and the length of the wall
       }
     }
 
-    /**
-    * Converts displayArray to a string that displays the contents of the room.
-    * @param roomDisplayString a string that displays the contents of the room.
-    * @return a string that displays the contents of the room
-    */
-
-    public String convertDisplayArrayToString(String roomDisplayString) {
+    private String convertDisplayArrayToString(String roomDisplayString) {
       for (int y = 0; y < roomHeight; y++) {
         for (int x = 0; x < roomWidth; x++) {
           if (!(Character.isLetter(roomDisplayArray[y][x].charAt(0)))) {

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 */
 public class Door {
 
-    private ArrayList<Room> connectedRooms;
+    private ArrayList<Room> connectedRooms = new ArrayList<>();
     private int wallPosition;
     private int otherRoomid;
 
@@ -16,9 +16,8 @@ public class Door {
 */
 
     public Door() {
-      connectedRooms = new ArrayList<>();
-      wallPosition = 0;
-      otherRoomid = -1;
+      setWallPosition(1);
+      setOtherRoomid(-1);
     }
 
 /**
@@ -29,7 +28,6 @@ public class Door {
 */
 
     public Door(Room currentRoom, int newOtherRoomid, int newWallPosition) {
-      connectedRooms = new ArrayList<>();
       connectRoom(currentRoom);
       setOtherRoomid(newOtherRoomid);
       setWallPosition(newWallPosition);

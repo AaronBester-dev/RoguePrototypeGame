@@ -28,7 +28,7 @@ public class Rogue {
 *Default constructor for rogue that sets everything to default values.
 */
     public Rogue() {
-      player = null;
+      setPlayer(null);
       symbolMap = null;
       tempRoomMap = null;
       parser = new RogueParser();
@@ -108,15 +108,20 @@ public class Rogue {
       return player;
     }
 
-/**
-* creates the room array based off of the rooms in room file.
-*@param filename name of the room file
+    /**
+* returns the string that displays the room.
+*@return string that displays the next display
 */
-    public void createRooms(String filename) {
-      while ((tempRoomMap = parser.nextRoom()) != null) {
-        addRoom(tempRoomMap);
+    public String getNextDisplay() {
+      return nextDisplay;
+    }
+
+    private void convertStringToSymbols() {
+      for (String key : symbolMap.keySet()) {
+        nextDisplay = nextDisplay.replaceAll(key.trim(), symbolMap.get(key).toString());
       }
     }
+
 
 /**
 * creates a room and adds it to the room array.
@@ -155,23 +160,28 @@ public class Rogue {
 */
 
     public void addItem(Map<String, String> toAdd) {
-
       Item newItem = new Item();
       int itemId = Integer.decode(toAdd.get("id"));
       int x = 0;
       int y = 1;
       boolean itemIsInCorrectLocation = false;
+      int roomId = 0;
+      int itemX = 0;
+      int itemY = 0;
+      Point newItemLocation = null;
+      Room roomToAddTo = null;
+
       newItem.setId(itemId);
       newItem.setName(toAdd.get("name"));
       newItem.setType(toAdd.get("type"));
       newItem.setDescription(toAdd.get("description"));
 
       if (toAdd.get("room") != null) {
-        int roomId = Integer.decode(toAdd.get("room"));
-        int itemX = Integer.decode(toAdd.get("x"));
-        int itemY = Integer.decode(toAdd.get("y"));
-        Point newItemLocation = new Point(itemX, itemY);
-        Room roomToAddTo = null;
+        roomId = Integer.decode(toAdd.get("room"));
+        itemX = Integer.decode(toAdd.get("x"));
+        itemY = Integer.decode(toAdd.get("y"));
+        newItemLocation = new Point(itemX, itemY);
+        roomToAddTo = null;
         newItem.setXyLocation(newItemLocation);
         rogueItems.add(newItem);
         for (Room singleRoom : getRooms()) {
@@ -209,6 +219,7 @@ public class Rogue {
       String[] doorStringArray;
       int doorConnectedRoomId = 0;
       int wallPosition = 0;
+
       if (toAdd.equals("-1")) {
         return (null);
       } else {
@@ -241,22 +252,6 @@ public class Rogue {
       }
     }
 
-/**
-* returns the string that displays the current rooms in the dungeon.
-*@return string that displays the current rooms in the dungeon
-*/
-    public String displayAll() {
-      String roomsDisplay = "";
-
-      for (int i = 0; i < roomArray.size(); i++) {
-        roomsDisplay += roomArray.get(i).displayRoom();
-      }
-      for (String key : symbolMap.keySet()) {
-        roomsDisplay = roomsDisplay.replaceAll(key.trim(), symbolMap.get(key).toString());
-      }
-
-      return roomsDisplay;
-    }
 
 /**
 * returns the string of the room after a move.
@@ -273,6 +268,9 @@ public class Rogue {
       Point wherePlayerWantsToGo = new Point(playerX, playerY);
       String moveMessage = "";
       String collisionObject = "";
+      Item itemToBePickedUp = null;
+      Door doorToWalkThrough = null;
+
       if (input == UP) {
         wherePlayerWantsToGo.setLocation(playerX, --playerY);
         moveMessage = "You walk up";
@@ -295,14 +293,14 @@ public class Rogue {
       } else if (collisionObject == "FLOOR") {
         movePlayer(player, wherePlayerWantsToGo);
       } else if (collisionObject == "ITEM") {
-        Item itemToBePickedUp = getItemFromRoom(currentRoom, wherePlayerWantsToGo);
+        itemToBePickedUp = getItemFromRoom(currentRoom, wherePlayerWantsToGo);
         player.pickUpItem(itemToBePickedUp);
         movePlayer(player, wherePlayerWantsToGo);
         moveMessage = "Picked up a " + itemToBePickedUp.getType();
       } else {
-         Door doorToWalkThrough = currentRoom.getDoor(String.valueOf(collisionObject.charAt(0)));
-         movePlayerToOtherRoom(player, doorToWalkThrough, String.valueOf(collisionObject.charAt(0)));
-         moveMessage = "You walk through a door.";
+        doorToWalkThrough = currentRoom.getDoor(String.valueOf(collisionObject.charAt(0)));
+        movePlayerToOtherRoom(player, doorToWalkThrough, String.valueOf(collisionObject.charAt(0)));
+        moveMessage = "You walk through a door.";
       }
 
       nextDisplay = player.getCurrentRoom().displayRoom();
@@ -388,20 +386,6 @@ public class Rogue {
       }
 
       movePlayer(currentPlayer, newXyLocation);
-    }
-
-    private void convertStringToSymbols() {
-      for (String key : symbolMap.keySet()) {
-        nextDisplay = nextDisplay.replaceAll(key.trim(), symbolMap.get(key).toString());
-      }
-    }
-
-/**
-* returns the string that displays the room.
-*@return string that displays the next display
-*/
-    public String getNextDisplay() {
-      return nextDisplay;
     }
 
     private void checkRooms() {
