@@ -3,24 +3,27 @@
             "id": 1,
             "start": true,
             "height": 10,
-            "width": 10,
+            "width": 20,
             "doors": [{
                 "dir": "S",
                 "con_room": 2,
                 "wall_pos": 1
             },
             {
-                "dir": "W",
-                "con_room": 2,
-                "wall_pos": 1
-            },
-            {
                 "dir": "N",
                 "con_room": 2,
-                "wall_pos": 1
+                "wall_pos": 4
             }],
-            "loot": [
-                  
+            "loot": [{
+                    "id": 1,
+                    "x": 3,
+                    "y": 3
+                },
+                {
+                    "id": 2,
+                    "x": 8,
+                    "y": 8
+                }
             ]
         },
         {
@@ -34,11 +37,6 @@
                 	"wall_pos": 3
                 },
                 {
-                    "dir": "E",
-                    "con_room": 1,
-                    "wall_pos": 7
-                },
-                {
                     "dir": "S",
                		"con_room": 1,
                 	"wall_pos": 5
@@ -46,14 +44,14 @@
             ],
             "loot": [
             {
-                    "id": 4,
-                    "x": 10,
-                    "y": 2
+                    "id": 3,
+                    "x": 7,
+                    "y": 8
                 },
             {
                     "id": 35,
                     "x": 3,
-                    "y": 2
+                    "y": 6
                 },   
             ]
         }
@@ -72,12 +70,6 @@
         },
         {
             "id": 3,
-            "name": "Iron Helmet",
-            "type": "armor",
-            "description": "you have a large helmet on your head"
-        },
-        {
-            "id": 4,
             "name": "Mango",
             "type": "food",
             "description": "my that was a yummy mango!"
@@ -87,14 +79,6 @@
             "name": "6 gold",
             "type": "gold",
             "description": "you found 6 gold pieces"
-        },
-        
-        {
-            "id": 10,
-            "name": "10 gold",
-            "type": "gold",
-            "description": "you found 10 gold pieces"
         }
-        
     ]
 }

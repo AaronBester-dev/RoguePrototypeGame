@@ -123,8 +123,8 @@ keys to the equivalent movement keys in rogue.
 *Says goodbye to user.
 */
     public void programExitError() {
-      clearDisplay();
-      draw("Error: Dungeon file doesn't work.", "");
+      this.clearDisplay();
+      this.draw("Error: Dungeon file doesn't work.", "");
       try {
         Thread.sleep(SLEEPTIME);
       } catch (InterruptedException q) {
@@ -171,8 +171,8 @@ the main method.
         oldRoom = theGame.getPlayer().getCurrentRoom();
       }
 
-      clearDisplay();
-      draw("Goodbye! Hope you had fun!", "");
+      theGameUI.clearDisplay();
+      theGameUI.draw("Goodbye! Hope you had fun!", "");
       try {
         Thread.sleep(SLEEPTIME);
       } catch (InterruptedException q) {
