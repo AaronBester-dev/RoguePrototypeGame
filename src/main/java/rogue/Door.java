@@ -7,7 +7,7 @@ import java.util.ArrayList;
 */
 public class Door {
 
-    private ArrayList<Room> connectedRooms = new ArrayList<>();
+    private ArrayList<Room> connectedRooms = new ArrayList<Room>();
     private int wallPosition;
     private int otherRoomid;
 

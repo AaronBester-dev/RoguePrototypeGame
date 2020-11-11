@@ -8,7 +8,6 @@ W/Arrow Key Up = Up
 A/Arrow Key Left = Left 
 S/Arrow Key Down = Down 
 D/Arrow Key Right = Right 
-Specific differences: For verifyRooms() if the room that was removed from the roomArray was the room the player was supposed to start in
-then I made it so the next available room was the room to start in. If there are no available rooms the program will stop and say
-the dungeon file can't be used. If no rooms are in the roomArray or there is only one room then the program will also stop and say the dungeon file can't be used.
+Specific differences: If no rooms are in the roomArray or there is only one room after running verifyRoom() on all rooms the program will exit and say
+the file can not be used.
 

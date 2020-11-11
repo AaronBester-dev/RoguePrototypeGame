@@ -389,7 +389,7 @@ public class Rogue {
     }
 
     private void checkRooms() {
-      ArrayList<Room> badRoomList = new ArrayList<>();
+      ArrayList<Room> badRoomList = new ArrayList<Room>();
       for (Room singleRoom : roomArray) {
         try {
           if (!(singleRoom.verifyRoom())) {
@@ -408,15 +408,9 @@ public class Rogue {
         if (roomArray.contains(badRoomList.get(i))) {
           roomArray.remove(badRoomList.get(i));
         }
-        if (badRoomList.get(i).isPlayerInRoom() && roomArray.size() >= 2) {
-          for (Room singleRoom : roomArray) {
-            player.setCurrentRoom(singleRoom);
-            singleRoom.setPlayer(player);
-            break;
-          }
-        } else {
+        if (badRoomList.get(i).isPlayerInRoom()) {
           player.setCurrentRoom(null);
-        }
+        } 
       }
     }
 
