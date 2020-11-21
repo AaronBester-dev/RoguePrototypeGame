@@ -22,7 +22,7 @@ public class TextUI {
 /**
 Constructor for TextUI class.  Creates the screens, sets
 cursor to top left corner and does nothing else.
-**/
+*/
     public TextUI() {
       super();
       try {
@@ -40,7 +40,7 @@ Prints a string to the screen starting at the indicated column and row.
 @param toDisplay the string to be printed
 @param column the column in which to start the display
 @param row the row in which to start the display
-**/
+*/
     public void putString(String toDisplay, int column, int row) {
       Terminal t = screen.getTerminal();
       try {
@@ -56,7 +56,7 @@ Prints a string to the screen starting at the indicated column and row.
 /**
 Changes the message at the top of the screen for the user.
 @param msg the message to be displayed
-**/
+*/
     public void setMessage(String msg) {
       putString("                                                ", 1, 1);
       putString(msg, startCol, msgRow);
@@ -66,7 +66,7 @@ Changes the message at the top of the screen for the user.
 Redraws the whole screen including the room and the message.
 @param message the message to be displayed at the top of the room
 @param room the room map to be drawn
-**/
+*/
     public void draw(String message, String room) {
       try {
         setMessage(message);
@@ -82,7 +82,7 @@ Redraws the whole screen including the room and the message.
 Obtains input from the user and returns it as a char.  Converts arrow
 keys to the equivalent movement keys in rogue.
 @return the ascii value of the key pressed by the user
-**/
+*/
     public char getInput() {
       KeyStroke keyStroke = null;
       char returnChar;
@@ -137,7 +137,7 @@ keys to the equivalent movement keys in rogue.
 /**
 the main method.
 @param args command line arguments are unused at this point.
-**/
+*/
 
     public static void main(String[] args) {
       char userInput = 'h';
