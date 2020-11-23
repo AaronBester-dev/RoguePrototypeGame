@@ -2,12 +2,12 @@
 public class Food extends Item implements Edible{
 
     public Food(){
-        super();
+      super();
     }
 
     @Override
     public String eat(){
-        return(super.getDescription());
+      return(super.getDescription());
     }
 
 }

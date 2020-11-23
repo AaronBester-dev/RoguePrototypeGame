@@ -2,12 +2,12 @@
 public class Clothing extends Item implements Wearable{
 
     public Clothing(){
-        super();
+      super();
     }
 
     @Override
     public String wear(){
-        return(super.getDescription());
+      return(super.getDescription());
     }
 
 }

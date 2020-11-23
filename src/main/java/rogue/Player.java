@@ -7,7 +7,6 @@ import java.awt.Point;
  * The player character.
  */
 public class Player {
-
     private String playerName;
     private Point playerLocation;
     private Room currentRoom;

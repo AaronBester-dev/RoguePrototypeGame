@@ -40,27 +40,21 @@ public class Rogue {
 */
 
     public Rogue(RogueParser theDungeonInfo) {
-
       parser = theDungeonInfo;
-
       Map roomInfo = parser.nextRoom();
       while (roomInfo != null) {
         addRoom(roomInfo);
         roomInfo = parser.nextRoom();
       }
-
       Map itemInfo = parser.nextItem();
       while (itemInfo != null) {
         addItem(itemInfo);
         itemInfo = parser.nextItem();
       }
-
       setSymbols();
       connectDoors();
-      /*Check rooms is ran twice in order to ensure that if any room depended on a
-      earlier room that was removed from the roomArray then those depended rooms are also removed*/
       checkRooms();
-      checkRooms();
+
       if (player.getCurrentRoom() != null) {
         nextDisplay = player.getCurrentRoom().displayRoom();
         convertStringToSymbols();
@@ -136,21 +130,17 @@ public class Rogue {
       Boolean isPlayer = Boolean.parseBoolean(toAdd.get("start").toString());
       Integer integerHeight = Integer.decode(toAdd.get("height").toString());
       Integer integerWidth = Integer.decode(toAdd.get("width").toString());
-
       if (isPlayer.booleanValue()) {
         setPlayer(new Player());
         newRoom.setPlayer(player);
         player.setCurrentRoom(newRoom);
       }
-
       newRoom.setId(integerId);
       newRoom.setHeight(integerHeight);
       newRoom.setWidth(integerWidth);
-
-      newRoom.setDoor("N", addDoor(toAdd.get("N"), newRoom));
-      newRoom.setDoor("W", addDoor(toAdd.get("W"), newRoom));
-      newRoom.setDoor("E", addDoor(toAdd.get("E"), newRoom));
-      newRoom.setDoor("S", addDoor(toAdd.get("S"), newRoom));
+      for(String key : newRoom.getDoors().keySet() ){
+        newRoom.setDoor(key, addDoor(toAdd.get(key),newRoom));
+      }
       newRoom.setRogue(this);
       newRoom.updateDisplayRoom();
       getRooms().add(newRoom);
@@ -263,51 +253,63 @@ public class Rogue {
 */
 
     public String makeMove(char input) throws InvalidMoveException {
-      Room currentRoom = player.getCurrentRoom();
-      String[][] currentRoomDisplayArray = player.getCurrentRoom().getRoomDisplayArray();
       int playerX = (int) player.getXyLocation().getX();
       int playerY = (int) player.getXyLocation().getY();
       Point wherePlayerWantsToGo = new Point(playerX, playerY);
       String moveMessage = "";
-      String collisionObject = "";
-      Item itemToBePickedUp = null;
-      Door doorToWalkThrough = null;
-
-      if (input == UP) {
-        wherePlayerWantsToGo.setLocation(playerX, --playerY);
-        moveMessage = "You walk up";
-      } else if (input == LEFT) {
-        wherePlayerWantsToGo.setLocation(--playerX, playerY);
-        moveMessage = "You walk left";
-      } else if (input == RIGHT) {
-        wherePlayerWantsToGo.setLocation(++playerX, playerY);
-        moveMessage = "You walk right";
-      } else if (input == DOWN) {
-        wherePlayerWantsToGo.setLocation(playerX, ++playerY);
-        moveMessage = "You walk down";
-      } else {
+     
+      try{
+        moveMessage = checkInput(input, playerX, playerY, wherePlayerWantsToGo);
+      } catch(InvalidMoveException e){
         throw new InvalidMoveException();
       }
 
+      moveMessage = whatHappenedWhenIMoved(wherePlayerWantsToGo);
+
+      nextDisplay = player.getCurrentRoom().displayRoom();
+      convertStringToSymbols();
+      return (moveMessage);
+    }
+
+    private String checkInput(char input, int playerX, int playerY, Point wherePlayerWantsToGo) throws InvalidMoveException{
+      if (input == UP) {
+        wherePlayerWantsToGo.setLocation(playerX, --playerY);
+        return ("You walk up");
+      } else if (input == LEFT) {
+        wherePlayerWantsToGo.setLocation(--playerX, playerY);
+        return "You walk left";
+      } else if (input == RIGHT) {
+        wherePlayerWantsToGo.setLocation(++playerX, playerY);
+        return "You walk right";
+      } else if (input == DOWN) {
+        wherePlayerWantsToGo.setLocation(playerX, ++playerY);
+        return "You walk down";
+      } else {
+        throw new InvalidMoveException();
+      }
+    }
+
+    private String whatHappenedWhenIMoved(Point wherePlayerWantsToGo){
+      Room currentRoom = player.getCurrentRoom();
+      String collisionObject = "";
+      Item itemToBePickedUp = null;
+      Door doorToWalkThrough = null;
+      String[][] currentRoomDisplayArray = player.getCurrentRoom().getRoomDisplayArray();
       collisionObject = whatDidICollideWith(currentRoomDisplayArray, wherePlayerWantsToGo);
       if (collisionObject == "NS_WALL" || collisionObject == "EW_WALL") {
-       moveMessage = "You hit a wall";
+        return "You hit a wall";
       } else if (collisionObject == "FLOOR") {
         movePlayer(player, wherePlayerWantsToGo);
       } else if (collisionObject == "ITEM") {
         itemToBePickedUp = getItemFromRoom(currentRoom, wherePlayerWantsToGo);
         player.pickUpItem(itemToBePickedUp);
         movePlayer(player, wherePlayerWantsToGo);
-        moveMessage = "Picked up a " + itemToBePickedUp.getType();
+        return "Picked up a " + itemToBePickedUp.getType();
       } else {
         doorToWalkThrough = currentRoom.getDoor(String.valueOf(collisionObject.charAt(0)));
         movePlayerToOtherRoom(player, doorToWalkThrough, String.valueOf(collisionObject.charAt(0)));
-        moveMessage = "You walk through a door.";
+        return "You walk through a door.";
       }
-
-      nextDisplay = player.getCurrentRoom().displayRoom();
-      convertStringToSymbols();
-      return (moveMessage);
     }
 
 /**
@@ -386,7 +388,6 @@ public class Rogue {
         otherDoor = otherRoom.getDoor("W");
         newXyLocation.setLocation(1, otherDoor.getWallPosition());
       }
-
       movePlayer(currentPlayer, newXyLocation);
     }
 
@@ -405,7 +406,6 @@ public class Rogue {
           }
         }
       }
-
       for (int i = 0; i < badRoomList.size(); i++) {
         if (roomArray.contains(badRoomList.get(i))) {
           roomArray.remove(badRoomList.get(i));
@@ -449,8 +449,6 @@ public class Rogue {
           }
           return true;
         }
-
-
       } else {
         return (false);
       }

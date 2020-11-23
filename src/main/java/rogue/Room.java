@@ -199,7 +199,6 @@ public class Room  {
       if (itemFound != 1) {
         throw new NoSuchItemException();
       }
-
     }
 
 /**
@@ -338,13 +337,10 @@ public class Room  {
           } else {
             roomDisplayString += roomDisplayArray[y][x];
           }
-
         }
         roomDisplayString += '\n';
       }
-
-      roomDisplayString += '\n';
-      roomDisplayString += '\n';
+      roomDisplayString += "\n\n";
       return (roomDisplayString);
     }
 }

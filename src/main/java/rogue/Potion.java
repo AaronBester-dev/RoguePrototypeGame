@@ -2,19 +2,21 @@
 public class Potion extends Magic implements Edible, Tossable{
 
     public Potion(){
-        super();
+      super();
     }
 
     @Override
     public String toss(){
-        String description = super.getDescription();
-        
-        return(super.getDescription());
+      String description = super.getDescription();
+      String[] descriptionArray = str.split(":");
+      return(descriptionArray[0]);
     }
 
     @Override
     public String eat(){
-
+      String description = super.getDescription();
+      String[] descriptionArray = str.split(":");
+      return(descriptionArray[1]);
     }
 
 }

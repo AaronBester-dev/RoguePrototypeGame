@@ -6,7 +6,6 @@ import java.util.ArrayList;
 *Class that holds all the information for a door.
 */
 public class Door {
-
     private ArrayList<Room> connectedRooms = new ArrayList<Room>();
     private int wallPosition;
     private int otherRoomid;
@@ -37,7 +36,6 @@ public class Door {
 *getter that gets the wall position of a door.
 *@return the wall position of the door.
 */
-
     public int getWallPosition() {
       return (wallPosition);
     }
