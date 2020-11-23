@@ -310,6 +310,7 @@ public class Rogue {
         movePlayerToOtherRoom(player, doorToWalkThrough, String.valueOf(collisionObject.charAt(0)));
         return "You walk through a door.";
       }
+      return "";
     }
 
 /**
@@ -406,6 +407,10 @@ public class Rogue {
           }
         }
       }
+      removeRooms(badRoomList);
+    }
+
+    private void removeRooms(ArrayList<Room> badRoomList){
       for (int i = 0; i < badRoomList.size(); i++) {
         if (roomArray.contains(badRoomList.get(i))) {
           roomArray.remove(badRoomList.get(i));
@@ -430,8 +435,14 @@ public class Rogue {
             }
           }
         }
+        return makeAndAddNewDoor(keyOfDoorToConnectTo,roomToConnectDoorTo);
+      } else {
+        return (false);
+      }
+    }
 
-        if (roomToConnectDoorTo == null) {
+    private boolean makeAndAddNewDoor(String keyOfDoorToConnectTo, Room roomToConnectDoorTo){
+       if (roomToConnectDoorTo == null) {
           return (false);
         } else {
           if (keyOfDoorToConnectTo.equals("N")) {
@@ -449,9 +460,5 @@ public class Rogue {
           }
           return true;
         }
-      } else {
-        return (false);
-      }
     }
-
 }

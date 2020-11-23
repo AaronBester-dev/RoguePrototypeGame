@@ -147,15 +147,12 @@ the main method.
       RogueParser parser = new RogueParser(configurationFileLocation);
       TextUI theGameUI = new TextUI();
       Rogue theGame = new Rogue(parser);
-
       oldRoom = theGame.getPlayer().getCurrentRoom();
-
       if (oldRoom == null) {
         theGameUI.programExitError();
       }
       message = "Welcome to my Rogue game";
       theGameUI.draw(message, theGame.getNextDisplay());
-
       while (userInput != 'q') {
         userInput = theGameUI.getInput();
         try {

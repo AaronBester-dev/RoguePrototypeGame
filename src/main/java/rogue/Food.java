@@ -1,3 +1,4 @@
+package rogue;
 
 public class Food extends Item implements Edible{
 

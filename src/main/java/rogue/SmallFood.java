@@ -1,3 +1,4 @@
+package rogue;
 
 public class SmallFood extends Food implements Tossable{
 

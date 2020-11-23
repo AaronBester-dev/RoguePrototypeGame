@@ -1,3 +1,4 @@
+package rogue;
 
 public class Clothing extends Item implements Wearable{
 
