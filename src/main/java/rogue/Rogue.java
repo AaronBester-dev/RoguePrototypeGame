@@ -264,14 +264,17 @@ public class Rogue {
       int playerY = (int) player.getXyLocation().getY();
       Point wherePlayerWantsToGo = new Point(playerX, playerY);
       String moveMessage = "";
+      String returnValue = "";
 
       try {
         moveMessage = checkInput(input, wherePlayerWantsToGo);
       } catch (InvalidMoveException e) {
         throw new InvalidMoveException();
       }
-      moveMessage = whatHappenedWhenIMoved(wherePlayerWantsToGo);
-
+      returnValue = whatHappenedWhenIMoved(wherePlayerWantsToGo);
+      if  (!(returnValue.equals(""))) {
+        moveMessage = returnValue;
+      }
       nextDisplay = player.getCurrentRoom().displayRoom();
       convertStringToSymbols();
       return (moveMessage);
