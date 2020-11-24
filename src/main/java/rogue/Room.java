@@ -213,22 +213,22 @@ public class Room  {
         throw new NotEnoughDoorsException();
       }
 
-      if(!(verifyDoorConnections())){
+      if (!(verifyDoorConnections())) {
         return (false);
       }
 
-      if(!(verifyRoomItems())){
+      if (!(verifyRoomItems())) {
         return false;
       }
 
-      if(!(verifyPlayerLocation())){
+      if (!(verifyPlayerLocation())) {
         return false;
       }
 
       return true;
     }
 
-    private boolean verifyDoorConnections(){
+    private boolean verifyDoorConnections() {
       for (String key: getDoors().keySet()) {
         Door doorHolder = getDoors().get(key);
         if (doorHolder != null) {
@@ -237,10 +237,10 @@ public class Room  {
           }
         }
       }
-      return(true);
+      return (true);
     }
 
-    private boolean verifyRoomItems(){
+    private boolean verifyRoomItems() {
       for (Item singleItem: roomItems) {
         int itemX = (int) singleItem.getXyLocation().getX();
         int itemY = (int) singleItem.getXyLocation().getY();
@@ -251,10 +251,10 @@ public class Room  {
           return false;
         }
       }
-      return(true);
+      return (true);
     }
 
-    private boolean verifyPlayerLocation(){
+    private boolean verifyPlayerLocation() {
       if (isPlayerInRoom()) {
         int playerX = (int) getPlayer().getXyLocation().getX();
         int playerY = (int) getPlayer().getXyLocation().getY();

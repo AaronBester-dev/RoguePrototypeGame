@@ -54,7 +54,7 @@ public class Rogue {
       setSymbols();
       connectDoors();
       checkRooms();
-
+      checkRooms();
       if (player.getCurrentRoom() != null) {
         nextDisplay = player.getCurrentRoom().displayRoom();
         convertStringToSymbols();
@@ -138,9 +138,10 @@ public class Rogue {
       newRoom.setId(integerId);
       newRoom.setHeight(integerHeight);
       newRoom.setWidth(integerWidth);
-      for(String key : newRoom.getDoors().keySet() ){
-        newRoom.setDoor(key, addDoor(toAdd.get(key),newRoom));
-      }
+      newRoom.setDoor("N", addDoor(toAdd.get("N"), newRoom));
+      newRoom.setDoor("S", addDoor(toAdd.get("S"), newRoom));
+      newRoom.setDoor("W", addDoor(toAdd.get("W"), newRoom));
+      newRoom.setDoor("E", addDoor(toAdd.get("E"), newRoom));
       newRoom.setRogue(this);
       newRoom.updateDisplayRoom();
       getRooms().add(newRoom);
@@ -154,35 +155,42 @@ public class Rogue {
     public void addItem(Map<String, String> toAdd) {
       Item newItem = new Item();
       int itemId = Integer.decode(toAdd.get("id"));
-      int x = 0;
-      int y = 1;
-      boolean itemIsInCorrectLocation = false;
-      int roomId = 0;
-      int itemX = 0;
-      int itemY = 0;
-      Point newItemLocation = null;
       Room roomToAddTo = null;
-
+      int roomId = 0;
       newItem.setId(itemId);
       newItem.setName(toAdd.get("name"));
       newItem.setType(toAdd.get("type"));
       newItem.setDescription(toAdd.get("description"));
-
       if (toAdd.get("room") != null) {
         roomId = Integer.decode(toAdd.get("room"));
-        itemX = Integer.decode(toAdd.get("x"));
-        itemY = Integer.decode(toAdd.get("y"));
-        newItemLocation = new Point(itemX, itemY);
-        roomToAddTo = null;
-        newItem.setXyLocation(newItemLocation);
-        rogueItems.add(newItem);
+        addItemToRoom(toAdd, newItem, roomId);
         for (Room singleRoom : getRooms()) {
           if (roomId == singleRoom.getId()) {
             roomToAddTo = singleRoom;
           }
         }
         roomToAddTo.updateDisplayRoom();
-        while (!itemIsInCorrectLocation) {
+        putItemInRoomInCorrectPosition(roomToAddTo, newItem);
+      }
+    }
+
+    private void addItemToRoom(Map<String, String> toAdd, Item newItem, int roomId) {
+      int itemX = 0;
+      int itemY = 0;
+      Point newItemLocation = null;
+      roomId = Integer.decode(toAdd.get("room"));
+      itemX = Integer.decode(toAdd.get("x"));
+      itemY = Integer.decode(toAdd.get("y"));
+      newItemLocation = new Point(itemX, itemY);
+      newItem.setXyLocation(newItemLocation);
+      rogueItems.add(newItem);
+    }
+
+    private void putItemInRoomInCorrectPosition(Room roomToAddTo, Item newItem) {
+      int x = 0;
+      int y = 1;
+      boolean itemIsInCorrectLocation = false;
+      while (!itemIsInCorrectLocation) {
           try {
             roomToAddTo.addItem(newItem);
             itemIsInCorrectLocation = true;
@@ -196,7 +204,6 @@ public class Rogue {
             roomToAddTo.getRoomItems().remove(newItem);
             itemIsInCorrectLocation = true;
           }
-        }
       }
     }
 
@@ -257,13 +264,12 @@ public class Rogue {
       int playerY = (int) player.getXyLocation().getY();
       Point wherePlayerWantsToGo = new Point(playerX, playerY);
       String moveMessage = "";
-     
-      try{
-        moveMessage = checkInput(input, playerX, playerY, wherePlayerWantsToGo);
-      } catch(InvalidMoveException e){
+
+      try {
+        moveMessage = checkInput(input, wherePlayerWantsToGo);
+      } catch (InvalidMoveException e) {
         throw new InvalidMoveException();
       }
-
       moveMessage = whatHappenedWhenIMoved(wherePlayerWantsToGo);
 
       nextDisplay = player.getCurrentRoom().displayRoom();
@@ -271,7 +277,9 @@ public class Rogue {
       return (moveMessage);
     }
 
-    private String checkInput(char input, int playerX, int playerY, Point wherePlayerWantsToGo) throws InvalidMoveException{
+    private String checkInput(char input, Point wherePlayerWantsToGo) throws InvalidMoveException {
+      int playerX = (int) player.getXyLocation().getX();
+      int playerY = (int) player.getXyLocation().getY();
       if (input == UP) {
         wherePlayerWantsToGo.setLocation(playerX, --playerY);
         return ("You walk up");
@@ -289,7 +297,7 @@ public class Rogue {
       }
     }
 
-    private String whatHappenedWhenIMoved(Point wherePlayerWantsToGo){
+    private String whatHappenedWhenIMoved(Point wherePlayerWantsToGo) {
       Room currentRoom = player.getCurrentRoom();
       String collisionObject = "";
       Item itemToBePickedUp = null;
@@ -310,7 +318,7 @@ public class Rogue {
         movePlayerToOtherRoom(player, doorToWalkThrough, String.valueOf(collisionObject.charAt(0)));
         return "You walk through a door.";
       }
-      return "";
+      return ("");
     }
 
 /**
@@ -410,7 +418,7 @@ public class Rogue {
       removeRooms(badRoomList);
     }
 
-    private void removeRooms(ArrayList<Room> badRoomList){
+    private void removeRooms(ArrayList<Room> badRoomList) {
       for (int i = 0; i < badRoomList.size(); i++) {
         if (roomArray.contains(badRoomList.get(i))) {
           roomArray.remove(badRoomList.get(i));
@@ -435,13 +443,13 @@ public class Rogue {
             }
           }
         }
-        return makeAndAddNewDoor(keyOfDoorToConnectTo,roomToConnectDoorTo);
+        return makeAndAddNewDoor(keyOfDoorToConnectTo, roomToConnectDoorTo, roomToFix);
       } else {
         return (false);
       }
     }
 
-    private boolean makeAndAddNewDoor(String keyOfDoorToConnectTo, Room roomToConnectDoorTo){
+    private boolean makeAndAddNewDoor(String keyOfDoorToConnectTo, Room roomToConnectDoorTo, Room roomToFix) {
        if (roomToConnectDoorTo == null) {
           return (false);
         } else {

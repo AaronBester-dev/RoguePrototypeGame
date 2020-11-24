@@ -1,8 +1,15 @@
 package rogue;
 
-public class Magic extends Item{
+/**
+*Subclass of Item for Magic items.
+*/
 
-    public Magic(){
+
+public class Magic extends Item {
+/**
+*Default constructor for a magic Item.
+*/
+    public Magic() {
       super();
     }
 }

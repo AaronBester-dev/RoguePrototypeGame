@@ -5,12 +5,12 @@
             "height": 10,
             "width": 20,
             "doors": [{
-                "dir": "S",
+                "dir": "N",
                 "con_room": 2,
                 "wall_pos": 1
             },
             {
-                "dir": "N",
+                "dir": "S",
                 "con_room": 2,
                 "wall_pos": 4
             }],
