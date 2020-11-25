@@ -12,7 +12,7 @@ public class Inventory {
     private ArrayList<Item> inventory = new ArrayList<Item>();
     private int currentItemIndex;
 
-/** 
+/**
 *Default constructor that makes a empty inventory.
 */
 
@@ -22,31 +22,30 @@ public class Inventory {
     }
 /**
 *Sets whether the item is going to be tossed,worn,or eaten.
+*@param newMode the new mode the inventory is set to.
  */
     public void setMode(char newMode) {
         mode = newMode;
     }
 /**
-*Adds item to the list of items
+*Adds item to the list of items.
+*@param newItem item to be added to the inventory.
  */
     public void addItem(Item newItem) {
         inventory.add(newItem);
     }
 /**
 *Uses the currently selected item.
+*@return the description of the item being used
  */
     public String useItem() {
         Item currentItem = inventory.get(currentItemIndex);
-        if (!(inventory.isEmpty())){
-          if (mode == 'e'){
+        if (!(inventory.isEmpty())) {
+          if (mode == 'e') {
             return eatItem(currentItem);
-          }
-
-          if (mode == 't'){
+          } else if (mode == 't') {
             return tossItem(currentItem);
-          }
-
-          if (mode == 'w'){
+          } else if (mode == 'w') {
             return wearItem(currentItem);
           }
         } else {
@@ -57,6 +56,7 @@ public class Inventory {
 /**
 *Checks if the item can be eaten and eats it.
 *@return the description of the item being eaten.
+*@param currentItem the item that is currently selected by the user
  */
     private String eatItem(Item currentItem) {
         if (currentItem.getType() == "Food") {
@@ -67,13 +67,14 @@ public class Inventory {
           Potion potionToEat = (Potion) currentItem;
           inventory.remove(currentItem);
           return (potionToEat.eat());
-        } else{
+        } else {
           return ("Item is not edible.");
         }
     }
 /**
 *Checks if the item can be worn and equips it or unequips it if its already worn.
 *@return the description of the item being worn.
+*@param currentItem the item that is currently selected by the user
  */
     private String wearItem(Item currentItem) {
         String currentItemType = currentItem.getType();
@@ -93,13 +94,14 @@ public class Inventory {
             Clothing clothingToTakeOff = (Clothing) currentItem;
             inventory.get(currentItemIndex).setType("Clothing");
             return (clothingToTakeOff.wear());
-          } else{
+          } else {
             return ("Item is not wearable.");
           }
     }
 /**
 *Checks if the item can be tossed and tosses it.
 *@return the description of the item being tossed.
+*@param currentItem the item that is currently selected by the user
  */
     private String tossItem(Item currentItem) {
       if (currentItem.getType() == "SmallFood") {
@@ -121,27 +123,24 @@ public class Inventory {
     public String printInventory() {
         int i = 0;
         String inventoryString = "";
-        if (inventory.isEmpty()){
+        if (inventory.isEmpty()) {
             return "                    ";
-        }
-        else{
+        } else {
           for (i = 0; i < inventory.size(); i++) {
             if (i == currentItemIndex) {
                 inventoryString += inventory.get(i).getType() + "<--\n";
-            }
-            else {
+            } else {
                 inventoryString += inventory.get(i).getType() + "\n";
             }
           }
-          return(inventoryString);
+          return (inventoryString);
         }
-        
     }
 /**
 *Changes the currently selected item to the one above the currently selected item.
  */
     public void moveUpThroughInventory() {
-        if (currentItemIndex - 1 >= 0){
+        if (currentItemIndex - 1 >= 0) {
             --currentItemIndex;
         }
     }
@@ -149,7 +148,7 @@ public class Inventory {
 *Changes the currently selected item to the one below the currently selected item.
  */
     public void moveDownThroughInventory() {
-        if (currentItemIndex + 1 < inventory.size()){
+        if (currentItemIndex + 1 < inventory.size()) {
             ++currentItemIndex;
         }
     }

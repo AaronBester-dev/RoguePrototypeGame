@@ -11,10 +11,10 @@ import java.awt.Point;
 */
 
 public class Rogue {
-    public static final char UP = 'w';
-    public static final char DOWN = 's';
-    public static final char LEFT = 'a';
-    public static final char RIGHT = 'd';
+    public static final char UP = 's';
+    public static final char DOWN = 'x';
+    public static final char LEFT = 'z';
+    public static final char RIGHT = 'c';
     private String nextDisplay = "";
     private Player player;
     private Inventory inventory = new Inventory();
@@ -252,7 +252,8 @@ public class Rogue {
       }
     }
 /**
-*Changes the next display to a string representation of the inventory
+*Changes the next display to a string representation of the inventory.
+*@param input character from the keyboard
 */
 
     public void openInventoryPanel(char input) {
@@ -261,6 +262,7 @@ public class Rogue {
     }
 /**
 *Allows the player to move up and down through the inventory panel.
+*@param input character from the keyboard
 */
     public void moveThroughInventoryPanel(char input) {
       if (input == UP) {

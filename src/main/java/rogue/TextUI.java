@@ -155,11 +155,11 @@ the main method.
       theGameUI.draw(message, theGame.getNextDisplay());
       while (userInput != 'q') {
         userInput = theGameUI.getInput();
-        if(userInput == 'w' || userInput == 'e' || userInput == 't'){
+        if (userInput == 'w' || userInput == 'e' || userInput == 't') {
           theGame.openInventoryPanel(userInput);
           theGameUI.clearDisplay();
           theGameUI.draw("Select item to use.", theGame.getNextDisplay());
-          while(userInput != 'i'){
+          while (userInput != 'i') {
             userInput = theGameUI.getInput();
             theGame.moveThroughInventoryPanel(userInput);
             theGameUI.draw("Select item to use.", theGame.getNextDisplay());
@@ -181,7 +181,6 @@ the main method.
         }
         oldRoom = theGame.getPlayer().getCurrentRoom();
       }
-
       theGameUI.clearDisplay();
       theGameUI.draw("Goodbye! Hope you had fun!", "");
       try {
