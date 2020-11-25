@@ -154,7 +154,7 @@ public class Rogue {
 */
 
     public void addItem(Map<String, String> toAdd) {
-      Item newItem = new Item();
+      Item newItem = createItemSubclass(toAdd);
       int itemId = Integer.decode(toAdd.get("id"));
       Room roomToAddTo = null;
       int roomId = 0;
@@ -172,6 +172,22 @@ public class Rogue {
         }
         roomToAddTo.updateDisplayRoom();
         putItemInRoomInCorrectPosition(roomToAddTo, newItem);
+      }
+    }
+
+    private Item createItemSubclass(Map<String, String> toAdd) {
+      if (toAdd.get("type").equals("Food")) {
+        return (Item) new Food();
+      } else if (toAdd.get("type").equals("Magic")) {
+        return  (Item) new Magic();
+      } else if (toAdd.get("type").equals("Potion")) {
+        return (Item) new Potion();
+      } else if (toAdd.get("type").equals("Ring")) {
+        return (Item) new Ring();
+      } else if (toAdd.get("type").equals("Clothing")) {
+        return (Item) new Clothing();
+      } else {
+        return (Item) new SmallFood();
       }
     }
 
