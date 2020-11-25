@@ -167,8 +167,8 @@ the main method.
           message = theGame.useCurrentItem();
           theGameUI.clearDisplay();
           theGameUI.draw(message, theGame.getNextDisplay());
-        }
-        try {
+        } else {
+          try {
           message = theGame.makeMove(userInput);
           /*oldRoom is used to check if the player has moved rooms and then clears the display if they have*/
           if (oldRoom != theGame.getPlayer().getCurrentRoom()) {
@@ -180,6 +180,7 @@ the main method.
           theGameUI.setMessage(message);
         }
         oldRoom = theGame.getPlayer().getCurrentRoom();
+        }
       }
       theGameUI.clearDisplay();
       theGameUI.draw("Goodbye! Hope you had fun!", "");

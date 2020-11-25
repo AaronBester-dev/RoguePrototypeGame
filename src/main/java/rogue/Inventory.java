@@ -39,8 +39,10 @@ public class Inventory {
 *@return the description of the item being used
  */
     public String useItem() {
-        Item currentItem = inventory.get(currentItemIndex);
-        if (!(inventory.isEmpty())) {
+        if (inventory.isEmpty()) {
+            return ("Inventory is empty");
+        } else {
+          Item currentItem = inventory.get(currentItemIndex);
           if (mode == 'e') {
             return eatItem(currentItem);
           } else if (mode == 't') {
@@ -48,8 +50,6 @@ public class Inventory {
           } else if (mode == 'w') {
             return wearItem(currentItem);
           }
-        } else {
-          return ("Inventory is empty");
         }
         return ("Inventory is empty");
     }
@@ -59,11 +59,11 @@ public class Inventory {
 *@param currentItem the item that is currently selected by the user
  */
     private String eatItem(Item currentItem) {
-        if (currentItem.getType() == "Food") {
+        if (currentItem.getType().equals("Food")) {
           Food foodToEat = (Food) currentItem;
           inventory.remove(currentItem);
           return (foodToEat.eat());
-        } else if (currentItem.getType() == "Potion") {
+        } else if (currentItem.getType().equals("Potion")) {
           Potion potionToEat = (Potion) currentItem;
           inventory.remove(currentItem);
           return (potionToEat.eat());
@@ -78,19 +78,19 @@ public class Inventory {
  */
     private String wearItem(Item currentItem) {
         String currentItemType = currentItem.getType();
-         if (currentItem.getType() == "Clothing") {
+         if (currentItem.getType().equals("Clothing")) {
             Clothing clothingToWear = (Clothing) currentItem;
             inventory.get(currentItemIndex).setType(currentItemType + " (Equipped)");
             return (clothingToWear.wear());
-          } else if (currentItem.getType() == "Ring") {
+          } else if (currentItem.getType().equals("Ring")) {
             Ring ringToWear = (Ring) currentItem;
             inventory.get(currentItemIndex).setType(currentItemType + " (Equipped)");
             return (ringToWear.wear());
-          } else if (currentItem.getType() == "Ring (Equipped)") {
+          } else if (currentItem.getType().equals("Ring (Equipped)")) {
             Ring ringToTakeOff = (Ring) currentItem;
             inventory.get(currentItemIndex).setType("Ring");
             return (ringToTakeOff.wear());
-          } else if (currentItem.getType() == "Clothing (Equipped)") {
+          } else if (currentItem.getType().equals("Clothing (Equipped)")) {
             Clothing clothingToTakeOff = (Clothing) currentItem;
             inventory.get(currentItemIndex).setType("Clothing");
             return (clothingToTakeOff.wear());
@@ -104,11 +104,11 @@ public class Inventory {
 *@param currentItem the item that is currently selected by the user
  */
     private String tossItem(Item currentItem) {
-      if (currentItem.getType() == "SmallFood") {
+      if (currentItem.getType().equals("SmallFood")) {
             SmallFood foodToToss = (SmallFood) currentItem;
             inventory.remove(currentItem);
             return (foodToToss.toss());
-          } else if (currentItem.getType() == "Potion") {
+          } else if (currentItem.getType().equals("Potion")) {
             Potion potionToToss = (Potion) currentItem;
             inventory.remove(currentItem);
             return (potionToToss.toss());
@@ -128,9 +128,9 @@ public class Inventory {
         } else {
           for (i = 0; i < inventory.size(); i++) {
             if (i == currentItemIndex) {
-                inventoryString += inventory.get(i).getType() + "<--\n";
+                inventoryString += inventory.get(i).getName() + "<--\n";
             } else {
-                inventoryString += inventory.get(i).getType() + "\n";
+                inventoryString += inventory.get(i).getName() + "                              \n";
             }
           }
           return (inventoryString);
