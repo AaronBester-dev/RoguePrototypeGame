@@ -10,7 +10,6 @@ public class Player {
     private String playerName;
     private Point playerLocation;
     private Room currentRoom;
-    private Inventory inventory = new Inventory();
 
 /**
  * Default player constructor that sets player to default values.

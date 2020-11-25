@@ -17,6 +17,7 @@ public class Rogue {
     public static final char RIGHT = 'd';
     private String nextDisplay = "";
     private Player player;
+    private Inventory inventory = new Inventory();
     private ArrayList<Room> roomArray = new ArrayList<Room>();
     private ArrayList<Item> rogueItems = new ArrayList<Item>();
     private HashMap<String, Character> symbolMap;
@@ -251,6 +252,27 @@ public class Rogue {
       }
     }
 
+    public void openInventoryPanel(char input){
+      inventory.setMode(input);
+      nextDisplay = inventory.printInventory();
+    }
+
+    public void moveThroughInventoryPanel(char input){
+      if(input == UP){
+        inventory.moveUpThroughInventory();
+      } else if(input == DOWN){
+        inventory.moveDownThroughInventory();
+      }
+      nextDisplay = inventory.printInventory();
+    }
+
+    public String useCurrentItem(){
+      String message = "";
+      message = inventory.useItem();
+      nextDisplay = player.getCurrentRoom().displayRoom();
+      convertStringToSymbols();
+      return message;
+    }
 
 /**
 * returns the string of the room after a move.
@@ -313,7 +335,7 @@ public class Rogue {
         movePlayer(player, wherePlayerWantsToGo);
       } else if (collisionObject == "ITEM") {
         itemToBePickedUp = getItemFromRoom(currentRoom, wherePlayerWantsToGo);
-        player.pickUpItem(itemToBePickedUp);
+        inventory.addItem(itemToBePickedUp);
         movePlayer(player, wherePlayerWantsToGo);
         return "Picked up a " + itemToBePickedUp.getType();
       } else {

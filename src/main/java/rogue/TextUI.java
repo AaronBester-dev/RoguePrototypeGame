@@ -156,9 +156,17 @@ the main method.
       while (userInput != 'q') {
         userInput = theGameUI.getInput();
         if(userInput == 'w' || userInput == 'e' userInput == 't'){
+          theGame.openInventoryPanel();
+          theGameUI.clearDisplay();
+          theGameUI.draw("Select item to use.", theGame.getNextDisplay());
           while(userInput != 'i'){
-            
+            userInput = theGameUI.getInput();
+            theGame.moveThroughInventoryPanel();
+            theGameUI.draw("Select item to use.", theGame.getNextDisplay());
           }
+          message = theGame.useCurrentItem();
+          theGameUI.clearDisplay();
+          theGameUI.draw(message, theGame.getNextDisplay());
         }
         try {
           message = theGame.makeMove(userInput);
