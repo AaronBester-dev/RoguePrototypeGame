@@ -78,30 +78,4 @@ public class Player {
     public void setCurrentRoom(Room newRoom) {
       currentRoom = newRoom;
     }
-/**
- *picks up the item for the player and adds it to the inventory.
- *@param itemToBePickedUp item that is going to be added.
- */
-    public void pickUpItem(Item itemToBePickedUp) {
-      inventory.addItem(itemToBePickedUp);
-    }
-
-    public String openInventory(char input){
-      inventory.setMode(input);
-      return inventory.printInventory();
-    }
-
-    public String useCurrentItem(){
-      return inventory.useItem();
-    }
-
-    public String moveThroughInventory(char input){
-      if(input == UP){
-        inventory.moveUpThroughInventory();
-        return(inventory.printInventory());
-      } else if(input == DOWN){
-        inventory.moveDownThroughInventory();
-        return(inventory.printInventory());
-      }
-    }
 }
