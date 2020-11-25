@@ -10,7 +10,7 @@ public class Player {
     private String playerName;
     private Point playerLocation;
     private Room currentRoom;
-    private ArrayList<Item> inventory = new ArrayList<Item>();
+    private Inventory inventory = new Inventory();
 
 /**
  * Default player constructor that sets player to default values.
@@ -84,6 +84,25 @@ public class Player {
  *@param itemToBePickedUp item that is going to be added.
  */
     public void pickUpItem(Item itemToBePickedUp) {
-      inventory.add(itemToBePickedUp);
+      inventory.addItem(itemToBePickedUp);
+    }
+
+    public String openInventory(char input){
+      inventory.setMode(input);
+      return inventory.printInventory();
+    }
+
+    public String useCurrentItem(){
+      return inventory.useItem();
+    }
+
+    public String moveThroughInventory(char input){
+      if(input == UP){
+        inventory.moveUpThroughInventory();
+        return(inventory.printInventory());
+      } else if(input == DOWN){
+        inventory.moveDownThroughInventory();
+        return(inventory.printInventory());
+      }
     }
 }

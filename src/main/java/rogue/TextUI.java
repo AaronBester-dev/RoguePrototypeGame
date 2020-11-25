@@ -155,6 +155,11 @@ the main method.
       theGameUI.draw(message, theGame.getNextDisplay());
       while (userInput != 'q') {
         userInput = theGameUI.getInput();
+        if(userInput == 'w' || userInput == 'e' userInput == 't'){
+          while(userInput != 'i'){
+            
+          }
+        }
         try {
           message = theGame.makeMove(userInput);
           /*oldRoom is used to check if the player has moved rooms and then clears the display if they have*/
