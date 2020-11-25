@@ -251,22 +251,30 @@ public class Rogue {
         }
       }
     }
+/**
+*Changes the next display to a string representation of the inventory
+*/
 
-    public void openInventoryPanel(char input){
+    public void openInventoryPanel(char input) {
       inventory.setMode(input);
       nextDisplay = inventory.printInventory();
     }
-
-    public void moveThroughInventoryPanel(char input){
-      if(input == UP){
+/**
+*Allows the player to move up and down through the inventory panel.
+*/
+    public void moveThroughInventoryPanel(char input) {
+      if (input == UP) {
         inventory.moveUpThroughInventory();
-      } else if(input == DOWN){
+      } else if (input == DOWN) {
         inventory.moveDownThroughInventory();
       }
       nextDisplay = inventory.printInventory();
     }
-
-    public String useCurrentItem(){
+/**
+*Uses the currently selected item and returns the description of the item used.
+*@return the description of the item being used
+*/
+    public String useCurrentItem() {
       String message = "";
       message = inventory.useItem();
       nextDisplay = player.getCurrentRoom().displayRoom();
