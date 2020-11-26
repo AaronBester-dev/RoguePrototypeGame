@@ -3,36 +3,92 @@ package rogue;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.TerminalScreen;
-import com.googlecode.lanterna.terminal.ansi.UnixTerminal;
+import com.googlecode.lanterna.terminal.swing.SwingTerminal;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.TerminalPosition;
 
+import javax.swing.JFrame;
+import java.awt.Container;
+import javax.swing.WindowConstants;
+import java.awt.BorderLayout;
 import java.io.IOException;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.border.Border;
+import javax.swing.BorderFactory;
+import javax.swing.border.EtchedBorder;
 
 
-public class TextUI {
-
+public class TextUI extends JFrame {
+   private SwingTerminal terminal;
+   public static final int WIDTH = 700;
+   public static final int HEIGHT = 800;
+   public static final int COLS = 80;
+   public static final int ROWS = 24;
    private TerminalScreen screen;
    private final char startCol = 0;
    private final char msgRow = 1;
    private final char roomRow = 3;
    private static final int SLEEPTIME = 2000;
-
+   private Container contentPane;
 
 /**
 Constructor for TextUI class.  Creates the screens, sets
 cursor to top left corner and does nothing else.
 */
     public TextUI() {
-      super();
-      try {
-        screen = new TerminalScreen(new UnixTerminal());
-        screen.setCursorPosition(TerminalPosition.TOP_LEFT_CORNER);
-        screen.startScreen();
-        screen.refresh();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+      super("my awesome game");
+      contentPane = getContentPane();
+      setWindowDefaults(getContentPane());
+      setUpPanels();
+      pack();
+      start();
+    }
+
+    private void setWindowDefaults(Container contentPanel) {
+        setTitle("Rogue!");
+        setSize(WIDTH, HEIGHT);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        contentPanel.setLayout(new BorderLayout());
+
+    }
+
+     private void setTerminal() {
+        JPanel terminalPanel = new JPanel();
+        terminal = new SwingTerminal();
+        terminalPanel.add(terminal);
+        contentPane.add(terminalPanel, BorderLayout.CENTER);
+    }
+
+    private void setUpPanels() {
+        JPanel labelPanel = new JPanel();
+        setUpLabelPanel(labelPanel);
+        setTerminal();
+    }
+
+    private void setUpLabelPanel(JPanel thePanel) {
+        Border prettyLine = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
+        thePanel.setBorder(prettyLine);
+        JLabel exampleLabel = new JLabel("Tomorrow and tomorrow and tomorrow");
+        thePanel.add(exampleLabel);
+        JTextField dataEntry = new JTextField("Enter text here", ROWS);
+        thePanel.add(dataEntry);
+        JButton clickMe = new JButton("Click Me");
+        thePanel.add(clickMe);
+        contentPane.add(thePanel, BorderLayout.SOUTH);
+    }
+
+     private void start() {
+        try {
+            screen = new TerminalScreen(terminal);
+            screen.setCursorPosition(TerminalPosition.TOP_LEFT_CORNER);
+            screen.startScreen();
+            screen.refresh();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 /**
@@ -153,6 +209,7 @@ the main method.
       }
       message = "Welcome to my Rogue game";
       theGameUI.draw(message, theGame.getNextDisplay());
+      theGameUI.setVisible(true);
       while (userInput != 'q') {
         userInput = theGameUI.getInput();
         if (userInput == 'w' || userInput == 'e' || userInput == 't') {
