@@ -7,15 +7,21 @@ import com.googlecode.lanterna.terminal.swing.SwingTerminal;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.TerminalPosition;
 
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.FileInputStream;
+
 import javax.swing.JFrame;
 import java.awt.Container;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
 import java.io.IOException;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JMenuBar;
 import javax.swing.JTextField;
-import javax.swing.JButton;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.border.Border;
 import javax.swing.BorderFactory;
 import javax.swing.border.EtchedBorder;
@@ -23,10 +29,13 @@ import javax.swing.border.EtchedBorder;
 
 public class TextUI extends JFrame {
    private SwingTerminal terminal;
+   private static Rogue theGame;
    public static final int WIDTH = 700;
    public static final int HEIGHT = 800;
    public static final int COLS = 80;
    public static final int ROWS = 24;
+   private static final int TEXTSIZE = 50;
+   private static final int PLAYERTEXTSIZE = 10;
    private TerminalScreen screen;
    private final char startCol = 0;
    private final char msgRow = 1;
@@ -43,15 +52,36 @@ cursor to top left corner and does nothing else.
       contentPane = getContentPane();
       setWindowDefaults(getContentPane());
       setUpPanels();
+      setUpMenuBar();
       pack();
       start();
     }
 
-    private void setWindowDefaults(Container contentPanel) {
+    private void setWindowDefaults(Container newContentPane) {
         setTitle("Rogue!");
         setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        contentPanel.setLayout(new BorderLayout());
+        newContentPane.setLayout(new BorderLayout());
+    }
+
+    private void setUpMenuBar() {
+      JMenuBar menuBar = new JMenuBar();
+      setJMenuBar(menuBar);
+
+      JMenu fileMenu = new JMenu("File");
+      menuBar.add(fileMenu);
+
+      JMenuItem saveFile = new JMenuItem("Save");
+      fileMenu.add(saveFile);
+
+      JMenuItem loadFile = new JMenuItem("Load");
+      fileMenu.add(loadFile);
+
+      JMenuItem changePlayerName = new JMenuItem("Change Player Name");
+      fileMenu.add(changePlayerName);
+
+      JMenuItem loadMap = new JMenuItem("Load New Map");
+      fileMenu.add(loadMap);
 
     }
 
@@ -63,21 +93,23 @@ cursor to top left corner and does nothing else.
     }
 
     private void setUpPanels() {
-        JPanel labelPanel = new JPanel();
-        setUpLabelPanel(labelPanel);
+        JPanel textPanel = new JPanel();
+        setUpTextPanel(textPanel);
         setTerminal();
     }
 
-    private void setUpLabelPanel(JPanel thePanel) {
+    private void setUpTextPanel(JPanel thePanel) {
         Border prettyLine = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
         thePanel.setBorder(prettyLine);
-        JLabel exampleLabel = new JLabel("Tomorrow and tomorrow and tomorrow");
-        thePanel.add(exampleLabel);
-        JTextField dataEntry = new JTextField("Enter text here", ROWS);
-        thePanel.add(dataEntry);
-        JButton clickMe = new JButton("Click Me");
-        thePanel.add(clickMe);
-        contentPane.add(thePanel, BorderLayout.SOUTH);
+        JTextField playerName = new JTextField("Name", PLAYERTEXTSIZE);
+        playerName.setHorizontalAlignment(JTextField.CENTER);
+        playerName.setEditable(false);
+        thePanel.add(playerName);
+        JTextField message = new JTextField("Welcome To My Rogue Game", TEXTSIZE);
+        message.setHorizontalAlignment(JTextField.CENTER);
+        message.setEditable(false);
+        thePanel.add(message);
+        contentPane.add(thePanel, BorderLayout.NORTH);
     }
 
      private void start() {
@@ -89,6 +121,25 @@ cursor to top left corner and does nothing else.
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+/**
+*Changes message in the message label.
+*@param message message you want to add to the label
+*/
+    public void changeMessage(String message) {
+      JPanel messagePanel = (JPanel) contentPane.getComponent(0);
+      JTextField messageText = (JTextField) messagePanel.getComponent(1);
+      messageText.setText(message);
+    }
+
+    /**
+*Changes player name in the player text field.
+*@param newName new player name.
+*/
+    public void changePlayerName(String newName) {
+      JPanel messagePanel = (JPanel) contentPane.getComponent(0);
+      JTextField nameText = (JTextField) messagePanel.getComponent(0);
+      nameText.setText(newName);
     }
 
 /**
@@ -188,8 +239,37 @@ keys to the equivalent movement keys in rogue.
       }
       System.exit(-1);
     }
-
-
+/**
+* Saves a rogue object as a binary file.
+*/
+    public void save() {
+      String filename = "rogue1.sav";
+      try {
+            //Saving of object in a file
+            FileOutputStream outPutStream = new FileOutputStream(filename);
+            ObjectOutputStream outPutDest = new ObjectOutputStream(outPutStream);
+            // Method for serialization of object
+            outPutDest.writeObject(theGame);
+            outPutDest.close();
+            outPutStream.close();
+      } catch (IOException ex) {
+        System.out.println(ex);
+      }
+    }
+/**
+* Loads a binary file containing the rogue object.
+* @param filename name of file containing the saved rogue object.
+*/
+    public void loadGame(String filename) {
+      try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename)); ) {
+             // Method for deserialization of object
+            theGame = (Rogue) in.readObject();   //we're casting it to the object we know it is
+        } catch (IOException ex) {
+            System.out.println("IOException is caught " + ex);
+        } catch (ClassNotFoundException ex) {
+            System.out.println("ClassNotFoundException is caught " + ex);
+        }
+    }
 /**
 the main method.
 @param args command line arguments are unused at this point.
@@ -202,12 +282,13 @@ the main method.
       String configurationFileLocation = "fileLocations.json";
       RogueParser parser = new RogueParser(configurationFileLocation);
       TextUI theGameUI = new TextUI();
-      Rogue theGame = new Rogue(parser);
+      theGame = new Rogue(parser);
       oldRoom = theGame.getPlayer().getCurrentRoom();
       if (oldRoom == null) {
         theGameUI.programExitError();
       }
       message = "Welcome to my Rogue game";
+      theGameUI.changeMessage(message);
       theGameUI.draw(message, theGame.getNextDisplay());
       theGameUI.setVisible(true);
       while (userInput != 'q') {
@@ -224,6 +305,7 @@ the main method.
           message = theGame.useCurrentItem();
           theGameUI.clearDisplay();
           theGameUI.draw(message, theGame.getNextDisplay());
+          theGameUI.changeMessage(message);
         } else {
           try {
           message = theGame.makeMove(userInput);
@@ -232,19 +314,17 @@ the main method.
             theGameUI.clearDisplay();
           }
           theGameUI.draw(message, theGame.getNextDisplay());
+          theGameUI.changeMessage(message);
         } catch (InvalidMoveException badMove) {
           message = "I didn't understand what you meant, please enter a command";
           theGameUI.setMessage(message);
+          theGameUI.changeMessage(message);
         }
         oldRoom = theGame.getPlayer().getCurrentRoom();
         }
       }
       theGameUI.clearDisplay();
       theGameUI.draw("Goodbye! Hope you had fun!", "");
-      try {
-        Thread.sleep(SLEEPTIME);
-      } catch (InterruptedException q) {
-        q.printStackTrace();
-      }
+      theGameUI.changeMessage("Goodbye! Hope you had fun!");
     }
 }
