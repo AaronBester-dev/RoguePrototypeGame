@@ -19,7 +19,6 @@ public class RogueParser {
     private ArrayList<Map<String, String>> items = new ArrayList<>();
     private ArrayList<Map<String, String>> itemLocations = new ArrayList<>();
     private HashMap<String, Character> symbols = new HashMap<>();
-
     private Iterator<Map<String, String>> roomIterator;
     private Iterator<Map<String, String>> itemIterator;
 
@@ -39,6 +38,14 @@ public class RogueParser {
      */
     public RogueParser(String filename) {
       parse(filename);
+    }
+    /**
+     * Constructor that takes filename for filelocatsion and room file and sets up the object.
+     * @param fileLocationFilename  (String) name of file that contains file location for rooms and symbols
+     * @param roomFile name of file that contains room location
+     */
+    public RogueParser(String fileLocationFilename, String roomFile) {
+      parseWithoutGettingRoomFile(fileLocationFilename, roomFile);
     }
 
     /**
@@ -123,6 +130,46 @@ public class RogueParser {
         String symbolsFileLocation = (String) configurationJSON.get("Symbols");
 
         Object roomsObj = parser.parse(new FileReader(roomsFileLocation));
+        roomsJSON = (JSONObject) roomsObj;
+
+        Object symbolsObj = parser.parse(new FileReader(symbolsFileLocation));
+        symbolsJSON = (JSONObject) symbolsObj;
+
+
+        extractRoomInfo(roomsJSON);
+        extractItemInfo(roomsJSON);
+        extractSymbolInfo(symbolsJSON);
+
+        roomIterator = rooms.iterator();
+        itemIterator = items.iterator();
+
+      } catch (FileNotFoundException e) {
+        System.out.println("Cannot find file named: " + filename);
+      } catch (IOException e) {
+        e.printStackTrace();
+      } catch (ParseException e) {
+        System.out.println("Error parsing JSON file");
+      }
+    }
+
+    /**
+     * Read the file containing the file locations.
+     * @param filename (String) Name of the file
+     * @param roomFileName (String) Name of the room file
+     */
+    private void parseWithoutGettingRoomFile(String filename, String roomFileName) {
+      JSONParser parser = new JSONParser();
+      JSONObject roomsJSON;
+      JSONObject symbolsJSON;
+
+      try {
+        Object obj = parser.parse(new FileReader(filename));
+        JSONObject configurationJSON = (JSONObject) obj;
+
+        // Extract the Symbols value from the file to get the file location for symbols-map
+        String symbolsFileLocation = (String) configurationJSON.get("Symbols");
+
+        Object roomsObj = parser.parse(new FileReader(roomFileName));
         roomsJSON = (JSONObject) roomsObj;
 
         Object symbolsObj = parser.parse(new FileReader(symbolsFileLocation));

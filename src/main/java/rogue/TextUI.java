@@ -7,6 +7,7 @@ import com.googlecode.lanterna.terminal.swing.SwingTerminal;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.TerminalPosition;
 
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JFileChooser;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
@@ -88,6 +89,7 @@ cursor to top left corner and does nothing else.
       fileMenu.add(changePlayerName);
 
       JMenuItem loadMap = new JMenuItem("Load New Map");
+      loadMap.addActionListener(ev -> changeJsonFile());
       fileMenu.add(loadMap);
 
     }
@@ -324,6 +326,21 @@ keys to the equivalent movement keys in rogue.
         } catch (ClassNotFoundException ex) {
             System.out.println("ClassNotFoundException is caught " + ex);
         }
+    }
+
+    private void changeJsonFile() {
+      JFrame loadFrame = new JFrame();
+      JFileChooser fileBrowser = new JFileChooser();
+      fileBrowser.setFileFilter(new FileNameExtensionFilter("json", "json"));
+      int returnValue = fileBrowser.showOpenDialog(loadFrame);
+      String filename = "";
+      if (returnValue == JFileChooser.APPROVE_OPTION) {
+        filename = fileBrowser.getSelectedFile().toString();
+        theGame = new Rogue(new RogueParser("fileLocations.json", filename));
+      }
+      draw("Loaded " + filename, theGame.getNextDisplay());
+      changeMessage("Loaded " + filename);
+      changeInventoryText(theGame.getInventoryString());
     }
 /**
 the main method.
