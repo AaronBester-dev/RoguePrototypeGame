@@ -31,14 +31,14 @@ import javax.swing.border.EtchedBorder;
 public class TextUI extends JFrame {
    private SwingTerminal terminal;
    private static Rogue theGame;
-   public static final int WIDTH = 700;
-   public static final int HEIGHT = 800;
+   public static final int WIDTH = 1000;
+   public static final int HEIGHT = 1000;
    public static final int COLS = 80;
    public static final int ROWS = 24;
    private static final int TEXTSIZE = 50;
    private static final int PLAYERTEXTSIZE = 10;
-   private static final int INVENTORYY = 20;
-   private static final int INVENTORYX = 10;
+   private static final int INVENTORYY = 100;
+   private static final int INVENTORYX = 17;
    private TerminalScreen screen;
    private final char startCol = 0;
    private final char msgRow = 1;
@@ -119,7 +119,7 @@ cursor to top left corner and does nothing else.
     }
 
     private void setUpInventoryPanel(JPanel thePanel) {
-      JTextArea inventoryText = new JTextArea(INVENTORYX, INVENTORYY);
+      JTextArea inventoryText = new JTextArea(INVENTORYY, INVENTORYX);
       inventoryText.setEditable(false);
       thePanel.add(inventoryText);
       contentPane.add(thePanel, BorderLayout.EAST);
