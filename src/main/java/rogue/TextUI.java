@@ -11,7 +11,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
 import java.io.FileInputStream;
-
+import java.awt.FlowLayout;
 import javax.swing.JFrame;
 import java.awt.Container;
 import javax.swing.WindowConstants;
@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JMenuBar;
 import javax.swing.JTextField;
 import javax.swing.JMenu;
+import javax.swing.JTextArea;
 import javax.swing.JMenuItem;
 import javax.swing.border.Border;
 import javax.swing.BorderFactory;
@@ -36,6 +37,8 @@ public class TextUI extends JFrame {
    public static final int ROWS = 24;
    private static final int TEXTSIZE = 50;
    private static final int PLAYERTEXTSIZE = 10;
+   private static final int INVENTORYY = 10;
+   private static final int INVENTORYX = 30;
    private TerminalScreen screen;
    private final char startCol = 0;
    private final char msgRow = 1;
@@ -94,11 +97,14 @@ cursor to top left corner and does nothing else.
 
     private void setUpPanels() {
         JPanel textPanel = new JPanel();
+        JPanel inventoryPanel = new JPanel();
         setUpTextPanel(textPanel);
+        setUpInventoryPanel(inventoryPanel);
         setTerminal();
     }
 
     private void setUpTextPanel(JPanel thePanel) {
+        thePanel.setLayout(new FlowLayout());
         Border prettyLine = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
         thePanel.setBorder(prettyLine);
         JTextField playerName = new JTextField("Name", PLAYERTEXTSIZE);
@@ -110,6 +116,13 @@ cursor to top left corner and does nothing else.
         message.setEditable(false);
         thePanel.add(message);
         contentPane.add(thePanel, BorderLayout.NORTH);
+    }
+
+    private void setUpInventoryPanel(JPanel thePanel) {
+      JTextArea inventoryText = new JTextArea(INVENTORYX, INVENTORYY);
+      inventoryText.setEditable(false);
+      thePanel.add(inventoryText);
+      contentPane.add(thePanel, BorderLayout.EAST);
     }
 
      private void start() {
@@ -140,6 +153,17 @@ cursor to top left corner and does nothing else.
       JPanel messagePanel = (JPanel) contentPane.getComponent(0);
       JTextField nameText = (JTextField) messagePanel.getComponent(0);
       nameText.setText(newName);
+      theGame.getPlayer().setName(newName);
+    }
+
+        /**
+*Changes inventory text in the inventory text field.
+*@param newInventory new inventory string.
+*/
+    public void changeInventoryText(String newInventory) {
+      JPanel inventoryPanel = (JPanel) contentPane.getComponent(1);
+      JTextArea inventoryText = (JTextArea) inventoryPanel.getComponent(0);
+      inventoryText.setText(newInventory);
     }
 
 /**
@@ -283,6 +307,7 @@ the main method.
       RogueParser parser = new RogueParser(configurationFileLocation);
       TextUI theGameUI = new TextUI();
       theGame = new Rogue(parser);
+      theGameUI.changePlayerName("Aaron");
       oldRoom = theGame.getPlayer().getCurrentRoom();
       if (oldRoom == null) {
         theGameUI.programExitError();
