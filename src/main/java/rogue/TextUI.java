@@ -18,6 +18,7 @@ import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
 import java.io.IOException;
 import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 import javax.swing.JMenuBar;
 import javax.swing.JTextField;
 import javax.swing.JMenu;
@@ -70,7 +71,6 @@ cursor to top left corner and does nothing else.
     private void setUpMenuBar() {
       JMenuBar menuBar = new JMenuBar();
       setJMenuBar(menuBar);
-
       JMenu fileMenu = new JMenu("File");
       menuBar.add(fileMenu);
 
@@ -81,6 +81,7 @@ cursor to top left corner and does nothing else.
       fileMenu.add(loadFile);
 
       JMenuItem changePlayerName = new JMenuItem("Change Player Name");
+      changePlayerName.addActionListener(ev -> changePlayerName());
       fileMenu.add(changePlayerName);
 
       JMenuItem loadMap = new JMenuItem("Load New Map");
@@ -145,15 +146,22 @@ cursor to top left corner and does nothing else.
       messageText.setText(message);
     }
 
-    /**
+/**
 *Changes player name in the player text field.
-*@param newName new player name.
 */
-    public void changePlayerName(String newName) {
+    public void changePlayerName() {
+      String newName = getPlayerName();
       JPanel messagePanel = (JPanel) contentPane.getComponent(0);
       JTextField nameText = (JTextField) messagePanel.getComponent(0);
       nameText.setText(newName);
       theGame.getPlayer().setName(newName);
+    }
+
+    private String getPlayerName() {
+      String name = "";
+      JOptionPane namePane = new JOptionPane();
+      name = namePane.showInputDialog("Enter name.");
+      return name;
     }
 
         /**
@@ -307,7 +315,7 @@ the main method.
       RogueParser parser = new RogueParser(configurationFileLocation);
       TextUI theGameUI = new TextUI();
       theGame = new Rogue(parser);
-      theGameUI.changePlayerName("Aaron");
+      theGameUI.changePlayerName();
       oldRoom = theGame.getPlayer().getCurrentRoom();
       if (oldRoom == null) {
         theGameUI.programExitError();
