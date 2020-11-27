@@ -7,6 +7,7 @@ import com.googlecode.lanterna.terminal.swing.SwingTerminal;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.TerminalPosition;
 
+import javax.swing.JFileChooser;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
@@ -75,9 +76,11 @@ cursor to top left corner and does nothing else.
       menuBar.add(fileMenu);
 
       JMenuItem saveFile = new JMenuItem("Save");
+      saveFile.addActionListener(ev -> save());
       fileMenu.add(saveFile);
 
       JMenuItem loadFile = new JMenuItem("Load");
+      loadFile.addActionListener(ev -> loadGameWithBrowser());
       fileMenu.add(loadFile);
 
       JMenuItem changePlayerName = new JMenuItem("Change Player Name");
@@ -275,19 +278,39 @@ keys to the equivalent movement keys in rogue.
 * Saves a rogue object as a binary file.
 */
     public void save() {
-      String filename = "rogue1.sav";
-      try {
-            //Saving of object in a file
-            FileOutputStream outPutStream = new FileOutputStream(filename);
-            ObjectOutputStream outPutDest = new ObjectOutputStream(outPutStream);
-            // Method for serialization of object
-            outPutDest.writeObject(theGame);
-            outPutDest.close();
-            outPutStream.close();
-      } catch (IOException ex) {
-        System.out.println(ex);
+      JFrame saveFrame = new JFrame();
+      JFileChooser fileBrowser = new JFileChooser();
+      int returnValue = fileBrowser.showSaveDialog(saveFrame);
+      if (returnValue == JFileChooser.APPROVE_OPTION) {
+        String filename = fileBrowser.getSelectedFile().toString();
+        try {
+          //Saving of object in a file
+          FileOutputStream outPutStream = new FileOutputStream(filename);
+          ObjectOutputStream outPutDest = new ObjectOutputStream(outPutStream);
+          // Method for serialization of object
+          outPutDest.writeObject(theGame);
+          outPutDest.close();
+          outPutStream.close();
+        } catch (IOException ex) {
+          System.out.println(ex);
+        }
       }
     }
+
+    private void loadGameWithBrowser() {
+      JFrame loadFrame = new JFrame();
+      JFileChooser fileBrowser = new JFileChooser();
+      int returnValue = fileBrowser.showOpenDialog(loadFrame);
+      String filename = "";
+      if (returnValue == JFileChooser.APPROVE_OPTION) {
+        filename = fileBrowser.getSelectedFile().toString();
+        loadGame(filename);
+      }
+      draw("Loaded " + filename, theGame.getNextDisplay());
+      changeMessage("Loaded " + filename);
+      changeInventoryText(theGame.getInventoryString());
+    }
+
 /**
 * Loads a binary file containing the rogue object.
 * @param filename name of file containing the saved rogue object.

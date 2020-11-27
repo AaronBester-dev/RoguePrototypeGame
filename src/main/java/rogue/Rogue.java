@@ -3,14 +3,14 @@ package rogue;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
+import java.io.Serializable;
 import java.awt.Point;
 
 /**
 *Rogue is the class that sets up the rogue game.
 */
 
-public class Rogue {
+public class Rogue implements Serializable {
     public static final char UP = 's';
     public static final char DOWN = 'x';
     public static final char LEFT = 'z';
@@ -22,7 +22,7 @@ public class Rogue {
     private ArrayList<Room> roomArray = new ArrayList<Room>();
     private ArrayList<Item> rogueItems = new ArrayList<Item>();
     private HashMap<String, Character> symbolMap;
-    private RogueParser parser;
+    private transient RogueParser parser;
     private Map<String, String> tempRoomMap;
     private Map<String, String> tempItemMap;
 

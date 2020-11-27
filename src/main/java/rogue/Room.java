@@ -1,7 +1,7 @@
 package rogue;
 import java.util.ArrayList;
 
-
+import java.io.Serializable;
 import java.util.HashMap;
 
 
@@ -9,7 +9,7 @@ import java.util.HashMap;
  * A room within the dungeon - contains monsters, treasure,
  * doors out, etc.
  */
-public class Room  {
+public class Room implements Serializable {
 
     private int roomWidth;
     private int roomHeight;

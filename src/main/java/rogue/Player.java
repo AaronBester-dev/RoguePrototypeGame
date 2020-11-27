@@ -1,10 +1,11 @@
 package rogue;
 
 import java.awt.Point;
+import java.io.Serializable;
 /**
  * The player character.
  */
-public class Player {
+public class Player implements Serializable {
     private String playerName;
     private Point playerLocation;
     private Room currentRoom;

@@ -1,19 +1,19 @@
 {
     "symbols": [
         {
-            "name": "PASSAGE", 
+            "name": "PASSAGE",
             "symbol": "#"
         },
         {
-            "name": "DOOR", 
+            "name": "DOOR",
             "symbol": "+"
         },
         {
-            "name": "FLOOR", 
+            "name": "FLOOR",
             "symbol": "."
         },
         {
-            "name": "PLAYER", 
+            "name": "PLAYER",
             "symbol": "@"
         },
         {
@@ -33,7 +33,7 @@
             "symbol": "!"
         },
                 {
-            "name": "MAGIC",
+            "name": "SCROLL",
             "symbol": "?"
         },
                 {
@@ -45,14 +45,12 @@
             "symbol": ":"
         },
         {
-            "name": "RING",
-            "symbol": ")"
+        "name": "RING",
+        "symbol": "^"
         },
         {
-            "name": "SMALLFOOD",
-            "symbol": "("
+        "name": "SMALLFOOD",
+        "symbol": ";"
         },
-                         
     ]
 }
-

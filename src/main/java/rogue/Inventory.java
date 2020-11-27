@@ -1,12 +1,12 @@
 package rogue;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
 *Class that stores the items the player is holding.
 */
 
-public class Inventory {
+public class Inventory implements Serializable {
 
     private char mode;
     private ArrayList<Item> inventory = new ArrayList<Item>();

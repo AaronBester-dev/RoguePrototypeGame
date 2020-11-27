@@ -1,11 +1,11 @@
 package rogue;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
 *Class that holds all the information for a door.
 */
-public class Door {
+public class Door implements Serializable {
     private ArrayList<Room> connectedRooms = new ArrayList<Room>();
     private int wallPosition;
     private int otherRoomid;
