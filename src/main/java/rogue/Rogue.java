@@ -16,6 +16,7 @@ public class Rogue {
     public static final char LEFT = 'z';
     public static final char RIGHT = 'c';
     private String nextDisplay = "";
+    private String inventoryString = "";
     private Player player;
     private Inventory inventory = new Inventory();
     private ArrayList<Room> roomArray = new ArrayList<Room>();
@@ -111,6 +112,13 @@ public class Rogue {
 */
     public String getNextDisplay() {
       return nextDisplay;
+    }
+    /**
+* returns the string that displays the inventory.
+*@return string that displays the current inventory.
+*/
+    public String getInventoryString() {
+      return inventoryString;
     }
 
     private void convertStringToSymbols() {
@@ -297,6 +305,7 @@ public class Rogue {
       message = inventory.useItem();
       nextDisplay = player.getCurrentRoom().displayRoom();
       convertStringToSymbols();
+      inventoryString = inventory.printInventoryWithoutSelection();
       return message;
     }
 
@@ -362,6 +371,7 @@ public class Rogue {
       } else if (collisionObject == "ITEM") {
         itemToBePickedUp = getItemFromRoom(currentRoom, wherePlayerWantsToGo);
         inventory.addItem(itemToBePickedUp);
+        inventoryString = inventory.printInventoryWithoutSelection();
         movePlayer(player, wherePlayerWantsToGo);
         return "Picked up a " + itemToBePickedUp.getType();
       } else {

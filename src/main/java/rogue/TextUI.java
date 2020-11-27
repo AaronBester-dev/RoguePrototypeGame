@@ -37,8 +37,8 @@ public class TextUI extends JFrame {
    public static final int ROWS = 24;
    private static final int TEXTSIZE = 50;
    private static final int PLAYERTEXTSIZE = 10;
-   private static final int INVENTORYY = 10;
-   private static final int INVENTORYX = 30;
+   private static final int INVENTORYY = 20;
+   private static final int INVENTORYX = 10;
    private TerminalScreen screen;
    private final char startCol = 0;
    private final char msgRow = 1;
@@ -322,15 +322,18 @@ the main method.
           theGame.openInventoryPanel(userInput);
           theGameUI.clearDisplay();
           theGameUI.draw("Select item to use.", theGame.getNextDisplay());
+          theGameUI.changeMessage("Select item to use.");
           while (userInput != 'i') {
             userInput = theGameUI.getInput();
             theGame.moveThroughInventoryPanel(userInput);
             theGameUI.draw("Select item to use.", theGame.getNextDisplay());
+            theGameUI.changeMessage("Select item to use.");
           }
           message = theGame.useCurrentItem();
           theGameUI.clearDisplay();
           theGameUI.draw(message, theGame.getNextDisplay());
           theGameUI.changeMessage(message);
+          theGameUI.changeInventoryText(theGame.getInventoryString());
         } else {
           try {
           message = theGame.makeMove(userInput);
@@ -339,6 +342,7 @@ the main method.
             theGameUI.clearDisplay();
           }
           theGameUI.draw(message, theGame.getNextDisplay());
+          theGameUI.changeInventoryText(theGame.getInventoryString());
           theGameUI.changeMessage(message);
         } catch (InvalidMoveException badMove) {
           message = "I didn't understand what you meant, please enter a command";

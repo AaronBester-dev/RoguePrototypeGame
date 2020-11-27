@@ -136,6 +136,23 @@ public class Inventory {
           return (inventoryString);
         }
     }
+
+    /**
+*Creates a string representation of the inventory.
+*@return the string representation of the inventory.
+ */
+    public String printInventoryWithoutSelection() {
+        int i = 0;
+        String inventoryString = "";
+        if (inventory.isEmpty()) {
+            return "                    ";
+        } else {
+          for (i = 0; i < inventory.size(); i++) {
+            inventoryString += inventory.get(i).getName() + "                              \n";
+          }
+          return (inventoryString);
+        }
+    }
 /**
 *Changes the currently selected item to the one above the currently selected item.
  */
