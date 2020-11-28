@@ -122,13 +122,12 @@ public class RogueParser {
         Object obj = parser.parse(new FileReader(filename));
         JSONObject configurationJSON = (JSONObject) obj;
         String roomsFileLocation = (String) configurationJSON.get("Rooms");
-        String symbolsFileLocation = (String) configurationJSON.get("Symbols");
         Object roomsObj = parser.parse(new FileReader(roomsFileLocation)); roomsJSON = (JSONObject) roomsObj;
-        Object symbolsObj = parser.parse(new FileReader(symbolsFileLocation));
-        symbolsJSON = (JSONObject) symbolsObj; extractRoomInfo(roomsJSON); extractItemInfo(roomsJSON); 
-        extractSymbolInfo(symbolsJSON); roomIterator = rooms.iterator(); itemIterator = items.iterator(); 
+        Object symbolsObj = parser.parse(new FileReader((String) configurationJSON.get("Symbols")));
+        symbolsJSON = (JSONObject) symbolsObj; extractRoomInfo(roomsJSON); extractItemInfo(roomsJSON);
+        extractSymbolInfo(symbolsJSON); roomIterator = rooms.iterator(); itemIterator = items.iterator();
       } catch (FileNotFoundException e) {
-        System.out.println("Cannot find file named: " + filename); 
+        System.out.println("Cannot find file named: " + filename);
       } catch (IOException e) {
         e.printStackTrace();
       } catch (ParseException e) {
