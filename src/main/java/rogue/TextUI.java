@@ -382,7 +382,7 @@ keys to the equivalent movement keys in rogue.
       clearDisplay();
       draw("Select item to use.", theGame.getNextDisplay());
       changeMessage("Select item to use.");
-      while (userInput != 'i') {
+      while (userInput != 'u') {
         userInput = getInput();
         theGame.moveThroughInventoryPanel(userInput);
         draw("Select item to use.", theGame.getNextDisplay());
