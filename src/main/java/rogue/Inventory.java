@@ -83,6 +83,10 @@ public class Inventory implements Serializable {
           Food foodToEat = (Food) currentItem;
           inventory.remove(currentItem);
           return (foodToEat.eat());
+        } else if (currentItem.getType().equals("SmallFood")) {
+          SmallFood smallFoodToEat = (SmallFood) currentItem;
+          inventory.remove(currentItem);
+          return (smallFoodToEat.eat());
         } else if (currentItem.getType().equals("Potion")) {
           Potion potionToEat = (Potion) currentItem;
           inventory.remove(currentItem);

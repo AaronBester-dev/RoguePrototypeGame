@@ -338,19 +338,33 @@ public class Rogue implements Serializable {
       Point wherePlayerWantsToGo = new Point(playerX, playerY);
       String moveMessage = "";
       String returnValue = "";
-
       try {
         moveMessage = checkInput(input, wherePlayerWantsToGo);
       } catch (InvalidMoveException e) {
         throw new InvalidMoveException();
       }
-      returnValue = whatHappenedWhenIMoved(wherePlayerWantsToGo);
+      if (!(hasPlayerGoneOutOfBounds(wherePlayerWantsToGo))) {
+        returnValue = whatHappenedWhenIMoved(wherePlayerWantsToGo);
       if  (!(returnValue.equals(""))) {
         moveMessage = returnValue;
       }
       nextDisplay = player.getCurrentRoom().displayRoom();
       convertStringToSymbols();
+      }
       return (moveMessage);
+    }
+
+    private boolean hasPlayerGoneOutOfBounds(Point wherePlayerWantsToGo) {
+      int x = (int) wherePlayerWantsToGo.getX();
+      int y = (int) wherePlayerWantsToGo.getY();
+      if (x >= player.getCurrentRoom().getWidth() || x <= -1) {
+        return true;
+      } else if (y >= player.getCurrentRoom().getHeight() || y <= -1) {
+        return true;
+      }
+
+      return false;
+
     }
 
     private String checkInput(char input, Point wherePlayerWantsToGo) throws InvalidMoveException {
@@ -463,16 +477,16 @@ public class Rogue implements Serializable {
       currentPlayer.setCurrentRoom(otherRoom);
       if (direction.equals("N")) {
         otherDoor = otherRoom.getDoor("S");
-        newXyLocation.setLocation(otherDoor.getWallPosition(), otherRoom.getHeight() - 2);
+        newXyLocation.setLocation(otherDoor.getWallPosition(), otherRoom.getHeight() - 1);
       } else if (direction.equals("S")) {
         otherDoor = otherRoom.getDoor("N");
-        newXyLocation.setLocation(otherDoor.getWallPosition(), 1);
+        newXyLocation.setLocation(otherDoor.getWallPosition(), 0);
       } else if (direction.equals("W")) {
         otherDoor = otherRoom.getDoor("E");
-        newXyLocation.setLocation(otherRoom.getWidth() - 2, otherDoor.getWallPosition());
+        newXyLocation.setLocation(otherRoom.getWidth() - 1, otherDoor.getWallPosition());
       } else {
         otherDoor = otherRoom.getDoor("W");
-        newXyLocation.setLocation(1, otherDoor.getWallPosition());
+        newXyLocation.setLocation(0, otherDoor.getWallPosition());
       }
       movePlayer(currentPlayer, newXyLocation);
     }
