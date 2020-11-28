@@ -140,15 +140,17 @@ public class Rogue implements Serializable {
       Integer integerHeight = Integer.decode(toAdd.get("height").toString());
       Integer integerWidth = Integer.decode(toAdd.get("width").toString());
       if (isPlayer.booleanValue()) {
-        setPlayer(new Player()); newRoom.setPlayer(player);
+        setPlayer(new Player());
+        newRoom.setPlayer(player);
         player.setCurrentRoom(newRoom);
       }
-      newRoom.setId(integerId); newRoom.setHeight(integerHeight);
-      newRoom.setWidth(integerWidth); newRoom.setDoor("N", addDoor(toAdd.get("N"), newRoom));
-      newRoom.setDoor("S", addDoor(toAdd.get("S"), newRoom));
-      newRoom.setDoor("W", addDoor(toAdd.get("W"), newRoom));
-      newRoom.setDoor("E", addDoor(toAdd.get("E"), newRoom));
-      newRoom.setRogue(this); newRoom.updateDisplayRoom();
+      newRoom.setId(integerId);
+      newRoom.setHeight(integerHeight);
+      newRoom.setWidth(integerWidth);
+      newRoom.setDoor("N", addDoor(toAdd.get("N"), newRoom)); newRoom.setDoor("S", addDoor(toAdd.get("S"), newRoom));
+      newRoom.setDoor("W", addDoor(toAdd.get("W"), newRoom)); newRoom.setDoor("E", addDoor(toAdd.get("E"), newRoom));
+      newRoom.setRogue(this);
+      newRoom.updateDisplayRoom();
       getRooms().add(newRoom);
     }
 
@@ -162,11 +164,12 @@ public class Rogue implements Serializable {
       int itemId = Integer.decode(toAdd.get("id"));
       Room roomToAddTo = null;
       int roomId = 0;
-      newItem.setId(itemId); newItem.setName(toAdd.get("name"));
+      newItem.setId(itemId);
+      newItem.setName(toAdd.get("name"));
       newItem.setType(toAdd.get("type")); newItem.setDescription(toAdd.get("description"));
       if (toAdd.get("room") != null) {
         roomId = Integer.decode(toAdd.get("room"));
-        addItemToRoom(toAdd, newItem, roomId);
+        addItemToItemList(toAdd, newItem, roomId);
         for (Room singleRoom : getRooms()) {
           if (roomId == singleRoom.getId()) {
             roomToAddTo = singleRoom;
@@ -193,7 +196,7 @@ public class Rogue implements Serializable {
       }
     }
 
-    private void addItemToRoom(Map<String, String> toAdd, Item newItem, int roomId) {
+    private void addItemToItemList(Map<String, String> toAdd, Item newItem, int roomId) {
       int itemX = 0;
       int itemY = 0;
       Point newItemLocation = null;
@@ -300,7 +303,7 @@ public class Rogue implements Serializable {
       if (inventory.getMode() == 't') {
         itemToToss = inventory.getCurrentItem();
       }
-      message = inventory.useItem(itemToToss);
+      message = inventory.useItem();
       if (itemToToss != null) {
         tossItemInRoom(itemToToss);
       }

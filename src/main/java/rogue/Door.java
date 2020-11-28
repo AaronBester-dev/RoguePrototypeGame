@@ -80,11 +80,11 @@ public class Door implements Serializable {
 *@return the other room that the player isn't in.
 */
     public Room getOtherRoom(Room currentRoom) {
-      int currentRoomIndex = connectedRooms.indexOf(currentRoom);
+      int currentRoomIndex = getConnectedRooms().indexOf(currentRoom);
       if (currentRoomIndex == 0) {
-        return (connectedRooms.get(1));
+        return (getConnectedRooms().get(1));
       } else {
-        return (connectedRooms.get(0));
+        return (getConnectedRooms().get(0));
       }
     }
 

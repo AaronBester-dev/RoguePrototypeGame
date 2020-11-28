@@ -82,19 +82,6 @@ public class RogueParser {
     }
 
     /**
-     * Get the character for a symbol.
-     * @param symbolName (String) Symbol Name
-     * @return (Character) Display character for the symbol
-     */
-    public Character getSymbol(String symbolName) {
-      if (symbols.containsKey(symbolName)) {
-        return symbols.get(symbolName);
-      }
-      // Does not contain the key
-      return null;
-    }
-
-    /**
      * Get the number of items.
      * @return (int) Number of items
      */

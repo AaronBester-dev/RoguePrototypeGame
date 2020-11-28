@@ -55,20 +55,17 @@ public class Inventory implements Serializable {
 /**
 *Uses the currently selected item.
 *@return the description of the item being used
-*@param itemToToss the item that is to be tossed if a item gets tossed.
  */
-    public String useItem(Item itemToToss) {
+    public String useItem() {
         if (inventory.isEmpty()) {
             return ("Inventory is empty");
         } else {
-          Item currentItem = inventory.get(currentItemIndex);
-          if (mode == 'e') {
-            return eatItem(currentItem);
-          } else if (mode == 't') {
-            itemToToss = currentItem;
-            return tossItem(itemToToss);
-          } else if (mode == 'w') {
-            return wearItem(currentItem);
+          if (getMode() == 'e') {
+            return eatItem();
+          } else if (getMode() == 't') {
+            return tossItem();
+          } else if (getMode() == 'w') {
+            return wearItem();
           }
         }
         return ("Inventory is empty");
@@ -76,20 +73,19 @@ public class Inventory implements Serializable {
 /**
 *Checks if the item can be eaten and eats it.
 *@return the description of the item being eaten.
-*@param currentItem the item that is currently selected by the user
  */
-    private String eatItem(Item currentItem) {
-        if (currentItem.getType().equals("Food")) {
-          Food foodToEat = (Food) currentItem;
-          inventory.remove(currentItem);
+    private String eatItem() {
+        if (getCurrentItem().getType().equals("Food")) {
+          Food foodToEat = (Food) getCurrentItem();
+          inventory.remove(getCurrentItem());
           return (foodToEat.eat());
-        } else if (currentItem.getType().equals("SmallFood")) {
-          SmallFood smallFoodToEat = (SmallFood) currentItem;
-          inventory.remove(currentItem);
+        } else if (getCurrentItem().getType().equals("SmallFood")) {
+          SmallFood smallFoodToEat = (SmallFood) getCurrentItem();
+          inventory.remove(getCurrentItem());
           return (smallFoodToEat.eat());
-        } else if (currentItem.getType().equals("Potion")) {
-          Potion potionToEat = (Potion) currentItem;
-          inventory.remove(currentItem);
+        } else if (getCurrentItem().getType().equals("Potion")) {
+          Potion potionToEat = (Potion) getCurrentItem();
+          inventory.remove(getCurrentItem());
           return (potionToEat.eat());
         } else {
           return ("Item is not edible.");
@@ -98,34 +94,33 @@ public class Inventory implements Serializable {
 /**
 *Checks if the item can be worn and equips it or unequips it if its already worn.
 *@return the description of the item being worn.
-*@param currentItem the item that is currently selected by the user
  */
-    private String wearItem(Item currentItem) {
-        String currentItemType = currentItem.getType();
-         if (currentItem.getType().equals("Clothing")) {
-            Clothing clothingToWear = (Clothing) currentItem;
+    private String wearItem() {
+        String currentItemType = getCurrentItem().getType();
+         if (getCurrentItem().getType().equals("Clothing")) {
+            Clothing clothingToWear = (Clothing) getCurrentItem();
             inventory.get(currentItemIndex).setType(currentItemType + " (Equipped)");
-            inventory.get(currentItemIndex).setName(currentItem.getName() + " (Equipped)");
+            inventory.get(currentItemIndex).setName(getCurrentItem().getName() + " (Equipped)");
             return (clothingToWear.wear());
-          } else if (currentItem.getType().equals("Ring")) {
-            Ring ringToWear = (Ring) currentItem;
+          } else if (getCurrentItem().getType().equals("Ring")) {
+            Ring ringToWear = (Ring) getCurrentItem();
             inventory.get(currentItemIndex).setType(currentItemType + " (Equipped)");
-            inventory.get(currentItemIndex).setName(currentItem.getName() + " (Equipped)");
+            inventory.get(currentItemIndex).setName(getCurrentItem().getName() + " (Equipped)");
             return (ringToWear.wear());
           }
-          return unequipItem(currentItem);
+          return unequipItem();
     }
 
-    private String unequipItem(Item currentItem) {
-      if (currentItem.getType().equals("Ring (Equipped)")) {
-        Ring ringToTakeOff = (Ring) currentItem;
+    private String unequipItem() {
+      if (getCurrentItem().getType().equals("Ring (Equipped)")) {
+        Ring ringToTakeOff = (Ring) getCurrentItem();
         inventory.get(currentItemIndex).setType("Ring");
-        inventory.get(currentItemIndex).setName(currentItem.getName().replace(" (Equipped)", ""));
+        inventory.get(currentItemIndex).setName(getCurrentItem().getName().replace(" (Equipped)", ""));
         return (ringToTakeOff.wear());
-      } else if (currentItem.getType().equals("Clothing (Equipped)")) {
-        Clothing clothingToTakeOff = (Clothing) currentItem;
+      } else if (getCurrentItem().getType().equals("Clothing (Equipped)")) {
+        Clothing clothingToTakeOff = (Clothing) getCurrentItem();
         inventory.get(currentItemIndex).setType("Clothing");
-        inventory.get(currentItemIndex).setName(currentItem.getName().replace(" (Equipped)", ""));
+        inventory.get(currentItemIndex).setName(getCurrentItem().getName().replace(" (Equipped)", ""));
         return (clothingToTakeOff.wear());
       } else {
         return ("Item can not be equipped");
@@ -134,16 +129,15 @@ public class Inventory implements Serializable {
 /**
 *Checks if the item can be tossed and tosses it.
 *@return the description of the item being tossed.
-*@param currentItem the item that is currently selected by the user
  */
-    private String tossItem(Item currentItem) {
-      if (currentItem.getType().equals("SmallFood")) {
-            SmallFood foodToToss = (SmallFood) currentItem;
-            inventory.remove(currentItem);
+    private String tossItem() {
+      if (getCurrentItem().getType().equals("SmallFood")) {
+            SmallFood foodToToss = (SmallFood) getCurrentItem();
+            inventory.remove(getCurrentItem());
             return (foodToToss.toss());
-          } else if (currentItem.getType().equals("Potion")) {
-            Potion potionToToss = (Potion) currentItem;
-            inventory.remove(currentItem);
+          } else if (getCurrentItem().getType().equals("Potion")) {
+            Potion potionToToss = (Potion) getCurrentItem();
+            inventory.remove(getCurrentItem());
             return (potionToToss.toss());
           } else {
             return ("Item is not tossable.");
@@ -163,7 +157,7 @@ public class Inventory implements Serializable {
             if (i == currentItemIndex) {
                 inventoryString += inventory.get(i).getName() + "<--\n";
             } else {
-                inventoryString += inventory.get(i).getName() + "                              \n";
+                inventoryString += inventory.get(i).getName() + "                   \n";
             }
           }
           return (inventoryString);
