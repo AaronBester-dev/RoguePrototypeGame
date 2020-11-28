@@ -141,7 +141,6 @@ public class Room implements Serializable {
       } else {
         return (null);
       }
-
     }
 
     /**
@@ -285,7 +284,7 @@ public class Room implements Serializable {
 
     public String displayRoom() {
       String roomDisplayString = "";
-      roomDisplayArray = new String[roomHeight][roomWidth];
+      roomDisplayArray = new String[getHeight()][getWidth()];
       initalizeRoomDisplayArray();
       addDoorsToRoomDisplayArray();
       addContentsToRoomDisplayArray();
@@ -294,21 +293,21 @@ public class Room implements Serializable {
     }
 
     private void initalizeRoomDisplayArray() {
-      for (int x = 0; x < roomWidth; x++) {
-        roomDisplayArray[0][x] = "NS_WALL";
+      for (int x = 0; x < getWidth(); x++) {
+        getRoomDisplayArray()[0][x] = "NS_WALL";
       }
 
-      for (int y = 1; y < roomHeight - 1; y++) {
+      for (int y = 1; y < getHeight() - 1; y++) {
         int x = 0;
-        roomDisplayArray[y][x] = "EW_WALL";
-        for (x = 1; x < roomWidth - 1; x++) {
-          roomDisplayArray[y][x] = "FLOOR";
+        getRoomDisplayArray()[y][x] = "EW_WALL";
+        for (x = 1; x < getWidth() - 1; x++) {
+          getRoomDisplayArray()[y][x] = "FLOOR";
         }
-        roomDisplayArray[y][x] = "EW_WALL";
+        getRoomDisplayArray()[y][x] = "EW_WALL";
       }
 
-      for (int x = 0; x < roomWidth; x++) {
-        roomDisplayArray[roomHeight - 1][x] = "NS_WALL";
+      for (int x = 0; x < getWidth(); x++) {
+        getRoomDisplayArray()[getHeight() - 1][x] = "NS_WALL";
       }
     }
 
