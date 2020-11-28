@@ -305,7 +305,9 @@ public class Rogue implements Serializable {
       }
       message = inventory.useItem();
       if (itemToToss != null) {
-        tossItemInRoom(itemToToss);
+        if (itemToToss.getType().equals("SmallFood") || itemToToss.getType().equals("Potion")) {
+          tossItemInRoom(itemToToss);
+        }
       }
       nextDisplay = player.getCurrentRoom().displayRoom();
       convertStringToSymbols();
