@@ -366,7 +366,7 @@ keys to the equivalent movement keys in rogue.
         if (userInput == 'w' || userInput == 'e' || userInput == 't') {
           moveInventory(userInput);
         } else {
-          movePlayer(oldRoom, userInput);
+          oldRoom = movePlayer(oldRoom, userInput);
         }
       }
     }
@@ -390,7 +390,7 @@ keys to the equivalent movement keys in rogue.
       changeInventoryText(theGame.getInventoryString());
     }
 
-    private void movePlayer(Room oldRoom, char userInput) {
+    private Room movePlayer(Room oldRoom, char userInput) {
       String message = "";
       try {
         message = theGame.makeMove(userInput);
@@ -407,6 +407,7 @@ keys to the equivalent movement keys in rogue.
         changeMessage(message);
       }
       oldRoom = theGame.getPlayer().getCurrentRoom();
+      return oldRoom;
     }
 /**
 the main method.
