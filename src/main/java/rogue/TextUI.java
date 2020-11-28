@@ -34,14 +34,14 @@ import javax.swing.border.EtchedBorder;
 public class TextUI extends JFrame {
    private SwingTerminal terminal;
    private static Rogue theGame;
-   public static final int WIDTH = 1000;
-   public static final int HEIGHT = 1000;
+   public static final int WIDTH = 700;
+   public static final int HEIGHT = 800;
    public static final int COLS = 80;
    public static final int ROWS = 24;
    private static final int TEXTSIZE = 50;
    private static final int PLAYERTEXTSIZE = 10;
    private static final int INVENTORYY = 100;
-   private static final int INVENTORYX = 17;
+   private static final int INVENTORYX = 20;
    private TerminalScreen screen;
    private final char startCol = 0;
    private final char msgRow = 1;
@@ -224,7 +224,6 @@ keys to the equivalent movement keys in rogue.
 */
     public char getInput() {
       KeyStroke keyStroke = null;
-      char returnChar;
       while (keyStroke == null) {
         try {
           keyStroke = screen.pollInput();
@@ -232,6 +231,11 @@ keys to the equivalent movement keys in rogue.
           e.printStackTrace();
         }
       }
+      return getInputPart2(keyStroke);
+    }
+
+    private char getInputPart2(KeyStroke keyStroke) {
+      char returnChar;
       if (keyStroke.getKeyType() == KeyType.ArrowDown) {
         returnChar = Rogue.DOWN;  //constant defined in rogue
       } else if (keyStroke.getKeyType() == KeyType.ArrowUp) {

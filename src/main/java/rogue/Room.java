@@ -358,10 +358,8 @@ public class Room implements Serializable {
           } else {
             roomDisplayString += roomDisplayArray[y][x];
           }
-        }
-        roomDisplayString += '\n';
+        } roomDisplayString += '\n';
       }
-      roomDisplayString += "\n\n";
-      return (roomDisplayString);
+      roomDisplayString += "\n\n"; return (roomDisplayString);
     }
 }

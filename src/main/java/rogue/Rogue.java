@@ -140,19 +140,15 @@ public class Rogue implements Serializable {
       Integer integerHeight = Integer.decode(toAdd.get("height").toString());
       Integer integerWidth = Integer.decode(toAdd.get("width").toString());
       if (isPlayer.booleanValue()) {
-        setPlayer(new Player());
-        newRoom.setPlayer(player);
+        setPlayer(new Player()); newRoom.setPlayer(player);
         player.setCurrentRoom(newRoom);
       }
-      newRoom.setId(integerId);
-      newRoom.setHeight(integerHeight);
-      newRoom.setWidth(integerWidth);
-      newRoom.setDoor("N", addDoor(toAdd.get("N"), newRoom));
+      newRoom.setId(integerId); newRoom.setHeight(integerHeight);
+      newRoom.setWidth(integerWidth); newRoom.setDoor("N", addDoor(toAdd.get("N"), newRoom));
       newRoom.setDoor("S", addDoor(toAdd.get("S"), newRoom));
       newRoom.setDoor("W", addDoor(toAdd.get("W"), newRoom));
       newRoom.setDoor("E", addDoor(toAdd.get("E"), newRoom));
-      newRoom.setRogue(this);
-      newRoom.updateDisplayRoom();
+      newRoom.setRogue(this); newRoom.updateDisplayRoom();
       getRooms().add(newRoom);
     }
 
@@ -166,10 +162,8 @@ public class Rogue implements Serializable {
       int itemId = Integer.decode(toAdd.get("id"));
       Room roomToAddTo = null;
       int roomId = 0;
-      newItem.setId(itemId);
-      newItem.setName(toAdd.get("name"));
-      newItem.setType(toAdd.get("type"));
-      newItem.setDescription(toAdd.get("description"));
+      newItem.setId(itemId); newItem.setName(toAdd.get("name"));
+      newItem.setType(toAdd.get("type")); newItem.setDescription(toAdd.get("description"));
       if (toAdd.get("room") != null) {
         roomId = Integer.decode(toAdd.get("room"));
         addItemToRoom(toAdd, newItem, roomId);
@@ -348,8 +342,7 @@ public class Rogue implements Serializable {
       if  (!(returnValue.equals(""))) {
         moveMessage = returnValue;
       }
-      nextDisplay = player.getCurrentRoom().displayRoom();
-      convertStringToSymbols();
+      nextDisplay = player.getCurrentRoom().displayRoom(); convertStringToSymbols();
       }
       return (moveMessage);
     }
@@ -389,27 +382,23 @@ public class Rogue implements Serializable {
 
     private String whatHappenedWhenIMoved(Point wherePlayerWantsToGo) {
       Room currentRoom = player.getCurrentRoom();
-      String collisionObject = "";
+      String[][] currentRoomDisplayArray = player.getCurrentRoom().getRoomDisplayArray();
+      String collisionObject = whatDidICollideWith(currentRoomDisplayArray, wherePlayerWantsToGo);
       Item itemToBePickedUp = null;
       Door doorToWalkThrough = null;
-      String[][] currentRoomDisplayArray = player.getCurrentRoom().getRoomDisplayArray();
-      collisionObject = whatDidICollideWith(currentRoomDisplayArray, wherePlayerWantsToGo);
       if (collisionObject == "NS_WALL" || collisionObject == "EW_WALL") {
         return "You hit a wall";
       } else if (collisionObject == "FLOOR") {
         movePlayer(player, wherePlayerWantsToGo);
       } else if (collisionObject == "ITEM") {
-        itemToBePickedUp = getItemFromRoom(currentRoom, wherePlayerWantsToGo);
-        inventory.addItem(itemToBePickedUp);
-        inventoryString = inventory.printInventoryWithoutSelection();
-        movePlayer(player, wherePlayerWantsToGo);
+        itemToBePickedUp = getItemFromRoom(currentRoom, wherePlayerWantsToGo); inventory.addItem(itemToBePickedUp);
+        inventoryString = inventory.printInventoryWithoutSelection(); movePlayer(player, wherePlayerWantsToGo);
         return "Picked up a " + itemToBePickedUp.getType();
       } else {
         doorToWalkThrough = currentRoom.getDoor(String.valueOf(collisionObject.charAt(0)));
         movePlayerToOtherRoom(player, doorToWalkThrough, String.valueOf(collisionObject.charAt(0)));
-        return "You walk through a door.";
       }
-      return ("");
+      return "You walk through a door.";
     }
 
 /**
@@ -473,20 +462,17 @@ public class Rogue implements Serializable {
       Door otherDoor = null;
       Point newXyLocation = new Point(0, 0);
       otherRoom.setPlayer(currentPlayer);
-      currentRoom.setPlayer(null);
-      currentPlayer.setCurrentRoom(otherRoom);
+      currentRoom.setPlayer(null); currentPlayer.setCurrentRoom(otherRoom);
       if (direction.equals("N")) {
         otherDoor = otherRoom.getDoor("S");
         newXyLocation.setLocation(otherDoor.getWallPosition(), otherRoom.getHeight() - 1);
       } else if (direction.equals("S")) {
-        otherDoor = otherRoom.getDoor("N");
-        newXyLocation.setLocation(otherDoor.getWallPosition(), 0);
+        otherDoor = otherRoom.getDoor("N"); newXyLocation.setLocation(otherDoor.getWallPosition(), 0);
       } else if (direction.equals("W")) {
         otherDoor = otherRoom.getDoor("E");
         newXyLocation.setLocation(otherRoom.getWidth() - 1, otherDoor.getWallPosition());
       } else {
-        otherDoor = otherRoom.getDoor("W");
-        newXyLocation.setLocation(0, otherDoor.getWallPosition());
+        otherDoor = otherRoom.getDoor("W"); newXyLocation.setLocation(0, otherDoor.getWallPosition());
       }
       movePlayer(currentPlayer, newXyLocation);
     }

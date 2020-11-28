@@ -112,19 +112,24 @@ public class Inventory implements Serializable {
             inventory.get(currentItemIndex).setType(currentItemType + " (Equipped)");
             inventory.get(currentItemIndex).setName(currentItem.getName() + " (Equipped)");
             return (ringToWear.wear());
-          } else if (currentItem.getType().equals("Ring (Equipped)")) {
-            Ring ringToTakeOff = (Ring) currentItem;
-            inventory.get(currentItemIndex).setType("Ring");
-            inventory.get(currentItemIndex).setName(currentItem.getName().replace(" (Equipped)", ""));
-            return (ringToTakeOff.wear());
-          } else if (currentItem.getType().equals("Clothing (Equipped)")) {
-            Clothing clothingToTakeOff = (Clothing) currentItem;
-            inventory.get(currentItemIndex).setType("Clothing");
-            inventory.get(currentItemIndex).setName(currentItem.getName().replace(" (Equipped)", ""));
-            return (clothingToTakeOff.wear());
-          } else {
-            return ("Item is not wearable.");
           }
+          return unequipItem(currentItem);
+    }
+
+    private String unequipItem(Item currentItem) {
+      if (currentItem.getType().equals("Ring (Equipped)")) {
+        Ring ringToTakeOff = (Ring) currentItem;
+        inventory.get(currentItemIndex).setType("Ring");
+        inventory.get(currentItemIndex).setName(currentItem.getName().replace(" (Equipped)", ""));
+        return (ringToTakeOff.wear());
+      } else if (currentItem.getType().equals("Clothing (Equipped)")) {
+        Clothing clothingToTakeOff = (Clothing) currentItem;
+        inventory.get(currentItemIndex).setType("Clothing");
+        inventory.get(currentItemIndex).setName(currentItem.getName().replace(" (Equipped)", ""));
+        return (clothingToTakeOff.wear());
+      } else {
+        return ("Item can not be equipped");
+      }
     }
 /**
 *Checks if the item can be tossed and tosses it.
