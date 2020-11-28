@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import java.awt.Container;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.io.IOException;
 import javax.swing.JPanel;
 import javax.swing.JOptionPane;
@@ -42,6 +43,7 @@ public class TextUI extends JFrame {
    private static final int PLAYERTEXTSIZE = 10;
    private static final int INVENTORYY = 100;
    private static final int INVENTORYX = 20;
+   private static final int FONTSIZE = 20;
    private TerminalScreen screen;
    private final char startCol = 0;
    private final char msgRow = 1;
@@ -111,10 +113,12 @@ cursor to top left corner and does nothing else.
         JTextField playerName = new JTextField("Name", PLAYERTEXTSIZE);
         playerName.setHorizontalAlignment(JTextField.CENTER);
         playerName.setEditable(false);
+        playerName.setFont(new Font("Epic", 1, FONTSIZE));
         thePanel.add(playerName);
         JTextField message = new JTextField("Welcome To My Rogue Game", TEXTSIZE);
         message.setHorizontalAlignment(JTextField.CENTER);
         message.setEditable(false);
+        message.setFont(new Font("Epic", 1, FONTSIZE));
         thePanel.add(message);
         contentPane.add(thePanel, BorderLayout.NORTH);
     }
@@ -122,6 +126,7 @@ cursor to top left corner and does nothing else.
     private void setUpInventoryPanel(JPanel thePanel) {
       JTextArea inventoryText = new JTextArea(INVENTORYY, INVENTORYX);
       inventoryText.setEditable(false);
+      inventoryText.setFont(new Font("Epic", 1, FONTSIZE));
       thePanel.add(inventoryText);
       contentPane.add(thePanel, BorderLayout.EAST);
     }

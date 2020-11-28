@@ -342,10 +342,10 @@ public class Rogue implements Serializable {
       }
       if (!(hasPlayerGoneOutOfBounds(wherePlayerWantsToGo))) {
         returnValue = whatHappenedWhenIMoved(wherePlayerWantsToGo);
-      if  (!(returnValue.equals(""))) {
-        moveMessage = returnValue;
-      }
-      nextDisplay = player.getCurrentRoom().displayRoom(); convertStringToSymbols();
+        if (!(returnValue.equals(""))) {
+          moveMessage = returnValue;
+        }
+        nextDisplay = player.getCurrentRoom().displayRoom(); convertStringToSymbols();
       }
       return (moveMessage);
     }
@@ -388,7 +388,6 @@ public class Rogue implements Serializable {
       String[][] currentRoomDisplayArray = player.getCurrentRoom().getRoomDisplayArray();
       String collisionObject = whatDidICollideWith(currentRoomDisplayArray, wherePlayerWantsToGo);
       Item itemToBePickedUp = null;
-      Door doorToWalkThrough = null;
       if (collisionObject == "NS_WALL" || collisionObject == "EW_WALL") {
         return "You hit a wall";
       } else if (collisionObject == "FLOOR") {
@@ -396,12 +395,13 @@ public class Rogue implements Serializable {
       } else if (collisionObject == "ITEM") {
         itemToBePickedUp = getItemFromRoom(currentRoom, wherePlayerWantsToGo); inventory.addItem(itemToBePickedUp);
         inventoryString = inventory.printInventoryWithoutSelection(); movePlayer(player, wherePlayerWantsToGo);
-        return "Picked up a " + itemToBePickedUp.getType();
+        return "Picked up " + itemToBePickedUp.getName();
       } else {
-        doorToWalkThrough = currentRoom.getDoor(String.valueOf(collisionObject.charAt(0)));
+        Door doorToWalkThrough = currentRoom.getDoor(String.valueOf(collisionObject.charAt(0)));
         movePlayerToOtherRoom(player, doorToWalkThrough, String.valueOf(collisionObject.charAt(0)));
+        return "You walk through a door.";
       }
-      return "You walk through a door.";
+      return "";
     }
 
 /**
