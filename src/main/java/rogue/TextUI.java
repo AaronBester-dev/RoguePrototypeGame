@@ -164,6 +164,7 @@ cursor to top left corner and does nothing else.
       return name;
     }
 
+
         /**
 *Changes inventory text in the inventory text field.
 *@param newInventory new inventory string.
@@ -293,7 +294,7 @@ keys to the equivalent movement keys in rogue.
           outPutDest.close();
           outPutStream.close();
         } catch (IOException ex) {
-          System.out.println(ex);
+          showErrorMessage("Error occurred while saving.", "Save Error");
         }
       }
     }
@@ -312,6 +313,12 @@ keys to the equivalent movement keys in rogue.
       changeInventoryText(theGame.getInventoryString());
     }
 
+    private void showErrorMessage(String errorMessage, String errorTitle) {
+      JPanel errorPanel = new JPanel();
+      JOptionPane errorPane = new JOptionPane();
+      errorPane.showMessageDialog(errorPanel, errorMessage, errorTitle, JOptionPane.WARNING_MESSAGE);
+    }
+
 /**
 * Loads a binary file containing the rogue object.
 * @param filename name of file containing the saved rogue object.
@@ -321,9 +328,9 @@ keys to the equivalent movement keys in rogue.
              // Method for deserialization of object
             theGame = (Rogue) in.readObject();   //we're casting it to the object we know it is
         } catch (IOException ex) {
-            System.out.println("IOException is caught " + ex);
+          showErrorMessage("Error occurred while loading.", "Load Error");
         } catch (ClassNotFoundException ex) {
-            System.out.println("ClassNotFoundException is caught " + ex);
+          showErrorMessage("Error occurred while loading.", "Load Error");
         }
     }
 
@@ -335,7 +342,11 @@ keys to the equivalent movement keys in rogue.
       String filename = "";
       if (returnValue == JFileChooser.APPROVE_OPTION) {
         filename = fileBrowser.getSelectedFile().toString();
-        theGame = new Rogue(new RogueParser("fileLocations.json", filename));
+        try {
+          theGame = new Rogue(new RogueParser("fileLocations.json", filename));
+        } catch (Exception e) {
+          showErrorMessage("Incompatible Json file.", "Json Load Error");
+        }
       }
       draw("Loaded " + filename, theGame.getNextDisplay());
       changeMessage("Loaded " + filename);
