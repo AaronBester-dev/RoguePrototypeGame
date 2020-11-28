@@ -75,23 +75,18 @@ cursor to top left corner and does nothing else.
       setJMenuBar(menuBar);
       JMenu fileMenu = new JMenu("File");
       menuBar.add(fileMenu);
-
       JMenuItem saveFile = new JMenuItem("Save");
       saveFile.addActionListener(ev -> save());
       fileMenu.add(saveFile);
-
       JMenuItem loadFile = new JMenuItem("Load");
       loadFile.addActionListener(ev -> loadGameWithBrowser());
       fileMenu.add(loadFile);
-
       JMenuItem changePlayerName = new JMenuItem("Change Player Name");
       changePlayerName.addActionListener(ev -> changePlayerName());
       fileMenu.add(changePlayerName);
-
       JMenuItem loadMap = new JMenuItem("Load New Map");
       loadMap.addActionListener(ev -> changeJsonFile());
       fileMenu.add(loadMap);
-
     }
 
      private void setTerminal() {
@@ -342,6 +337,62 @@ keys to the equivalent movement keys in rogue.
       changeMessage("Loaded " + filename);
       changeInventoryText(theGame.getInventoryString());
     }
+
+    private void sayByeBye() {
+      clearDisplay();
+      draw("Goodbye! Hope you had fun!", "");
+      changeMessage("Goodbye! Hope you had fun!");
+    }
+
+    private void getUserInput(Room oldRoom) {
+      char userInput = 'h';
+      while (userInput != 'q') {
+        userInput = getInput();
+        if (userInput == 'w' || userInput == 'e' || userInput == 't') {
+          moveInventory(userInput);
+        } else {
+          movePlayer(oldRoom, userInput);
+        }
+      }
+    }
+
+    private void moveInventory(char userInput) {
+      String message = "";
+      theGame.openInventoryPanel(userInput);
+      clearDisplay();
+      draw("Select item to use.", theGame.getNextDisplay());
+      changeMessage("Select item to use.");
+      while (userInput != 'i') {
+        userInput = getInput();
+        theGame.moveThroughInventoryPanel(userInput);
+        draw("Select item to use.", theGame.getNextDisplay());
+        changeMessage("Select item to use.");
+      }
+      message = theGame.useCurrentItem();
+      clearDisplay();
+      draw(message, theGame.getNextDisplay());
+      changeMessage(message);
+      changeInventoryText(theGame.getInventoryString());
+    }
+
+    private void movePlayer(Room oldRoom, char userInput) {
+      String message = "";
+      try {
+        message = theGame.makeMove(userInput);
+        /*oldRoom is used to check if the player has moved rooms and then clears the display if they have*/
+        if (oldRoom != theGame.getPlayer().getCurrentRoom()) {
+          clearDisplay();
+        }
+        draw(message, theGame.getNextDisplay());
+        changeInventoryText(theGame.getInventoryString());
+        changeMessage(message);
+      } catch (InvalidMoveException badMove) {
+        message = "I didn't understand what you meant, please enter a command";
+        setMessage(message);
+        changeMessage(message);
+      }
+      oldRoom = theGame.getPlayer().getCurrentRoom();
+    }
 /**
 the main method.
 @param args command line arguments are unused at this point.
@@ -364,44 +415,7 @@ the main method.
       theGameUI.changeMessage(message);
       theGameUI.draw(message, theGame.getNextDisplay());
       theGameUI.setVisible(true);
-      while (userInput != 'q') {
-        userInput = theGameUI.getInput();
-        if (userInput == 'w' || userInput == 'e' || userInput == 't') {
-          theGame.openInventoryPanel(userInput);
-          theGameUI.clearDisplay();
-          theGameUI.draw("Select item to use.", theGame.getNextDisplay());
-          theGameUI.changeMessage("Select item to use.");
-          while (userInput != 'i') {
-            userInput = theGameUI.getInput();
-            theGame.moveThroughInventoryPanel(userInput);
-            theGameUI.draw("Select item to use.", theGame.getNextDisplay());
-            theGameUI.changeMessage("Select item to use.");
-          }
-          message = theGame.useCurrentItem();
-          theGameUI.clearDisplay();
-          theGameUI.draw(message, theGame.getNextDisplay());
-          theGameUI.changeMessage(message);
-          theGameUI.changeInventoryText(theGame.getInventoryString());
-        } else {
-          try {
-          message = theGame.makeMove(userInput);
-          /*oldRoom is used to check if the player has moved rooms and then clears the display if they have*/
-          if (oldRoom != theGame.getPlayer().getCurrentRoom()) {
-            theGameUI.clearDisplay();
-          }
-          theGameUI.draw(message, theGame.getNextDisplay());
-          theGameUI.changeInventoryText(theGame.getInventoryString());
-          theGameUI.changeMessage(message);
-        } catch (InvalidMoveException badMove) {
-          message = "I didn't understand what you meant, please enter a command";
-          theGameUI.setMessage(message);
-          theGameUI.changeMessage(message);
-        }
-        oldRoom = theGame.getPlayer().getCurrentRoom();
-        }
-      }
-      theGameUI.clearDisplay();
-      theGameUI.draw("Goodbye! Hope you had fun!", "");
-      theGameUI.changeMessage("Goodbye! Hope you had fun!");
+      theGameUI.getUserInput(oldRoom);
+      theGameUI.sayByeBye();
     }
 }
