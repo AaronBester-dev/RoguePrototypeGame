@@ -25,6 +25,10 @@
 |verifyPlayerLocation|Checks if the player in the room is in a valid location.|int playerX, int playerY|isPlayerInRoom, getHeight, getWidth getXYLocation for player class ||13
 |updateDisplayRoom|Updates the roomDisplayArray when changes are made to the room|ArrayList roomDisplayArray |initializeRoomDisplayArray, addDoorsToRoomDisplayArray, addContentsToRoomDisplayArray||6
 |displayRoom|Creates a string represenation of the current room|ArrayList roomDisplayArray, String roomDisplayString |initializeRoomDisplayArray, addDoorsToRoomDisplayArray, addContentsToRoomDisplayArray,convertDisplayArrayToString, getWidth, getHeight|roomDisplayString|9
-|initializeRoomDisplayArray|Initializes the roomDisplayArray to a empty room as tall as the current height of the room and as wide as the current width of the room.|ArrayList roomDisplayArray, String roomDisplayString |initializeRoomDisplayArray, addDoorsToRoomDisplayArray, addContentsToRoomDisplayArray,convertDisplayArrayToString, getWidth, getHeight|roomDisplayString|12
+|initializeRoomDisplayArray|Initializes the roomDisplayArray to a empty room as tall as the current height of the room and as wide as the current width of the room.|ArrayList roomDisplayArray, String roomDisplayString |initializeRoomDisplayArray, addDoorsToRoomDisplayArray, addContentsToRoomDisplayArray,convertDisplayArrayToString, getWidth, getHeight, getRoomDisplayArray|roomDisplayString|18
+|addDoorsToRoomDisplayArray|Adds doors to the roomDisplayArray.|Door doorHolder|getDoor, getWidth, getHeight, getRoomDisplayArray, getWallPosition for Door class||18
+|addContentsToRoomDisplayArray|Adds player and items to the roomDisplayArray.|int playerX, int playerY|getPlayer, getXYLocation for Player and Item class,isPlayerInRoom, getRoomItems, getRoomDisplayArray||10
+|convertDisplayArrayToString|Converts the roomDisplayArray to a single string.|int x, int y, int itemId, Item singleItem|getWidth, getHeight, getRoomItems, getRoomDisplayArray, getId for item class||20
+
 
 

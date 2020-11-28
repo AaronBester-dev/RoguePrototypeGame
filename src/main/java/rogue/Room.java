@@ -314,51 +314,53 @@ public class Room implements Serializable {
     private void addDoorsToRoomDisplayArray() {
       Door doorHolder = getDoor("N");
       if (doorHolder != null) {
-        roomDisplayArray[0][doorHolder.getWallPosition()] = "NDOOR";
+        getRoomDisplayArray()[0][doorHolder.getWallPosition()] = "NDOOR";
       }
       doorHolder = getDoor("W");
       if (doorHolder  != null) {
-        roomDisplayArray[doorHolder.getWallPosition()][0] = "WDOOR";
+        getRoomDisplayArray()[doorHolder.getWallPosition()][0] = "WDOOR";
       }
       doorHolder = getDoor("S");
       if (doorHolder != null) {
-        roomDisplayArray[roomHeight - 1][doorHolder.getWallPosition()] = "SDOOR";
+        getRoomDisplayArray()[getHeight() - 1][doorHolder.getWallPosition()] = "SDOOR";
       }
       doorHolder = getDoor("E");
       if (doorHolder != null) {
-        roomDisplayArray[doorHolder.getWallPosition()][roomWidth - 1] = "EDOOR";
+        getRoomDisplayArray()[doorHolder.getWallPosition()][getWidth() - 1] = "EDOOR";
       }
     }
 
     private void addContentsToRoomDisplayArray() {
       if (isPlayerInRoom()) {
-        roomDisplayArray[(int) roomPlayer.getXyLocation().getY()][(int) roomPlayer.getXyLocation().getX()] = "PLAYER";
+        int playerX = (int) getPlayer().getXyLocation().getX();
+        int playerY = (int) getPlayer().getXyLocation().getY();
+        getRoomDisplayArray()[playerY][playerX] = "PLAYER";
       }
 
-      for (int i = 0; i < roomItems.size(); i++) {
-        roomDisplayArray[(int) roomItems.get(i).getXyLocation().getY()]
-        [(int) roomItems.get(i).getXyLocation().getX()] = Integer.toString(roomItems.get(i).getId());
+      for (int i = 0; i < getRoomItems().size(); i++) {
+        getRoomDisplayArray()[(int) getRoomItems().get(i).getXyLocation().getY()]
+        [(int) getRoomItems().get(i).getXyLocation().getX()] = Integer.toString(getRoomItems().get(i).getId());
       }
     }
 
     private String convertDisplayArrayToString(String roomDisplayString) {
-      for (int y = 0; y < roomHeight; y++) {
-        for (int x = 0; x < roomWidth; x++) {
-          if (!(Character.isLetter(roomDisplayArray[y][x].charAt(0)))) {
-            int itemId = Integer.decode(roomDisplayArray[y][x]);
-            for (Item singleItem : roomItems) {
+      for (int y = 0; y < getHeight(); y++) {
+        for (int x = 0; x < getWidth(); x++) {
+          if (!(Character.isLetter(getRoomDisplayArray()[y][x].charAt(0)))) {
+            int itemId = Integer.decode(getRoomDisplayArray()[y][x]);
+            for (Item singleItem : getRoomItems()) {
               if (singleItem.getId() == itemId) {
                 roomDisplayString += singleItem.getType().toUpperCase();
               }
             }
-          } else if (roomDisplayArray[y][x].equals("NDOOR") || roomDisplayArray[y][x].equals("SDOOR")
-          || roomDisplayArray[y][x].equals("EDOOR") || roomDisplayArray[y][x].equals("WDOOR")) {
+          } else if (getRoomDisplayArray()[y][x].equals("NDOOR") || getRoomDisplayArray()[y][x].equals("SDOOR")
+          || getRoomDisplayArray()[y][x].equals("EDOOR") || getRoomDisplayArray()[y][x].equals("WDOOR")) {
             roomDisplayString += "DOOR";
           } else {
-            roomDisplayString += roomDisplayArray[y][x];
+            roomDisplayString += getRoomDisplayArray()[y][x];
           }
         } roomDisplayString += '\n';
       }
-      roomDisplayString += "\n\n"; return (roomDisplayString);
+      return (roomDisplayString);
     }
 }
