@@ -302,11 +302,27 @@ public class Rogue implements Serializable {
 */
     public String useCurrentItem() {
       String message = "";
-      message = inventory.useItem();
+      Item itemToToss = null;
+      if (inventory.getMode() == 't') {
+        itemToToss = inventory.getCurrentItem();
+      }
+      message = inventory.useItem(itemToToss);
+      if (itemToToss != null) {
+        tossItemInRoom(itemToToss);
+      }
       nextDisplay = player.getCurrentRoom().displayRoom();
       convertStringToSymbols();
       inventoryString = inventory.printInventoryWithoutSelection();
       return message;
+    }
+
+    private void tossItemInRoom(Item itemToToss) {
+      int x = (int) player.getXyLocation().getX();
+      int y = (int) player.getXyLocation().getY() + 1;
+      Point itemXYLocation = new Point(x, y);
+      itemToToss.setCurrentRoom(player.getCurrentRoom());
+      itemToToss.setXyLocation(itemXYLocation);
+      putItemInRoomInCorrectPosition(player.getCurrentRoom(), itemToToss);
     }
 
 /**

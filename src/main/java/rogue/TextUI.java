@@ -165,7 +165,7 @@ cursor to top left corner and does nothing else.
     private String getPlayerName() {
       String name = "";
       JOptionPane namePane = new JOptionPane();
-      name = namePane.showInputDialog("Enter name.");
+      name = namePane.showInputDialog("Enter your name.");
       return name;
     }
 

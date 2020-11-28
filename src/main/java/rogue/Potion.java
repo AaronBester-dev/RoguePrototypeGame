@@ -18,7 +18,10 @@ public class Potion extends Magic implements Edible, Tossable {
     public String toss() {
       String description = super.getDescription();
       String[] descriptionArray = description.split(":");
-      return (descriptionArray[0]);
+      if (descriptionArray.length > 1) {
+        return (descriptionArray[1]);
+      }
+      return ("You toss the potion.");
     }
 /**
 *Gets description of potion when it is eaten.
@@ -28,7 +31,7 @@ public class Potion extends Magic implements Edible, Tossable {
     public String eat() {
       String description = super.getDescription();
       String[] descriptionArray = description.split(":");
-      return (descriptionArray[1]);
+      return (descriptionArray[0]);
     }
 
 }

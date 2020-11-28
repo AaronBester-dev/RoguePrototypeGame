@@ -20,6 +20,15 @@ public class Inventory implements Serializable {
         mode = 'z';
         currentItemIndex = 0;
     }
+
+/**
+*Sets whether the item is going to be tossed,worn,or eaten.
+*@return current inventory mode.
+ */
+    public char getMode() {
+        return mode;
+    }
+
 /**
 *Sets whether the item is going to be tossed,worn,or eaten.
 *@param newMode the new mode the inventory is set to.
@@ -27,6 +36,15 @@ public class Inventory implements Serializable {
     public void setMode(char newMode) {
         mode = newMode;
     }
+
+    /**
+*Gets the currently selected item.
+*@return the currentyly selected item.
+ */
+    public Item getCurrentItem() {
+        return inventory.get(currentItemIndex);
+    }
+
 /**
 *Adds item to the list of items.
 *@param newItem item to be added to the inventory.
@@ -37,8 +55,9 @@ public class Inventory implements Serializable {
 /**
 *Uses the currently selected item.
 *@return the description of the item being used
+*@param itemToToss the item that is to be tossed if a item gets tossed.
  */
-    public String useItem() {
+    public String useItem(Item itemToToss) {
         if (inventory.isEmpty()) {
             return ("Inventory is empty");
         } else {
@@ -46,7 +65,8 @@ public class Inventory implements Serializable {
           if (mode == 'e') {
             return eatItem(currentItem);
           } else if (mode == 't') {
-            return tossItem(currentItem);
+            itemToToss = currentItem;
+            return tossItem(itemToToss);
           } else if (mode == 'w') {
             return wearItem(currentItem);
           }
