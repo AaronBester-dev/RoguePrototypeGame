@@ -88,7 +88,7 @@ public class Inventory implements Serializable {
           inventory.remove(getCurrentItem());
           return (potionToEat.eat());
         } else {
-          return ("Item is not edible.");
+          return (getCurrentItem().getName() + " is not edible.");
         }
     }
 /**
@@ -123,7 +123,7 @@ public class Inventory implements Serializable {
         inventory.get(currentItemIndex).setName(getCurrentItem().getName().replace(" (Equipped)", ""));
         return (clothingToTakeOff.wear());
       } else {
-        return ("Item can not be equipped");
+        return (getCurrentItem().getName() + " can not be equipped");
       }
     }
 /**
@@ -140,7 +140,7 @@ public class Inventory implements Serializable {
             inventory.remove(getCurrentItem());
             return (potionToToss.toss());
           } else {
-            return ("Item is not tossable.");
+            return (getCurrentItem().getName() + " is not tossable.");
           }
     }
 /**
