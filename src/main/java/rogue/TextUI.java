@@ -378,13 +378,12 @@ keys to the equivalent movement keys in rogue.
 
     private void moveInventory(char userInput) {
       String message = "";
-      theGame.openInventoryPanel(userInput);
-      clearDisplay();
       draw("Select item to use.", theGame.getNextDisplay());
       changeMessage("Select item to use.");
+      changeInventoryText(theGame.openInventoryPanel(userInput));
       while (userInput != 'u') {
         userInput = getInput();
-        theGame.moveThroughInventoryPanel(userInput);
+        changeInventoryText(theGame.moveThroughInventoryPanel(userInput));
         draw("Select item to use.", theGame.getNextDisplay());
         changeMessage("Select item to use.");
       }

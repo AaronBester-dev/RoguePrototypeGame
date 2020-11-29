@@ -275,23 +275,25 @@ public class Rogue implements Serializable {
 /**
 *Changes the next display to a string representation of the inventory.
 *@param input character from the keyboard
+*@return (String) string that prints inventory
 */
 
-    public void openInventoryPanel(char input) {
+    public String openInventoryPanel(char input) {
       inventory.setMode(input);
-      nextDisplay = inventory.printInventory();
+      return inventory.printInventory();
     }
 /**
 *Allows the player to move up and down through the inventory panel.
 *@param input character from the keyboard
+*@return (String) string that prints inventory
 */
-    public void moveThroughInventoryPanel(char input) {
+    public String moveThroughInventoryPanel(char input) {
       if (input == UP) {
         inventory.moveUpThroughInventory();
       } else if (input == DOWN) {
         inventory.moveDownThroughInventory();
       }
-      nextDisplay = inventory.printInventory();
+      return inventory.printInventory();
     }
 /**
 *Uses the currently selected item and returns the description of the item used.
