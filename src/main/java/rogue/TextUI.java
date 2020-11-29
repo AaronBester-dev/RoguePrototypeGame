@@ -92,35 +92,35 @@ cursor to top left corner and does nothing else.
     }
 
      private void setTerminal() {
-        JPanel terminalPanel = new JPanel();
-        terminal = new SwingTerminal();
-        terminalPanel.add(terminal);
-        contentPane.add(terminalPanel, BorderLayout.CENTER);
+      JPanel terminalPanel = new JPanel();
+      terminal = new SwingTerminal();
+      terminalPanel.add(terminal);
+      contentPane.add(terminalPanel, BorderLayout.CENTER);
     }
 
     private void setUpPanels() {
-        JPanel textPanel = new JPanel();
-        JPanel inventoryPanel = new JPanel();
-        setUpTextPanel(textPanel);
-        setUpInventoryPanel(inventoryPanel);
-        setTerminal();
+      JPanel textPanel = new JPanel();
+      JPanel inventoryPanel = new JPanel();
+      setUpTextPanel(textPanel);
+      setUpInventoryPanel(inventoryPanel);
+      setTerminal();
     }
 
     private void setUpTextPanel(JPanel thePanel) {
-        thePanel.setLayout(new FlowLayout());
-        Border prettyLine = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
-        thePanel.setBorder(prettyLine);
-        JTextField playerName = new JTextField("Name", PLAYERTEXTSIZE);
-        playerName.setHorizontalAlignment(JTextField.CENTER);
-        playerName.setEditable(false);
-        playerName.setFont(new Font("Epic", 1, FONTSIZE));
-        thePanel.add(playerName);
-        JTextField message = new JTextField("Welcome To My Rogue Game", TEXTSIZE);
-        message.setHorizontalAlignment(JTextField.CENTER);
-        message.setEditable(false);
-        message.setFont(new Font("Epic", 1, FONTSIZE));
-        thePanel.add(message);
-        contentPane.add(thePanel, BorderLayout.NORTH);
+      thePanel.setLayout(new FlowLayout());
+      Border prettyLine = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
+      thePanel.setBorder(prettyLine);
+      JTextField playerName = new JTextField("Name", PLAYERTEXTSIZE);
+      playerName.setHorizontalAlignment(JTextField.CENTER);
+      playerName.setEditable(false);
+      playerName.setFont(new Font("Epic", 1, FONTSIZE));
+      thePanel.add(playerName);
+      JTextField message = new JTextField("Welcome To My Rogue Game", TEXTSIZE);
+      message.setHorizontalAlignment(JTextField.CENTER);
+      message.setEditable(false);
+      message.setFont(new Font("Epic", 1, FONTSIZE));
+      thePanel.add(message);
+      contentPane.add(thePanel, BorderLayout.NORTH);
     }
 
     private void setUpInventoryPanel(JPanel thePanel) {
@@ -131,15 +131,15 @@ cursor to top left corner and does nothing else.
       contentPane.add(thePanel, BorderLayout.EAST);
     }
 
-     private void start() {
-        try {
-            screen = new TerminalScreen(terminal);
-            screen.setCursorPosition(TerminalPosition.TOP_LEFT_CORNER);
-            screen.startScreen();
-            screen.refresh();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void start() {
+      try {
+        screen = new TerminalScreen(terminal);
+        screen.setCursorPosition(TerminalPosition.TOP_LEFT_CORNER);
+        screen.startScreen();
+        screen.refresh();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
 /**
 *Changes message in the message label.
@@ -330,13 +330,13 @@ keys to the equivalent movement keys in rogue.
 */
     public void loadGame(String filename) {
       try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename)); ) {
-             // Method for deserialization of object
-            theGame = (Rogue) in.readObject();   //we're casting it to the object we know it is
-        } catch (IOException ex) {
-          showErrorMessage("Error occurred while loading.", "Load Error");
-        } catch (ClassNotFoundException ex) {
-          showErrorMessage("Error occurred while loading.", "Load Error");
-        }
+        // Method for deserialization of object
+        theGame = (Rogue) in.readObject();   //we're casting it to the object we know it is
+      } catch (IOException ex) {
+        showErrorMessage("Error occurred while loading.", "Load Error");
+      } catch (ClassNotFoundException ex) {
+        showErrorMessage("Error occurred while loading.", "Load Error");
+      }
     }
 
     private void changeJsonFile() {

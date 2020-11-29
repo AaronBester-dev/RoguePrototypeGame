@@ -213,19 +213,19 @@ public class Rogue implements Serializable {
       int y = 1;
       boolean itemIsInCorrectLocation = false;
       while (!itemIsInCorrectLocation) {
-          try {
-            roomToAddTo.addItem(newItem);
-            itemIsInCorrectLocation = true;
-          } catch (ImpossiblePositionException e) {
-            x++;
-            if (x >= roomToAddTo.getWidth() - 1) {
-              y++;
-            }
-            newItem.setXyLocation(new Point(x, y));
-          } catch (NoSuchItemException f) {
-            roomToAddTo.getRoomItems().remove(newItem);
-            itemIsInCorrectLocation = true;
+        try {
+          roomToAddTo.addItem(newItem);
+          itemIsInCorrectLocation = true;
+        } catch (ImpossiblePositionException e) {
+          x++;
+          if (x >= roomToAddTo.getWidth() - 1) {
+            y++;
           }
+          newItem.setXyLocation(new Point(x, y));
+        } catch (NoSuchItemException f) {
+          roomToAddTo.getRoomItems().remove(newItem);
+          itemIsInCorrectLocation = true;
+        }
       }
     }
 
@@ -247,7 +247,6 @@ public class Rogue implements Serializable {
         doorStringArray = toAdd.split(" ");
         doorConnectedRoomId = Integer.decode(doorStringArray[0]);
         wallPosition = Integer.decode(doorStringArray[1]);
-
         return (new Door(newRoom, doorConnectedRoomId, wallPosition));
       }
     }
@@ -362,9 +361,7 @@ public class Rogue implements Serializable {
       } else if (y >= player.getCurrentRoom().getHeight() || y <= -1) {
         return true;
       }
-
       return false;
-
     }
 
     private String checkInput(char input, Point wherePlayerWantsToGo) throws InvalidMoveException {
@@ -534,23 +531,23 @@ public class Rogue implements Serializable {
     }
 
     private boolean makeAndAddNewDoor(String keyOfDoorToConnectTo, Room roomToConnectDoorTo, Room roomToFix) {
-       if (roomToConnectDoorTo == null) {
-          return (false);
-        } else {
-          if (keyOfDoorToConnectTo.equals("N")) {
-            roomToConnectDoorTo.setDoor("N", new Door(roomToConnectDoorTo, roomToFix.getId(), 1));
-            roomToFix.setDoor("S", new Door(roomToFix, roomToConnectDoorTo.getId(), 1));
-          } else if (keyOfDoorToConnectTo.equals("S")) {
-            roomToConnectDoorTo.setDoor("S", new Door(roomToConnectDoorTo, roomToFix.getId(), 1));
-            roomToFix.setDoor("N", new Door(roomToFix, roomToConnectDoorTo.getId(), 1));
-          } else if (keyOfDoorToConnectTo.equals("W")) {
-            roomToConnectDoorTo.setDoor("W", new Door(roomToConnectDoorTo, roomToFix.getId(), 1));
-            roomToFix.setDoor("E", new Door(roomToFix, roomToConnectDoorTo.getId(), 1));
-          } else if (keyOfDoorToConnectTo.equals("E")) {
-            roomToConnectDoorTo.setDoor("E", new Door(roomToConnectDoorTo, roomToFix.getId(), 1));
-            roomToFix.setDoor("W", new Door(roomToFix, roomToConnectDoorTo.getId(), 1));
-          }
-          return true;
+      if (roomToConnectDoorTo == null) {
+        return (false);
+      } else {
+        if (keyOfDoorToConnectTo.equals("N")) {
+          roomToConnectDoorTo.setDoor("N", new Door(roomToConnectDoorTo, roomToFix.getId(), 1));
+          roomToFix.setDoor("S", new Door(roomToFix, roomToConnectDoorTo.getId(), 1));
+        } else if (keyOfDoorToConnectTo.equals("S")) {
+          roomToConnectDoorTo.setDoor("S", new Door(roomToConnectDoorTo, roomToFix.getId(), 1));
+          roomToFix.setDoor("N", new Door(roomToFix, roomToConnectDoorTo.getId(), 1));
+        } else if (keyOfDoorToConnectTo.equals("W")) {
+          roomToConnectDoorTo.setDoor("W", new Door(roomToConnectDoorTo, roomToFix.getId(), 1));
+          roomToFix.setDoor("E", new Door(roomToFix, roomToConnectDoorTo.getId(), 1));
+        } else if (keyOfDoorToConnectTo.equals("E")) {
+          roomToConnectDoorTo.setDoor("E", new Door(roomToConnectDoorTo, roomToFix.getId(), 1));
+          roomToFix.setDoor("W", new Door(roomToFix, roomToConnectDoorTo.getId(), 1));
         }
+        return true;
+      }
     }
 }
