@@ -33,7 +33,7 @@ import javax.swing.BorderFactory;
 import javax.swing.border.EtchedBorder;
 
 
-public class TextUI extends JFrame {
+public class WindowUI extends JFrame {
    private SwingTerminal terminal;
    private static Rogue theGame;
    public static final int WIDTH = 700;
@@ -53,10 +53,10 @@ public class TextUI extends JFrame {
    private Container contentPane;
 
 /**
-Constructor for TextUI class.  Creates the screens, sets
+Constructor for WindowUI class.  Creates the screens, sets
 cursor to top left corner and does nothing else.
 */
-    public TextUI() {
+    public WindowUI() {
       super("my awesome game");
       contentPane = getContentPane();
       setWindowDefaults(getContentPane());
@@ -426,7 +426,7 @@ the main method.
       Room oldRoom = null;
       String configurationFileLocation = "fileLocations.json";
       RogueParser parser = new RogueParser(configurationFileLocation);
-      TextUI theGameUI = new TextUI();
+      WindowUI theGameUI = new WindowUI();
       theGame = new Rogue(parser);
       theGameUI.changePlayerName();
       oldRoom = theGame.getPlayer().getCurrentRoom();
