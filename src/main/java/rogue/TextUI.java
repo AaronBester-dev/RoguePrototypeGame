@@ -19,6 +19,7 @@ import java.awt.Container;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.Color;
 import java.io.IOException;
 import javax.swing.JPanel;
 import javax.swing.JOptionPane;
@@ -66,10 +67,10 @@ cursor to top left corner and does nothing else.
     }
 
     private void setWindowDefaults(Container newContentPane) {
-        setTitle("Rogue!");
-        setSize(WIDTH, HEIGHT);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        newContentPane.setLayout(new BorderLayout());
+      setTitle("Rogue!");
+      setSize(WIDTH, HEIGHT);
+      setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+      newContentPane.setLayout(new BorderLayout());
     }
 
     private void setUpMenuBar() {
@@ -95,6 +96,7 @@ cursor to top left corner and does nothing else.
       JPanel terminalPanel = new JPanel();
       terminal = new SwingTerminal();
       terminalPanel.add(terminal);
+      terminalPanel.setBackground(Color.black);
       contentPane.add(terminalPanel, BorderLayout.CENTER);
     }
 
